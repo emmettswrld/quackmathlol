@@ -7,67 +7,40 @@
     <link rel="icon" type="image/png" href="https://i.imgur.com/GHMzp1T.png">
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
-        
         * { margin: 0; padding: 0; box-sizing: border-box; }
-        
         body { 
             font-family: "SF Pro Display", "SF Pro Text", "Inter", system-ui, -apple-system, sans-serif; 
-            min-height: 100vh; 
-            background: #000; 
-            color: #fff; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
-            overflow: hidden; 
-            -webkit-font-smoothing: antialiased;
+            min-height: 100vh; background: #000; color: #fff; display: flex; 
+            justify-content: center; align-items: center; overflow: hidden; -webkit-font-smoothing: antialiased;
         }
-
-        body::before, body::after { 
+        body::before { 
             content: ""; position: absolute; width: 120%; height: 120%; 
             background: radial-gradient(circle at 20% 30%, rgba(0, 150, 255, 0.15), transparent 40%), 
-                        radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.08), transparent 45%), 
-                        radial-gradient(circle at 50% 50%, rgba(0, 255, 180, 0.12), transparent 50%); 
+                        radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.08), transparent 45%); 
             animation: floatBG 25s linear infinite; z-index: -1; 
         }
-        @keyframes floatBG { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-5%, -5%) scale(1.05); } 100% { transform: translate(0, 0) scale(1); } }
-
-        .container { width: 100%; max-width: 520px; padding: 2rem 1.25rem; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.25rem; }
+        @keyframes floatBG { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-2%, -2%); } }
+        .container { width: 100%; max-width: 520px; padding: 2rem 1.25rem; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; }
         .logo { width: 60px; height: auto; filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.25)); }
-        
         h1 { font-size: 2.1rem; font-weight: 700; letter-spacing: -0.022em; }
-        
         #search { 
             width: 100%; padding: 0.85rem 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); 
             outline: none; font-size: 1rem; text-align: center; background: rgba(255, 255, 255, 0.08); 
             color: white; backdrop-filter: blur(10px);
         }
-
-        ul { 
-            width: 100%; list-style: none; display: flex; flex-direction: column; 
-            gap: 0.7rem; max-height: 50vh; 
-            overflow-y: auto; 
-            overflow-x: hidden; 
-            padding-right: 5px; 
-        }
-        
+        ul { width: 100%; list-style: none; display: flex; flex-direction: column; gap: 0.7rem; max-height: 55vh; overflow-y: auto; overflow-x: hidden; padding-right: 5px; }
         ul::-webkit-scrollbar { width: 4px; }
         ul::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
-
-        li { width: 100%; }
-        
         a { 
-            display: block; padding: 1rem; border-radius: 12px; text-decoration: none; 
-            font-weight: 600; color: white; background: rgba(255, 255, 255, 0.06); 
-            transition: all 0.2s ease; border: 1px solid rgba(255,255,255,0.05);
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            display: block; padding: 1rem; border-radius: 12px; text-decoration: none; font-weight: 600; 
+            color: white; background: rgba(255, 255, 255, 0.06); transition: all 0.2s ease; 
+            border: 1px solid rgba(255,255,255,0.05); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
         a:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
-        
         footer { margin-top: 1rem; font-size: 0.85rem; color: #86868b; }
     </style>
 </head>
 <body>
-
     <div class="container">
         <img src="https://i.imgur.com/GHMzp1T.png" alt="Logo" class="logo">
         <h1>Quackmath Games</h1>
@@ -81,12 +54,11 @@
         const search = document.getElementById('search');
         let games = [];
 
-        // List of domains or keywords to block
+        // Specifically block these non-game URLs and system links
         const blockList = [
-            'forms.gle', 'oraclecloud', 'discord.gg', 'cheapest.autos', 
-            'fort1nd', 'dinprima', 'neocities', '99v.org', 'galacticnetwork', 
-            'toothpastenetwork', 'geography-basic', 'netlify.app', 'zxsgames', 
-            'glseries', 'cloudfront', 'report abuse', 'learn more', 'google', 'published by'
+            'howo.pages.dev', 'itafricagroup', 'leeschoolsk12', 'frogiesarcade', 'bostoncareercounselor',
+            'travelpage.biz', 'neo-space.space', 'dj-jam.be', 'cloe.', 'adaptor.', 'berkatdoa',
+            'cbu.net', 'geographyles', 'i5.ca', 'forms.gle', 'discord.gg', 'report abuse', 'learn more'
         ];
 
         fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub')
@@ -100,21 +72,18 @@
                     let name = link.innerText.trim();
                     const url = new URL(link.href).searchParams.get('q') || link.href;
 
-                    // Stop if we hit ruffle
+                    // Stop parsing entirely once we hit ruffle
                     if (name.toLowerCase().includes('ruffle.html')) break;
 
-                    // Filter out blocked URLs/Keywords
-                    const isBlocked = blockList.some(term => 
-                        name.toLowerCase().includes(term) || url.toLowerCase().includes(term)
-                    );
-                    if (isBlocked) continue;
+                    // Skip if the URL is in our blocklist
+                    if (blockList.some(term => url.toLowerCase().includes(term) || name.toLowerCase().includes(term))) continue;
 
-                    if (name.length > 1) {
-                        // Regex: removes '.html' and any occurrence of 'cl' as a standalone word or at start/end
+                    if (name.length > 2) {
+                        // Aggressively remove .html and cl
                         let cleanName = name
                             .replace(/\.html/gi, '')
-                            .replace(/\bcl\b/gi, '') 
-                            .replace(/\s+/g, ' ') // clean up double spaces
+                            .replace(/cl/gi, '') // Removes 'cl' anywhere it appears
+                            .replace(/\s+/g, ' ') 
                             .trim();
 
                         if(cleanName) games.push({ name: cleanName, url: url });
@@ -136,7 +105,6 @@
                 list.appendChild(li);
             });
         }
-
         search.addEventListener('input', e => render(e.target.value));
     </script>
 </body>
