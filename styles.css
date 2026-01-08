@@ -65,7 +65,7 @@ body::after {
 
 /* ---------- LOGO ---------- */
 .logo {
-  width: 140px;
+  width: 40px;
   height: auto;
   filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.25));
 }
@@ -111,10 +111,6 @@ ul {
 /* scrollbar */
 ul::-webkit-scrollbar {
   width: 6px;
-}
-ul::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.2);
-  border-radius: 10px;
 }
 
 /* ---------- LINKS ---------- */
