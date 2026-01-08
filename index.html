@@ -11,7 +11,6 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body { 
-            /* SF Pro / Inter Font Stack */
             font-family: "SF Pro Display", "SF Pro Text", "Inter", system-ui, -apple-system, sans-serif; 
             min-height: 100vh; 
             background: #000; 
@@ -23,7 +22,6 @@
             -webkit-font-smoothing: antialiased;
         }
 
-        /* Animated Background */
         body::before, body::after { 
             content: ""; position: absolute; width: 120%; height: 120%; 
             background: radial-gradient(circle at 20% 30%, rgba(0, 150, 255, 0.15), transparent 40%), 
@@ -31,7 +29,6 @@
                         radial-gradient(circle at 50% 50%, rgba(0, 255, 180, 0.12), transparent 50%); 
             animation: floatBG 25s linear infinite; z-index: -1; 
         }
-        body::after { animation-duration: 40s; opacity: 0.7; }
         @keyframes floatBG { 0% { transform: translate(0, 0) scale(1); } 50% { transform: translate(-5%, -5%) scale(1.05); } 100% { transform: translate(0, 0) scale(1); } }
 
         .container { width: 100%; max-width: 520px; padding: 2rem 1.25rem; display: flex; flex-direction: column; align-items: center; text-align: center; gap: 1.25rem; }
@@ -42,17 +39,17 @@
         #search { 
             width: 100%; padding: 0.85rem 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); 
             outline: none; font-size: 1rem; text-align: center; background: rgba(255, 255, 255, 0.08); 
-            color: white; backdrop-filter: blur(10px); transition: border 0.2s;
+            color: white; backdrop-filter: blur(10px);
         }
-        #search:focus { border: 1px solid rgba(255,255,255,0.3); }
-        #search::placeholder { color: rgba(255, 255, 255, 0.4); }
 
         ul { 
             width: 100%; list-style: none; display: flex; flex-direction: column; 
-            gap: 0.7rem; max-height: 50vh; overflow-y: auto; padding-right: 5px; 
+            gap: 0.7rem; max-height: 50vh; 
+            overflow-y: auto; 
+            overflow-x: hidden; /* Removes horizontal scrollbar */
+            padding-right: 5px; 
         }
         
-        /* Custom Scrollbar */
         ul::-webkit-scrollbar { width: 4px; }
         ul::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
 
@@ -62,12 +59,12 @@
             display: block; padding: 1rem; border-radius: 12px; text-decoration: none; 
             font-weight: 600; color: white; background: rgba(255, 255, 255, 0.06); 
             transition: all 0.2s ease; border: 1px solid rgba(255,255,255,0.05);
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
-        a:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); border-color: rgba(255,255,255,0.2); }
+        a:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
         
         footer { margin-top: 1rem; font-size: 0.85rem; color: #86868b; }
-        .loading { opacity: 0.6; animation: pulse 1.5s infinite; }
-        @keyframes pulse { 50% { opacity: 0.3; } }
+        .loading { opacity: 0.6; }
     </style>
 </head>
 <body>
@@ -76,7 +73,7 @@
         <img src="https://i.imgur.com/GHMzp1T.png" alt="Logo" class="logo">
         <h1>Quackmath Games</h1>
         <input type="text" id="search" placeholder="Search games...">
-        <ul id="gameList"><li class="loading">Fetching games...</li></ul>
+        <ul id="gameList"><li class="loading">Cleaning and loading games...</li></ul>
         <footer>Made by Quackmath</footer>
     </div>
 
@@ -85,34 +82,38 @@
         const search = document.getElementById('search');
         let games = [];
 
-        // Fetching the published Google Doc
         fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub')
             .then(r => r.text())
             .then(html => {
                 const parser = new DOMParser();
                 const doc = parser.parseFromString(html, 'text/html');
-                
-                // Get all links in the document
                 const links = doc.querySelectorAll('a');
                 
-                links.forEach(link => {
-                    const url = link.href;
-                    // We only want the actual game links (usually Drive or external)
-                    // Google Docs wraps links in a redirect, so we extract the 'q' parameter
-                    const actualUrl = new URL(url).searchParams.get('q') || url;
-                    
-                    const name = link.innerText.trim();
+                for (let link of links) {
+                    let name = link.innerText.trim();
+                    const url = new URL(link.href).searchParams.get('q') || link.href;
 
-                    // Filter out empty names or the "Report Abuse" links at bottom of Google Docs
-                    if (name && name.length > 1 && !actualUrl.includes('google.com/url?')) {
-                        games.push({ name, url: actualUrl });
+                    // Stop parsing if we reach ruffle.html
+                    if (name.toLowerCase() === 'ruffle.html' || name.toLowerCase() === 'ruffle') break;
+
+                    // Filter out unwanted system links
+                    const ignoreList = ['report abuse', 'learn more', 'google', 'published by'];
+                    if (ignoreList.some(term => name.toLowerCase().includes(term))) continue;
+
+                    if (name.length > 1) {
+                        // Clean "cl" and ".html" from the name (case insensitive)
+                        let cleanName = name
+                            .replace(/\.html/gi, '')
+                            .replace(/\bcl\b/gi, '') // Removes "cl" as a whole word
+                            .trim();
+
+                        games.push({ name: cleanName, url: url });
                     }
-                });
-
+                }
                 render();
             })
             .catch(err => {
-                list.innerHTML = '<li>Error loading games. Make sure the Doc is Published to Web.</li>';
+                list.innerHTML = '<li>Error loading games.</li>';
                 console.error(err);
             });
 
