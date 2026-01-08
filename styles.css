@@ -1,68 +1,147 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
 
+/* ---------- RESET ---------- */
 * {
-  box-sizing: border-box;
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
+  font-family: "Inter", system-ui, sans-serif;
 }
 
+/* ---------- BACKGROUND ---------- */
 body {
-  font-family: Inter, system-ui, sans-serif;
-  background: #fff;
-  color: #111;
+  min-height: 100vh;
+  background: #000;
+  color: #fff;
   display: flex;
   justify-content: center;
-  min-height: 100vh;
+  align-items: center;
+  overflow: hidden;
 }
 
+/* Animated gradient particles */
+body::before,
+body::after {
+  content: "";
+  position: absolute;
+  width: 120%;
+  height: 120%;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(0, 150, 255, 0.15), transparent 40%),
+    radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.08), transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(0, 255, 180, 0.12), transparent 50%);
+  animation: floatBG 25s linear infinite;
+  z-index: -1;
+}
+
+body::after {
+  animation-duration: 40s;
+  opacity: 0.7;
+}
+
+@keyframes floatBG {
+  0% {
+    transform: translate(0, 0) scale(1);
+  }
+  50% {
+    transform: translate(-5%, -5%) scale(1.05);
+  }
+  100% {
+    transform: translate(0, 0) scale(1);
+  }
+}
+
+/* ---------- MAIN CONTAINER ---------- */
 .container {
   width: 100%;
   max-width: 520px;
-  padding: 2rem 1rem;
+  padding: 2rem 1.25rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 1.25rem;
+}
+
+/* ---------- LOGO ---------- */
+.logo {
+  width: 140px;
+  height: auto;
+  filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.25));
+}
+
+/* ---------- TITLE ---------- */
+h1 {
+  font-size: 2.1rem;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+}
+
+/* ---------- SEARCH ---------- */
+#search {
+  width: 100%;
+  padding: 0.85rem 1rem;
+  border-radius: 10px;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  text-align: center;
+  background: rgba(255, 255, 255, 0.08);
+  color: white;
+  backdrop-filter: blur(6px);
+}
+
+#search::placeholder {
+  color: rgba(255, 255, 255, 0.5);
+}
+
+/* ---------- LIST ---------- */
+ul {
+  width: 100%;
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  max-height: 55vh;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+/* scrollbar */
+ul::-webkit-scrollbar {
+  width: 6px;
+}
+ul::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 10px;
+}
+
+/* ---------- LINKS ---------- */
+li {
+  width: 100%;
   text-align: center;
 }
 
-.logo {
-  width: 120px;
-  margin-bottom: 0.5rem;
-}
-
-h1 {
-  font-size: 2rem;
-  font-weight: 700;
-  margin-bottom: 1.5rem;
-}
-
-#search {
-  width: 100%;
-  padding: 0.75rem;
-  font-size: 1rem;
-  border-radius: 8px;
-  border: 2px solid #aaa;
-  margin-bottom: 1.5rem;
-}
-
-ul {
-  list-style: none;
-  text-align: left;
-}
-
-li {
-  margin: 0.5rem 0;
-}
-
 a {
+  display: block;
+  padding: 0.65rem 0.75rem;
+  border-radius: 8px;
   text-decoration: none;
-  color: #0066cc;
   font-weight: 500;
+  color: white;
+  background: rgba(255, 255, 255, 0.06);
+  transition: transform 0.15s ease, background 0.15s ease;
 }
 
 a:hover {
-  text-decoration: underline;
+  background: rgba(255, 255, 255, 0.14);
+  transform: scale(1.03);
 }
 
+/* ---------- FOOTER ---------- */
 footer {
-  margin-top: 2rem;
+  margin-top: 1rem;
   font-size: 0.85rem;
-  color: #666;
+  opacity: 0.7;
 }
