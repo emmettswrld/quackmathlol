@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quackmath</title>
-    <link rel="icon" type="image/png" href="https://i.imgur.com/GHMzp1T.png">
+    <title id="pageTitle">Quackmath</title>
+    <link id="favicon" rel="icon" type="image/png" href="https://ik.imagekit.io/quackmath/goose%20(1).png">
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
         
@@ -30,6 +30,57 @@
         }
         @keyframes floatBG { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-2%, -2%); } }
 
+        /* Cloak Toggle Styles */
+        .cloak-container {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            z-index: 100;
+        }
+
+        .cloak-label {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: rgba(255, 255, 255, 0.6);
+        }
+
+        .switch {
+            position: relative;
+            display: inline-block;
+            width: 44px;
+            height: 24px;
+        }
+
+        .switch input { opacity: 0; width: 0; height: 0; }
+
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-color: rgba(255, 255, 255, 0.1);
+            transition: .4s;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 3px;
+            bottom: 3px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+
+        input:checked + .slider { background-color: #2ecc71; }
+        input:checked + .slider:before { transform: translateX(20px); }
+
         .container { 
             width: 100%; 
             max-width: 520px; 
@@ -43,7 +94,7 @@
             position: relative;
         }
 
-        .logo { width: 60px; height: auto; filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.25)); }
+        .logo { width: 80px; height: auto; filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.25)); }
         
         h1 { 
             font-size: 2.1rem; 
@@ -154,18 +205,27 @@
     </style>
 </head>
 <body>
+
+    <div class="cloak-container">
+        <span class="cloak-label">Toggle Cloak</span>
+        <label class="switch">
+            <input type="checkbox" id="cloakToggle">
+            <span class="slider"></span>
+        </label>
+    </div>
+
     <div class="container">
-        <img src="https://i.imgur.com/GHMzp1T.png" alt="Logo" class="logo">
+        <img src="https://ik.imagekit.io/quackmath/goose%20(1).png" alt="Logo" class="logo">
         <h1>Quackmath <span id="gameCount" class="count-badge">0</span></h1>
         <input type="text" id="search" placeholder="Search games...">
         <ul id="gameList">
             <div class="loader-container">
-                <img src="https://i.imgur.com/u1UwWFz.gif" class="custom-loader" alt="Loading...">
+                <img src="https://ik.imagekit.io/quackmath/71a12b05f17e71ab1ca4d61ccae6c98854bb65b40f0d8ece82be1f661088db6e.loading.gif" class="custom-loader" alt="Loading...">
             </div>
         </ul>
     </div>
 
-    <button id="scrollTop" title="Go to top">⬆</button>
+    <button id="scrollTop" title="Go to top">↑</button>
 
     <footer>Made with ♡ by Quackmath</footer>
 
@@ -174,7 +234,28 @@
         const search = document.getElementById('search');
         const countBadge = document.getElementById('gameCount');
         const scrollBtn = document.getElementById('scrollTop');
+        const cloakToggle = document.getElementById('cloakToggle');
+        
+        const originalTitle = "Quackmath Games";
+        const originalFavicon = "https://ik.imagekit.io/quackmath/goose%20(1).png";
+        const cloakTitle = "Google Classroom";
+        const cloakFavicon = "https://ik.imagekit.io/quackmath/Google_Classroom_Logo.svg.png";
+
         let games = [];
+
+        // Cloak Logic
+        function applyCloak(isCloaked) {
+            document.title = isCloaked ? cloakTitle : originalTitle;
+            document.getElementById('favicon').href = isCloaked ? cloakFavicon : originalFavicon;
+            localStorage.setItem('quackCloak', isCloaked);
+        }
+
+        cloakToggle.addEventListener('change', (e) => applyCloak(e.target.checked));
+
+        // Load saved cloak state
+        const savedCloak = localStorage.getItem('quackCloak') === 'true';
+        cloakToggle.checked = savedCloak;
+        applyCloak(savedCloak);
 
         const blockList = [
             'howo.pages.dev', 'itafricagroup', 'leeschoolsk12', 'frogiesarcade', 'bostoncareercounselor',
