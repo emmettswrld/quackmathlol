@@ -6,13 +6,23 @@
     <title>Quackmath Games</title>
     <link rel="icon" type="image/png" href="https://i.imgur.com/GHMzp1T.png">
     <style>
+        /* Force Inter font for everyone */
         @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
+        
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         body { 
-            font-family: "SF Pro Display", "SF Pro Text", "Inter", system-ui, -apple-system, sans-serif; 
-            min-height: 100vh; background: #000; color: #fff; display: flex; 
-            justify-content: center; align-items: center; overflow: hidden; -webkit-font-smoothing: antialiased;
+            font-family: "Inter", sans-serif; 
+            height: 100vh; 
+            background: #000; 
+            color: #fff; 
+            display: flex; 
+            flex-direction: column;
+            align-items: center; 
+            overflow: hidden; 
+            -webkit-font-smoothing: antialiased;
         }
+
         body::before { 
             content: ""; position: absolute; width: 120%; height: 120%; 
             background: radial-gradient(circle at 20% 30%, rgba(0, 150, 255, 0.15), transparent 40%), 
@@ -20,24 +30,87 @@
             animation: floatBG 25s linear infinite; z-index: -1; 
         }
         @keyframes floatBG { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-2%, -2%); } }
-        .container { width: 100%; max-width: 520px; padding: 2rem 1.25rem; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; }
-        .logo { width: 60px; height: auto; filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.25)); }
-        h1 { font-size: 2.1rem; font-weight: 700; letter-spacing: -0.022em; }
-        #search { 
-            width: 100%; padding: 0.85rem 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); 
-            outline: none; font-size: 1rem; text-align: center; background: rgba(255, 255, 255, 0.08); 
-            color: white; backdrop-filter: blur(10px);
+
+        .container { 
+            width: 100%; 
+            max-width: 520px; 
+            padding: 2rem 1.25rem; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            gap: 1.25rem;
+            flex-grow: 1; /* Allows container to fill space between top and footer */
+            justify-content: center;
         }
-        ul { width: 100%; list-style: none; display: flex; flex-direction: column; gap: 0.7rem; max-height: 55vh; overflow-y: auto; overflow-x: hidden; padding-right: 5px; }
+
+        .logo { width: 60px; height: auto; filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.25)); }
+        
+        h1 { 
+            font-size: 2.1rem; 
+            font-weight: 700; 
+            letter-spacing: -0.02em; 
+            text-align: center;
+        }
+        
+        #search { 
+            width: 100%; 
+            padding: 0.85rem 1rem; 
+            border-radius: 12px; 
+            border: 1px solid rgba(255,255,255,0.1); 
+            outline: none; 
+            font-size: 1rem; 
+            text-align: center; 
+            background: rgba(255, 255, 255, 0.08); 
+            color: white; 
+            backdrop-filter: blur(10px);
+            font-family: "Inter", sans-serif;
+        }
+
+        ul { 
+            width: 100%; 
+            list-style: none; 
+            display: flex; 
+            flex-direction: column; 
+            gap: 0.7rem; 
+            max-height: 45vh; 
+            overflow-y: auto; 
+            overflow-x: hidden; 
+            padding-right: 5px; 
+        }
+        
         ul::-webkit-scrollbar { width: 4px; }
         ul::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); border-radius: 10px; }
+
+        li { width: 100%; text-align: center; }
+        
         a { 
-            display: block; padding: 1rem; border-radius: 12px; text-decoration: none; font-weight: 600; 
-            color: white; background: rgba(255, 255, 255, 0.06); transition: all 0.2s ease; 
-            border: 1px solid rgba(255,255,255,0.05); white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            display: block; 
+            padding: 1rem; 
+            border-radius: 12px; 
+            text-decoration: none; 
+            font-weight: 600; 
+            color: white; 
+            background: rgba(255, 255, 255, 0.06); 
+            transition: all 0.2s ease; 
+            border: 1px solid rgba(255,255,255,0.05); 
+            white-space: nowrap; 
+            overflow: hidden; 
+            text-overflow: ellipsis;
+            text-align: center; /* Centers the text inside the button */
         }
         a:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
-        footer { margin-top: 1rem; font-size: 0.85rem; color: #86868b; }
+        
+        footer { 
+            width: 100%;
+            padding: 20px;
+            text-align: center;
+            font-size: 0.85rem; 
+            color: #86868b;
+            background: rgba(0,0,0,0.5); /* Slight background to keep it readable over the animation */
+            backdrop-filter: blur(5px);
+            position: relative;
+            z-index: 10;
+        }
     </style>
 </head>
 <body>
@@ -46,15 +119,15 @@
         <h1>Quackmath Games</h1>
         <input type="text" id="search" placeholder="Search games...">
         <ul id="gameList"><li>Loading...</li></ul>
-        <footer>Made by Quackmath</footer>
     </div>
+
+    <footer>Made by Quackmath</footer>
 
     <script>
         const list = document.getElementById('gameList');
         const search = document.getElementById('search');
         let games = [];
 
-        // Specifically block these non-game URLs and system links
         const blockList = [
             'howo.pages.dev', 'itafricagroup', 'leeschoolsk12', 'frogiesarcade', 'bostoncareercounselor',
             'travelpage.biz', 'neo-space.space', 'dj-jam.be', 'cloe.', 'adaptor.', 'berkatdoa',
@@ -72,17 +145,13 @@
                     let name = link.innerText.trim();
                     const url = new URL(link.href).searchParams.get('q') || link.href;
 
-                    // Stop parsing entirely once we hit ruffle
                     if (name.toLowerCase().includes('ruffle.html')) break;
-
-                    // Skip if the URL is in our blocklist
                     if (blockList.some(term => url.toLowerCase().includes(term) || name.toLowerCase().includes(term))) continue;
 
                     if (name.length > 2) {
-                        // Aggressively remove .html and cl
                         let cleanName = name
                             .replace(/\.html/gi, '')
-                            .replace(/cl/gi, '') // Removes 'cl' anywhere it appears
+                            .replace(/cl/gi, '') 
                             .replace(/\s+/g, ' ') 
                             .trim();
 
