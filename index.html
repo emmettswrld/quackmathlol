@@ -46,7 +46,7 @@
             width: 100%; list-style: none; display: flex; flex-direction: column; 
             gap: 0.7rem; max-height: 50vh; 
             overflow-y: auto; 
-            overflow-x: hidden; /* Removes horizontal scrollbar */
+            overflow-x: hidden; 
             padding-right: 5px; 
         }
         
@@ -64,7 +64,6 @@
         a:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
         
         footer { margin-top: 1rem; font-size: 0.85rem; color: #86868b; }
-        .loading { opacity: 0.6; }
     </style>
 </head>
 <body>
@@ -73,7 +72,7 @@
         <img src="https://i.imgur.com/GHMzp1T.png" alt="Logo" class="logo">
         <h1>Quackmath Games</h1>
         <input type="text" id="search" placeholder="Search games...">
-        <ul id="gameList"><li class="loading">Cleaning and loading games...</li></ul>
+        <ul id="gameList"><li>Loading...</li></ul>
         <footer>Made by Quackmath</footer>
     </div>
 
@@ -81,6 +80,14 @@
         const list = document.getElementById('gameList');
         const search = document.getElementById('search');
         let games = [];
+
+        // List of domains or keywords to block
+        const blockList = [
+            'forms.gle', 'oraclecloud', 'discord.gg', 'cheapest.autos', 
+            'fort1nd', 'dinprima', 'neocities', '99v.org', 'galacticnetwork', 
+            'toothpastenetwork', 'geography-basic', 'netlify.app', 'zxsgames', 
+            'glseries', 'cloudfront', 'report abuse', 'learn more', 'google', 'published by'
+        ];
 
         fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub')
             .then(r => r.text())
@@ -93,39 +100,32 @@
                     let name = link.innerText.trim();
                     const url = new URL(link.href).searchParams.get('q') || link.href;
 
-                    // Stop parsing if we reach ruffle.html
-                    if (name.toLowerCase() === 'ruffle.html' || name.toLowerCase() === 'ruffle') break;
+                    // Stop if we hit ruffle
+                    if (name.toLowerCase().includes('ruffle.html')) break;
 
-                    // Filter out unwanted system links
-                    const ignoreList = ['report abuse', 'learn more', 'google', 'published by'];
-                    if (ignoreList.some(term => name.toLowerCase().includes(term))) continue;
+                    // Filter out blocked URLs/Keywords
+                    const isBlocked = blockList.some(term => 
+                        name.toLowerCase().includes(term) || url.toLowerCase().includes(term)
+                    );
+                    if (isBlocked) continue;
 
                     if (name.length > 1) {
-                        // Clean "cl" and ".html" from the name (case insensitive)
+                        // Regex: removes '.html' and any occurrence of 'cl' as a standalone word or at start/end
                         let cleanName = name
                             .replace(/\.html/gi, '')
-                            .replace(/\bcl\b/gi, '') // Removes "cl" as a whole word
+                            .replace(/\bcl\b/gi, '') 
+                            .replace(/\s+/g, ' ') // clean up double spaces
                             .trim();
 
-                        games.push({ name: cleanName, url: url });
+                        if(cleanName) games.push({ name: cleanName, url: url });
                     }
                 }
                 render();
-            })
-            .catch(err => {
-                list.innerHTML = '<li>Error loading games.</li>';
-                console.error(err);
             });
 
         function render(filter = '') {
             list.innerHTML = '';
             const filtered = games.filter(g => g.name.toLowerCase().includes(filter.toLowerCase()));
-
-            if (filtered.length === 0) {
-                list.innerHTML = '<li style="opacity:0.5; padding: 20px;">No games found</li>';
-                return;
-            }
-
             filtered.forEach(g => {
                 const li = document.createElement('li');
                 const a = document.createElement('a');
