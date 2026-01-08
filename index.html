@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Quackmath Games</title>
+    <title>Quackmath </title>
     <link rel="icon" type="image/png" href="https://i.imgur.com/GHMzp1T.png">
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
@@ -113,6 +113,17 @@
         }
         a:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
 
+        .loader-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 40px;
+        }
+        .custom-loader {
+            width: 120px; 
+            height: auto;
+        }
+
         #scrollTop {
             position: fixed;
             bottom: 80px;
@@ -147,12 +158,16 @@
         <img src="https://i.imgur.com/GHMzp1T.png" alt="Logo" class="logo">
         <h1>Quackmath Games <span id="gameCount" class="count-badge">0</span></h1>
         <input type="text" id="search" placeholder="Search games...">
-        <ul id="gameList"><li>Loading...</li></ul>
+        <ul id="gameList">
+            <div class="loader-container">
+                <img src="https://i.imgur.com/u1UwWFz.gif" class="custom-loader" alt="Loading...">
+            </div>
+        </ul>
     </div>
 
     <button id="scrollTop" title="Go to top">↑</button>
 
-    <footer>Made with ♡ by Quackmath</footer>
+    <footer>Made by Quackmath</footer>
 
     <script>
         const list = document.getElementById('gameList');
@@ -199,6 +214,11 @@
             const filtered = games.filter(g => g.name.toLowerCase().includes(filter.toLowerCase()));
             countBadge.textContent = filtered.length;
             
+            if (filtered.length === 0 && games.length > 0) {
+                list.innerHTML = '<li style="opacity: 0.5; padding-top: 20px;">No games found</li>';
+                return;
+            }
+
             filtered.forEach(g => {
                 const li = document.createElement('li');
                 const a = document.createElement('a');
@@ -211,15 +231,9 @@
         }
 
         search.addEventListener('input', e => render(e.target.value));
-
         list.addEventListener('scroll', () => {
-            if (list.scrollTop > 200) {
-                scrollBtn.style.display = 'flex';
-            } else {
-                scrollBtn.style.display = 'none';
-            }
+            scrollBtn.style.display = list.scrollTop > 200 ? 'flex' : 'none';
         });
-
         scrollBtn.addEventListener('click', () => {
             list.scrollTo({ top: 0, behavior: 'smooth' });
         });
