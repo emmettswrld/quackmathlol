@@ -6,7 +6,6 @@
     <title>Quackmath Games</title>
     <link rel="icon" type="image/png" href="https://i.imgur.com/GHMzp1T.png">
     <style>
-        /* Force Inter font for everyone */
         @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
         
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -39,8 +38,9 @@
             flex-direction: column; 
             align-items: center; 
             gap: 1.25rem;
-            flex-grow: 1; /* Allows container to fill space between top and footer */
+            flex-grow: 1; 
             justify-content: center;
+            position: relative;
         }
 
         .logo { width: 60px; height: auto; filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.25)); }
@@ -50,6 +50,18 @@
             font-weight: 700; 
             letter-spacing: -0.02em; 
             text-align: center;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .count-badge {
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 4px 10px;
+            border-radius: 20px;
+            color: rgba(255, 255, 255, 0.8);
+            font-weight: 600;
         }
         
         #search { 
@@ -76,6 +88,7 @@
             overflow-y: auto; 
             overflow-x: hidden; 
             padding-right: 5px; 
+            scroll-behavior: smooth;
         }
         
         ul::-webkit-scrollbar { width: 4px; }
@@ -96,18 +109,34 @@
             white-space: nowrap; 
             overflow: hidden; 
             text-overflow: ellipsis;
-            text-align: center; /* Centers the text inside the button */
+            text-align: center;
         }
         a:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
+
+        #scrollTop {
+            position: fixed;
+            bottom: 80px;
+            right: 20px;
+            background: rgba(255, 255, 255, 0.1);
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            backdrop-filter: blur(10px);
+            z-index: 100;
+        }
         
         footer { 
             width: 100%;
             padding: 20px;
             text-align: center;
             font-size: 0.85rem; 
-            color: #86868b;
-            background: rgba(0,0,0,0.5); /* Slight background to keep it readable over the animation */
-            backdrop-filter: blur(5px);
+            color: rgba(255, 255, 255, 0.5); 
             position: relative;
             z-index: 10;
         }
@@ -116,16 +145,20 @@
 <body>
     <div class="container">
         <img src="https://i.imgur.com/GHMzp1T.png" alt="Logo" class="logo">
-        <h1>Quackmath Games</h1>
+        <h1>Quackmath Games <span id="gameCount" class="count-badge">0</span></h1>
         <input type="text" id="search" placeholder="Search games...">
         <ul id="gameList"><li>Loading...</li></ul>
     </div>
+
+    <button id="scrollTop" title="Go to top">↑</button>
 
     <footer>Made by Quackmath</footer>
 
     <script>
         const list = document.getElementById('gameList');
         const search = document.getElementById('search');
+        const countBadge = document.getElementById('gameCount');
+        const scrollBtn = document.getElementById('scrollTop');
         let games = [];
 
         const blockList = [
@@ -164,6 +197,8 @@
         function render(filter = '') {
             list.innerHTML = '';
             const filtered = games.filter(g => g.name.toLowerCase().includes(filter.toLowerCase()));
+            countBadge.textContent = filtered.length;
+            
             filtered.forEach(g => {
                 const li = document.createElement('li');
                 const a = document.createElement('a');
@@ -174,7 +209,20 @@
                 list.appendChild(li);
             });
         }
+
         search.addEventListener('input', e => render(e.target.value));
+
+        list.addEventListener('scroll', () => {
+            if (list.scrollTop > 200) {
+                scrollBtn.style.display = 'flex';
+            } else {
+                scrollBtn.style.display = 'none';
+            }
+        });
+
+        scrollBtn.addEventListener('click', () => {
+            list.scrollTo({ top: 0, behavior: 'smooth' });
+        });
     </script>
 </body>
 </html>
