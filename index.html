@@ -22,7 +22,6 @@
                         radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.08), transparent 45%); 
             animation: floatBG 25s linear infinite; z-index: -1; 
         }
-        @keyframes floatBG { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-2%, -2%); } }
 
         /* --- UI ELEMENTS --- */
         #announcementBanner {
@@ -31,7 +30,6 @@
             font-size: 0.85rem; color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px);
             z-index: 1001; position: relative;
         }
-        #announcementBanner b { cursor: pointer; text-decoration: underline; margin-left: 5px; }
         
         .dismiss-btn {
             position: absolute; right: 20px; background: rgba(255,255,255,0.1);
@@ -53,74 +51,38 @@
         .cloak-group { display: flex; flex-direction: column; gap: 5px; }
         .label-row { display: flex; justify-content: space-between; align-items: center; }
         .cloak-group label { font-size: 0.65rem; color: rgba(255,255,255,0.4); font-weight: 700; text-transform: uppercase; }
-        
-        .set-btn {
-            font-size: 0.65rem; color: #2ecc71; background: none; border: none;
-            cursor: pointer; font-weight: 700; text-transform: uppercase;
-        }
-
-        .cloak-input {
-            background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 6px; padding: 8px; color: white; font-size: 0.8rem; outline: none; width: 100%;
-        }
+        .set-btn { font-size: 0.65rem; color: #2ecc71; background: none; border: none; cursor: pointer; font-weight: 700; text-transform: uppercase; }
+        .cloak-input { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; padding: 8px; color: white; font-size: 0.8rem; outline: none; width: 100%; }
 
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(255, 255, 255, 0.1); transition: .4s; border-radius: 24px;
-        }
-        .slider:before {
-            position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px;
-            background-color: white; transition: .4s; border-radius: 50%;
-        }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255, 255, 255, 0.1); transition: .4s; border-radius: 24px; }
+        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
         input:checked + .slider { background-color: #2ecc71; }
         input:checked + .slider:before { transform: translateX(20px); }
 
-        /* --- MAIN LAYOUT --- */
-        .container { 
-            width: 100%; max-width: 520px; padding: 2rem 1.25rem; 
-            display: flex; flex-direction: column; align-items: center; gap: 1.25rem;
-            flex-grow: 1; justify-content: center; position: relative;
-        }
+        /* --- MAIN CONTENT --- */
+        .container { width: 100%; max-width: 520px; padding: 2rem 1.25rem; display: flex; flex-direction: column; align-items: center; gap: 1.25rem; flex-grow: 1; justify-content: center; position: relative; }
         .logo { width: 80px; filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.25)); }
         h1 { font-size: 2.1rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
         .count-badge { font-size: 0.9rem; background: rgba(255, 255, 255, 0.15); padding: 4px 10px; border-radius: 20px; color: rgba(255, 255, 255, 0.8); }
         
-        #search { 
-            width: 100%; padding: 0.85rem 1rem; border-radius: 12px; 
-            border: 1px solid rgba(255,255,255,0.1); background: rgba(255, 255, 255, 0.08); 
-            color: white; text-align: center; outline: none; backdrop-filter: blur(10px);
-        }
+        #search { width: 100%; padding: 0.85rem 1rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255, 255, 255, 0.08); color: white; text-align: center; outline: none; backdrop-filter: blur(10px); }
 
-        ul { 
-            width: 100%; list-style: none; display: flex; flex-direction: column; gap: 0.7rem; 
-            max-height: 45vh; overflow-y: auto; padding-right: 8px;
-        }
+        ul { width: 100%; list-style: none; display: flex; flex-direction: column; gap: 0.7rem; max-height: 45vh; overflow-y: auto; padding-right: 8px; }
         ul::-webkit-scrollbar { width: 5px; }
         ul::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
 
-        a { 
-            display: block; padding: 1rem; border-radius: 12px; color: white; 
-            background: rgba(255, 255, 255, 0.06); text-decoration: none; font-weight: 600; 
-            border: 1px solid rgba(255,255,255,0.05); text-align: center; transition: 0.2s;
-        }
+        a { display: block; padding: 1rem; border-radius: 12px; color: white; background: rgba(255, 255, 255, 0.06); text-decoration: none; font-weight: 600; border: 1px solid rgba(255,255,255,0.05); text-align: center; transition: 0.2s; }
         a:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
 
-        #scrollTop {
-            position: fixed; bottom: 80px; right: 20px; background: rgba(255, 255, 255, 0.1);
-            color: white; border: 1px solid rgba(255, 255, 255, 0.2); width: 40px; height: 40px;
-            border-radius: 50%; cursor: pointer; display: none; align-items: center; justify-content: center; z-index: 100;
-        }
-        
         footer { width: 100%; padding: 20px; text-align: center; font-size: 0.85rem; color: rgba(255, 255, 255, 0.5); }
-        .modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); z-index:2000; justify-content:center; align-items:center; opacity:0; transition: 0.3s; }
     </style>
 </head>
 <body>
 
     <div id="announcementBanner">
-        <span>New update- Links, 100+ new games, and more <b onclick="toggleUpdateModal()">Learn more</b></span>
+        <span>Quackmath Updates Live</span>
         <button class="dismiss-btn" onclick="hideBanner()">Dismiss</button>
     </div>
 
@@ -151,23 +113,12 @@
         <ul id="gameList"></ul>
     </div>
 
-    <button id="scrollTop">↑</button>
-
-    <div id="updateModal" class="modal">
-        <div style="background:#111; border:1px solid rgba(255,255,255,0.1); padding:2rem; border-radius:24px; width:90%; max-width:400px;">
-            <h2 style="margin-bottom:1rem;">Update Details</h2>
-            <p style="font-size:0.9rem; color:rgba(255,255,255,0.7); line-height:1.5;">100+ new games added. Subdomain favicon fixing enabled. Improved cloak saving.</p>
-            <button onclick="toggleUpdateModal()" style="margin-top:1.5rem; background:none; border:none; color:#2ecc71; cursor:pointer; font-weight:700;">Dismiss</button>
-        </div>
-    </div>
-
     <footer>Made with ♡ by Quackmath</footer>
 
 <script>
     const list = document.getElementById('gameList');
     const search = document.getElementById('search');
     const countBadge = document.getElementById('gameCount');
-    const scrollBtn = document.getElementById('scrollTop');
     const titleInput = document.getElementById('customTitleInput');
     const iconInput = document.getElementById('customFaviconInput');
     const cloakToggle = document.getElementById('cloakToggle');
@@ -175,21 +126,11 @@
     
     const originalTitle = "Quackmath";
     const originalFavicon = "https://ik.imagekit.io/quackmath/goose%20(1).png";
+    const blockList = ['new website', 'howo.pages.dev', 'itafricagroup', 'leeschoolsk12', 'frogiesarcade', 'bostoncareercounselor', 'travelpage.biz', 'neo-space.space', 'dj-jam.be', 'cloe.', 'adaptor.', 'berkatdoa', 'cbu.net', 'geographyles', 'i5.ca', 'forms.gle', 'discord.gg', 'report abuse', 'learn more'];
 
     function hideBanner() {
         document.getElementById('announcementBanner').style.display = 'none';
         document.getElementById('cloakContainer').style.top = '20px';
-    }
-
-    function toggleUpdateModal() {
-        const modal = document.getElementById('updateModal');
-        if (modal.style.display === 'none' || modal.style.display === '') {
-            modal.style.display = 'flex';
-            setTimeout(() => modal.style.opacity = '1', 10);
-        } else {
-            modal.style.opacity = '0';
-            setTimeout(() => modal.style.display = 'none', 300);
-        }
     }
 
     // --- CLOAK LOGIC ---
@@ -200,15 +141,11 @@
     }
 
     function updateIcon() {
-        let val = iconInput.value.trim() || "clever.com";
-        let domain = val;
-        try {
-            if (val.startsWith('http')) {
-                domain = new URL(val).hostname;
-            }
-        } catch(e) {}
-        
+        let val = iconInput.value.trim().toLowerCase() || "clever.com";
+        // Subdomain fix: Clean string to help Google API target the specific subdomain
+        let domain = val.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split('/')[0];
         const finalIconUrl = `https://www.google.com/s2/favicons?sz=128&domain=${domain}`;
+        
         localStorage.setItem('customCloakIcon', finalIconUrl);
         if (cloakToggle.checked) document.getElementById('favicon').href = finalIconUrl;
     }
@@ -226,7 +163,7 @@
         }
     });
 
-    // --- GAMES ---
+    // --- GAME FETCHING & FILTERING ---
     let games = [];
     fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub')
         .then(r => r.text())
@@ -234,7 +171,10 @@
             const doc = new DOMParser().parseFromString(html, 'text/html');
             const links = doc.querySelectorAll('a');
             links.forEach(link => {
-                const name = link.innerText.trim();
+                let name = link.innerText.trim();
+                let url = link.href.toLowerCase();
+                // Filter Issue Fix: Apply blocklist during fetch
+                if (blockList.some(term => url.includes(term) || name.toLowerCase().includes(term))) return;
                 if (name.length > 2) games.push({ name: name, url: link.href });
             });
             render();
@@ -253,8 +193,6 @@
     }
 
     search.addEventListener('input', e => render(e.target.value));
-    list.addEventListener('scroll', () => scrollBtn.style.display = list.scrollTop > 200 ? 'flex' : 'none');
-    scrollBtn.addEventListener('click', () => list.scrollTo({ top: 0, behavior: 'smooth' }));
 
     // Init
     window.onload = () => {
