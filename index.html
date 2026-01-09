@@ -168,7 +168,6 @@
     const originalTitle = "Quackmath";
     const originalFavicon = "https://ik.imagekit.io/quackmath/goose%20(1).png";
     
-    // SMART BLOCKLIST: Only blocks what you actually don't want
     const blockTerms = ['new website', 'howo.pages.dev', 'itafricagroup', 'leeschoolsk12', 'frogiesarcade', 'bostoncareercounselor', 'travelpage.biz', 'neo-space.space', 'dj-jam.be', 'cloe.', 'adaptor.', 'berkatdoa', 'cbu.net', 'geographyles', 'i5.ca', 'forms.gle', 'discord.gg', 'report abuse', 'learn more'];
 
     function toggleUpdateModal() {
@@ -221,15 +220,19 @@
                 let name = link.innerText.trim();
                 let url = link.href.toLowerCase();
                 
-                // --- FIXED FILTER LOGIC ---
-                // 1. Blocks if name is exactly 'cl' or '.html'
-                if (name.toLowerCase() === 'cl' || name.toLowerCase() === '.html') return;
-                // 2. Blocks if URL contains '.html' (junk file path)
-                if (url.includes('.html')) return;
-                // 3. Blocks other generic junk from blockTerms
+                // 1. Process specific 'cl(Game Name).html' format
+                if (name.toLowerCase().startsWith('cl(') && name.toLowerCase().endsWith(').html')) {
+                    // This regex grabs everything inside the first set of parentheses
+                    const match = name.match(/\(([^)]+)\)/);
+                    if (match && match[1]) {
+                        name = match[1]; // Set name to just the stuff inside ()
+                    }
+                }
+                
+                // 2. Final Filter: Check remaining blockTerms
                 if (blockTerms.some(term => url.includes(term.toLowerCase()) || name.toLowerCase().includes(term.toLowerCase()))) return;
                 
-                if (name.length > 2) games.push({ name: name, url: link.href });
+                if (name.length > 1) games.push({ name: name, url: link.href });
             });
             render();
         });
