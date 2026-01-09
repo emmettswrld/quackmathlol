@@ -25,9 +25,9 @@
         @keyframes floatBG { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-2%, -2%); } }
 
         /* --- SCROLLBARS --- */
-        ul::-webkit-scrollbar, .scroll-area::-webkit-scrollbar { width: 5px; }
-        ul::-webkit-scrollbar-track, .scroll-area::-webkit-scrollbar-track { background: transparent; }
-        ul::-webkit-scrollbar-thumb, .scroll-area::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        ul::-webkit-scrollbar { width: 5px; }
+        ul::-webkit-scrollbar-track { background: transparent; }
+        ul::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
         ul:hover::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.25); }
 
         /* --- BANNER --- */
@@ -39,7 +39,7 @@
             backdrop-filter: blur(10px); z-index: 1001; position: relative;
             transition: all 0.4s ease;
         }
-        #announcementBanner.urgent { background: rgba(231, 76, 60, 0.9); color: white; }
+        #announcementBanner.urgent { background: rgba(231, 76, 60, 0.95); color: white; border-bottom: 1px solid rgba(255,255,255,0.2); }
         #announcementBanner b { cursor: pointer; text-decoration: underline; margin-left: 5px; }
         
         .dismiss-btn { position: absolute; right: 20px; background: rgba(255,255,255,0.1); border: none; color: white; padding: 2px 8px; border-radius: 6px; font-size: 0.7rem; cursor: pointer; font-weight: 600; }
@@ -78,7 +78,7 @@
 <body>
 
     <div id="announcementBanner">
-        <span id="bannerText">Fetching updates...</span>
+        <span id="bannerText">Loading site updates...</span>
         <button class="dismiss-btn" onclick="hideBanner()">Dismiss</button>
     </div>
 
@@ -103,8 +103,8 @@
         </div>
 
         <div id="adminPanel">
-            <h3 style="color:#2ecc71; font-size:0.7rem; text-transform:uppercase;">Admin Link Active</h3>
-            <p style="font-size:0.6rem; color:#888;">Edit your Google Doc line 1 (text) and line 2 (RED/NORMAL) to update the site for everyone.</p>
+            <h3 style="color:#2ecc71; font-size:0.7rem; text-transform:uppercase;">Global Admin Access</h3>
+            <p style="font-size:0.6rem; color:#888;">Live syncing with your Google Doc. Changes affect everyone.</p>
             <button onclick="document.getElementById('adminPanel').style.display='none'" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); color:white; padding:5px; border-radius:5px; cursor:pointer; font-size:0.6rem; margin-top:5px; width:100%;">CLOSE</button>
         </div>
     </div>
@@ -125,28 +125,36 @@
     const banner = document.getElementById('announcementBanner');
     const bannerSpan = document.getElementById('bannerText');
 
-    // --- GLOBAL SYNC (ADMIN DOC) ---
+    // --- GLOBAL SYNC (CLEAN TEXT) ---
     async function syncAdmin() {
         try {
             const r = await fetch(ADMIN_URL);
-            const text = await r.text();
+            const html = await r.text();
             const parser = new DOMParser();
-            const doc = parser.parseFromString(text, 'text/html');
-            const content = doc.body.innerText.split('\n').filter(line => line.trim() !== "");
+            const doc = parser.parseFromString(html, 'text/html');
             
-            const message = content[0] || "Welcome to Quackmath!";
-            const colorMode = (content[1] || "").trim().toUpperCase();
+            // This grabs only the human-typed text from the Doc body
+            const bodyText = doc.body.innerText || doc.body.textContent;
+            const lines = bodyText.split('\n').map(l => l.trim()).filter(l => l.length > 0);
+            
+            const message = lines[0] || "Welcome to Quackmath!";
+            const colorMode = (lines[1] || "").toUpperCase();
 
             bannerSpan.innerHTML = `${message} <b onclick="alert('Updates are live!')">Learn more</b>`;
+            
             if (colorMode === "RED") banner.classList.add('urgent');
             else banner.classList.remove('urgent');
-        } catch (e) { console.error("Admin sync failed"); }
+            
+        } catch (e) { 
+            console.error("Sync Error:", e); 
+            bannerSpan.innerText = "Welcome to Quackmath!";
+        }
     }
 
     // --- CLOAK LOGIC ---
     function setCustomTitle() {
         const val = document.getElementById('customTitleInput').value.trim() || "Google";
-        localStorage.setItem('customTitle', val);
+        localStorage.setItem('quackTitle', val);
         if(document.getElementById('cloakToggle').checked) document.title = val;
     }
 
@@ -154,15 +162,15 @@
         let val = document.getElementById('customFaviconInput').value.trim().toLowerCase() || "google.com";
         let domain = val.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split('/')[0];
         const finalUrl = `https://www.google.com/s2/favicons?sz=128&domain=${domain}`;
-        localStorage.setItem('customFav', finalUrl);
+        localStorage.setItem('quackFav', finalUrl);
         if(document.getElementById('cloakToggle').checked) document.getElementById('favicon').href = finalUrl;
     }
 
     document.getElementById('cloakToggle').addEventListener('change', (e) => {
         const active = e.target.checked;
         document.getElementById('cloakInputs').style.display = active ? 'flex' : 'none';
-        document.title = active ? (localStorage.getItem('customTitle') || "Google") : "Quackmath";
-        document.getElementById('favicon').href = active ? (localStorage.getItem('customFav') || "https://www.google.com/favicon.ico") : "https://ik.imagekit.io/quackmath/goose%20(1).png";
+        document.title = active ? (localStorage.getItem('quackTitle') || "Google") : "Quackmath";
+        document.getElementById('favicon').href = active ? (localStorage.getItem('quackFav') || "https://www.google.com/favicon.ico") : "https://ik.imagekit.io/quackmath/goose%20(1).png";
         localStorage.setItem('cloakState', active);
     });
 
@@ -175,7 +183,6 @@
         doc.querySelectorAll('a').forEach(link => {
             let name = link.innerText.trim();
             if (name.length > 2) {
-                // cl(...) .html TRIMMER
                 if (name.toLowerCase().startsWith('cl(') && name.toLowerCase().endsWith(').html')) {
                     name = name.slice(3, -6);
                 }
