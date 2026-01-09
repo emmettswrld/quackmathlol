@@ -349,7 +349,6 @@
 
     function setCustomFavicon() {
         let val = document.getElementById('customFaviconInput').value.trim().toLowerCase() || "google.com";
-        // Handles subdomains by cleaning only the protocol and trailing slashes
         let domain = val.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split('/')[0];
         const finalUrl = `https://www.google.com/s2/favicons?sz=128&domain=${domain}`;
         localStorage.setItem('customCloakFavicon', finalUrl);
@@ -412,11 +411,18 @@
         });
     }
 
+    // UPDATED SEARCH LOGIC
     search.addEventListener('input', e => { 
         const val = e.target.value.toLowerCase();
         if (val === 'off') { hideBanner(); search.value = ''; render(); }
         else if (val === 'on') { showBanner(); search.value = ''; render(); }
         else { render(e.target.value); }
+    });
+
+    search.addEventListener('keyup', e => {
+        if (e.key === 'Enter' && search.value.toLowerCase().trim() === 'admin') {
+            window.location.href = 'https://quackmath-admin.vercel.app';
+        }
     });
     
     list.addEventListener('scroll', () => { scrollBtn.style.display = list.scrollTop > 200 ? 'flex' : 'none'; });
