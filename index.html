@@ -8,10 +8,14 @@
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
         
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+            font-family: "Inter", sans-serif; 
+        }
         
         body { 
-            font-family: "Inter", sans-serif; 
             height: 100vh; 
             background: #000; 
             color: #fff; 
@@ -30,7 +34,6 @@
         }
         @keyframes floatBG { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-2%, -2%); } }
 
-        /* Cloak Toggle Styles */
         .cloak-container {
             position: absolute;
             top: 20px;
@@ -126,7 +129,6 @@
             background: rgba(255, 255, 255, 0.08); 
             color: white; 
             backdrop-filter: blur(10px);
-            font-family: "Inter", sans-serif;
         }
 
         ul { 
@@ -170,10 +172,7 @@
             align-items: center;
             padding: 40px;
         }
-        .custom-loader {
-            width: 120px; 
-            height: auto;
-        }
+        .custom-loader { width: 120px; height: auto; }
 
         #scrollTop {
             position: fixed;
@@ -232,47 +231,35 @@
         <h2 style="margin-bottom:1.5rem; font-size:1.4rem; letter-spacing:-0.02em;">Quackmath Links</h2>
         
         <div style="display:flex; flex-direction:column; gap:10px;">
-            <a href="https://quackmath.vercel.app" target="_blank" style="display:block; padding:12px; background:rgba(255,255,255,0.05); color:white; text-decoration:none; border-radius:12px; font-weight:600; transition:0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.12)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">Quackmath (Main)</a>
-            
-            <a href="https://quackenglish.vercel.app" target="_blank" style="display:block; padding:12px; background:rgba(255,255,255,0.05); color:white; text-decoration:none; border-radius:12px; font-weight:600; transition:0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.12)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">Quackenglish</a>
-            
-            <a href="https://quackhistory.vercel.app" target="_blank" style="display:block; padding:12px; background:rgba(255,255,255,0.05); color:white; text-decoration:none; border-radius:12px; font-weight:600; transition:0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.12)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">Quackhistory</a>
-            
-            <a href="https://quackfitness.vercel.app" target="_blank" style="display:block; padding:12px; background:rgba(255,255,255,0.05); color:white; text-decoration:none; border-radius:12px; font-weight:600; transition:0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.12)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">Quackfitness</a>
-
-            <a href="https://quackenglish.vercel.app" target="_blank" style="display:block; padding:12px; background:rgba(255,255,255,0.05); color:white; text-decoration:none; border-radius:12px; font-weight:600; transition:0.2s;" onmouseover="this.style.background='rgba(255,255,255,0.12)'" onmouseout="this.style.background='rgba(255,255,255,0.05)'">Quackenglish</a>
+            <a href="https://quackmath.vercel.app" target="_blank">Quackmath (Main)</a>
+            <a href="https://quackenglish.vercel.app" target="_blank">Quackenglish</a>
+            <a href="https://quackhistory.vercel.app" target="_blank">Quackhistory</a>
+            <a href="https://quackfitness.vercel.app" target="_blank">Quackfitness</a>
+            <a href="https://quackscience.vercel.app" target="_blank">Quackscience</a>
         </div>
 
         <button onclick="toggleModal()" style="margin-top:1.5rem; background:none; border:none; color:rgba(255,255,255,0.4); cursor:pointer; font-size:0.9rem; font-weight:600;">Close</button>
+        <p style="margin-top: 1rem; font-size: 0.75rem; color: rgba(255,255,255,0.3); font-weight: 500;">hello testing</p>
     </div>
 </div>
 
-<footer>Made with ♡ by Quackmath — <button onclick="toggleModal()" style="background:none; border:none; color:inherit; font:inherit; font-weight:bold; cursor:pointer; text-decoration:none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">More Links</button></footer>
+<footer>Made with ♡ by Quackmath — <button onclick="toggleModal()" style="background:none; border:none; color:inherit; font:inherit; font-weight:bold; cursor:pointer; text-decoration:none;">More Links</button></footer>
 
 <script>
     function toggleModal() {
         const modal = document.getElementById('linksModal');
         const content = document.getElementById('modalContent');
-        
         if (modal.style.display === 'none' || modal.style.display === '') {
             modal.style.display = 'flex';
-            setTimeout(() => {
-                modal.style.opacity = '1';
-                content.style.transform = 'scale(1)';
-            }, 10);
+            setTimeout(() => { modal.style.opacity = '1'; content.style.transform = 'scale(1)'; }, 10);
         } else {
-            modal.style.opacity = '0';
-            content.style.transform = 'scale(0.8)';
-            setTimeout(() => {
-                modal.style.display = 'none';
-            }, 300);
+            modal.style.opacity = '0'; content.style.transform = 'scale(0.8)';
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
         }
     }
 
-    // Close modal if clicking outside the box
     window.onclick = function(event) {
-        const modal = document.getElementById('linksModal');
-        if (event.target == modal) toggleModal();
+        if (event.target == document.getElementById('linksModal')) toggleModal();
     }
 
     const list = document.getElementById('gameList');
@@ -288,7 +275,6 @@
 
     let games = [];
 
-    // Cloak Logic
     function applyCloak(isCloaked) {
         document.title = isCloaked ? cloakTitle : originalTitle;
         document.getElementById('favicon').href = isCloaked ? cloakFavicon : originalFavicon;
@@ -296,17 +282,11 @@
     }
 
     cloakToggle.addEventListener('change', (e) => applyCloak(e.target.checked));
-
-    // Load saved cloak state
     const savedCloak = localStorage.getItem('quackCloak') === 'true';
     cloakToggle.checked = savedCloak;
     applyCloak(savedCloak);
 
-    const blockList = [
-        'new website', 'howo.pages.dev', 'itafricagroup', 'leeschoolsk12', 'frogiesarcade', 'bostoncareercounselor',
-        'travelpage.biz', 'neo-space.space', 'dj-jam.be', 'cloe.', 'adaptor.', 'berkatdoa',
-        'cbu.net', 'geographyles', 'i5.ca', 'forms.gle', 'discord.gg', 'report abuse', 'learn more'
-    ];
+    const blockList = ['new website', 'howo.pages.dev', 'itafricagroup', 'leeschoolsk12', 'frogiesarcade', 'bostoncareercounselor', 'travelpage.biz', 'neo-space.space', 'dj-jam.be', 'cloe.', 'adaptor.', 'berkatdoa', 'cbu.net', 'geographyles', 'i5.ca', 'forms.gle', 'discord.gg', 'report abuse', 'learn more'];
 
     fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub')
         .then(r => r.text())
@@ -314,21 +294,13 @@
             const parser = new DOMParser();
             const doc = parser.parseFromString(html, 'text/html');
             const links = doc.querySelectorAll('a');
-            
             for (let link of links) {
                 let name = link.innerText.trim();
                 const url = new URL(link.href).searchParams.get('q') || link.href;
-
                 if (name.toLowerCase().includes('ruffle.html')) break;
                 if (blockList.some(term => url.toLowerCase().includes(term) || name.toLowerCase().includes(term))) continue;
-
                 if (name.length > 2) {
-                    let cleanName = name
-                        .replace(/\.html/gi, '')
-                        .replace(/cl/gi, '') 
-                        .replace(/\s+/g, ' ') 
-                        .trim();
-
+                    let cleanName = name.replace(/\.html/gi, '').replace(/cl/gi, '').replace(/\s+/g, ' ').trim();
                     if(cleanName) games.push({ name: cleanName, url: url });
                 }
             }
@@ -339,12 +311,10 @@
         list.innerHTML = '';
         const filtered = games.filter(g => g.name.toLowerCase().includes(filter.toLowerCase()));
         countBadge.textContent = filtered.length;
-        
         if (filtered.length === 0 && games.length > 0) {
             list.innerHTML = '<li style="opacity: 0.5; padding-top: 20px;">No games found</li>';
             return;
         }
-
         filtered.forEach(g => {
             const li = document.createElement('li');
             const a = document.createElement('a');
@@ -357,12 +327,8 @@
     }
 
     search.addEventListener('input', e => render(e.target.value));
-    list.addEventListener('scroll', () => {
-        scrollBtn.style.display = list.scrollTop > 200 ? 'flex' : 'none';
-    });
-    scrollBtn.addEventListener('click', () => {
-        list.scrollTo({ top: 0, behavior: 'smooth' });
-    });
+    list.addEventListener('scroll', () => { scrollBtn.style.display = list.scrollTop > 200 ? 'flex' : 'none'; });
+    scrollBtn.addEventListener('click', () => { list.scrollTo({ top: 0, behavior: 'smooth' }); });
 </script>
 </body>
 </html>
