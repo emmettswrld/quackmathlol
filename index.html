@@ -168,8 +168,8 @@
     const originalTitle = "Quackmath";
     const originalFavicon = "https://ik.imagekit.io/quackmath/goose%20(1).png";
     
-    // UPDATED FILTER: Blocks exact name matches for 'cl' and any name/URL containing '.html'
-    const blockTerms = ['.html', 'new website', 'howo.pages.dev', 'itafricagroup', 'leeschoolsk12', 'frogiesarcade', 'bostoncareercounselor', 'travelpage.biz', 'neo-space.space', 'dj-jam.be', 'cloe.', 'adaptor.', 'berkatdoa', 'cbu.net', 'geographyles', 'i5.ca', 'forms.gle', 'discord.gg', 'report abuse', 'learn more'];
+    // SMART BLOCKLIST: Only blocks what you actually don't want
+    const blockTerms = ['new website', 'howo.pages.dev', 'itafricagroup', 'leeschoolsk12', 'frogiesarcade', 'bostoncareercounselor', 'travelpage.biz', 'neo-space.space', 'dj-jam.be', 'cloe.', 'adaptor.', 'berkatdoa', 'cbu.net', 'geographyles', 'i5.ca', 'forms.gle', 'discord.gg', 'report abuse', 'learn more'];
 
     function toggleUpdateModal() {
         const modal = document.getElementById('updateModal');
@@ -221,10 +221,12 @@
                 let name = link.innerText.trim();
                 let url = link.href.toLowerCase();
                 
-                // STICK FILTER LOGIC
-                // 1. Blocks if name is exactly 'cl' (to avoid blocking names with 'cl' inside like 'Clicker')
-                if (name.toLowerCase() === 'cl') return;
-                // 2. Blocks if URL or Name contains any other block terms
+                // --- FIXED FILTER LOGIC ---
+                // 1. Blocks if name is exactly 'cl' or '.html'
+                if (name.toLowerCase() === 'cl' || name.toLowerCase() === '.html') return;
+                // 2. Blocks if URL contains '.html' (junk file path)
+                if (url.includes('.html')) return;
+                // 3. Blocks other generic junk from blockTerms
                 if (blockTerms.some(term => url.includes(term.toLowerCase()) || name.toLowerCase().includes(term.toLowerCase()))) return;
                 
                 if (name.length > 2) games.push({ name: name, url: link.href });
