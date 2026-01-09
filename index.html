@@ -247,6 +247,8 @@
     </div>
 </div>
 
+<footer>Made with ♡ by Quackmath — <button onclick="toggleModal()" style="background:none; border:none; color:inherit; font:inherit; font-weight:bold; cursor:pointer; text-decoration:none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">More Links</button></footer>
+
 <script>
     function toggleModal() {
         const modal = document.getElementById('linksModal');
@@ -272,98 +274,95 @@
         const modal = document.getElementById('linksModal');
         if (event.target == modal) toggleModal();
     }
-</script>
-    <footer>Made with ♡ by Quackmath — <button onclick="toggleModal()" style="background:none; border:none; color:inherit; font:inherit; font-weight:bold; cursor:pointer; text-decoration:none; transition: opacity 0.2s;" onmouseover="this.style.opacity='0.7'" onmouseout="this.style.opacity='1'">More Links</button></footer>
-</div>
+
+    const list = document.getElementById('gameList');
+    const search = document.getElementById('search');
+    const countBadge = document.getElementById('gameCount');
+    const scrollBtn = document.getElementById('scrollTop');
+    const cloakToggle = document.getElementById('cloakToggle');
     
-        const list = document.getElementById('gameList');
-        const search = document.getElementById('search');
-        const countBadge = document.getElementById('gameCount');
-        const scrollBtn = document.getElementById('scrollTop');
-        const cloakToggle = document.getElementById('cloakToggle');
-        
-        const originalTitle = "Quackmath";
-        const originalFavicon = "https://ik.imagekit.io/quackmath/goose%20(1).png";
-        const cloakTitle = "Clever | Portal";
-        const cloakFavicon = "https://ik.imagekit.io/quackmath/images__1_-removebg-preview.png";
+    const originalTitle = "Quackmath";
+    const originalFavicon = "https://ik.imagekit.io/quackmath/goose%20(1).png";
+    const cloakTitle = "Clever | Portal";
+    const cloakFavicon = "https://ik.imagekit.io/quackmath/images__1_-removebg-preview.png";
 
-        let games = [];
+    let games = [];
 
-        // Cloak Logic
-        function applyCloak(isCloaked) {
-            document.title = isCloaked ? cloakTitle : originalTitle;
-            document.getElementById('favicon').href = isCloaked ? cloakFavicon : originalFavicon;
-            localStorage.setItem('quackCloak', isCloaked);
-        }
+    // Cloak Logic
+    function applyCloak(isCloaked) {
+        document.title = isCloaked ? cloakTitle : originalTitle;
+        document.getElementById('favicon').href = isCloaked ? cloakFavicon : originalFavicon;
+        localStorage.setItem('quackCloak', isCloaked);
+    }
 
-        cloakToggle.addEventListener('change', (e) => applyCloak(e.target.checked));
+    cloakToggle.addEventListener('change', (e) => applyCloak(e.target.checked));
 
-        // Load saved cloak state
-        const savedCloak = localStorage.getItem('quackCloak') === 'true';
-        cloakToggle.checked = savedCloak;
-        applyCloak(savedCloak);
+    // Load saved cloak state
+    const savedCloak = localStorage.getItem('quackCloak') === 'true';
+    cloakToggle.checked = savedCloak;
+    applyCloak(savedCloak);
 
-const blockList = [
-            'new website', 'howo.pages.dev', 'itafricagroup', 'leeschoolsk12', 'frogiesarcade', 'bostoncareercounselor',
-            'travelpage.biz', 'neo-space.space', 'dj-jam.be', 'cloe.', 'adaptor.', 'berkatdoa',
-            'cbu.net', 'geographyles', 'i5.ca', 'forms.gle', 'discord.gg', 'report abuse', 'learn more'
-        ];
+    const blockList = [
+        'new website', 'howo.pages.dev', 'itafricagroup', 'leeschoolsk12', 'frogiesarcade', 'bostoncareercounselor',
+        'travelpage.biz', 'neo-space.space', 'dj-jam.be', 'cloe.', 'adaptor.', 'berkatdoa',
+        'cbu.net', 'geographyles', 'i5.ca', 'forms.gle', 'discord.gg', 'report abuse', 'learn more'
+    ];
 
-        fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub')
-            .then(r => r.text())
-            .then(html => {
-                const parser = new DOMParser();
-                const doc = parser.parseFromString(html, 'text/html');
-                const links = doc.querySelectorAll('a');
-                
-                for (let link of links) {
-                    let name = link.innerText.trim();
-                    const url = new URL(link.href).searchParams.get('q') || link.href;
-
-                    if (name.toLowerCase().includes('ruffle.html')) break;
-                    if (blockList.some(term => url.toLowerCase().includes(term) || name.toLowerCase().includes(term))) continue;
-
-                    if (name.length > 2) {
-                        let cleanName = name
-                            .replace(/\.html/gi, '')
-                            .replace(/cl/gi, '') 
-                            .replace(/\s+/g, ' ') 
-                            .trim();
-
-                        if(cleanName) games.push({ name: cleanName, url: url });
-                    }
-                }
-                render();
-            });
-
-        function render(filter = '') {
-            list.innerHTML = '';
-            const filtered = games.filter(g => g.name.toLowerCase().includes(filter.toLowerCase()));
-            countBadge.textContent = filtered.length;
+    fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub')
+        .then(r => r.text())
+        .then(html => {
+            const parser = new DOMParser();
+            const doc = parser.parseFromString(html, 'text/html');
+            const links = doc.querySelectorAll('a');
             
-            if (filtered.length === 0 && games.length > 0) {
-                list.innerHTML = '<li style="opacity: 0.5; padding-top: 20px;">No games found</li>';
-                return;
-            }
+            for (let link of links) {
+                let name = link.innerText.trim();
+                const url = new URL(link.href).searchParams.get('q') || link.href;
 
-            filtered.forEach(g => {
-                const li = document.createElement('li');
-                const a = document.createElement('a');
-                a.href = g.url;
-                a.target = '_blank';
-                a.textContent = g.name;
-                li.appendChild(a);
-                list.appendChild(li);
-            });
+                if (name.toLowerCase().includes('ruffle.html')) break;
+                if (blockList.some(term => url.toLowerCase().includes(term) || name.toLowerCase().includes(term))) continue;
+
+                if (name.length > 2) {
+                    let cleanName = name
+                        .replace(/\.html/gi, '')
+                        .replace(/cl/gi, '') 
+                        .replace(/\s+/g, ' ') 
+                        .trim();
+
+                    if(cleanName) games.push({ name: cleanName, url: url });
+                }
+            }
+            render();
+        });
+
+    function render(filter = '') {
+        list.innerHTML = '';
+        const filtered = games.filter(g => g.name.toLowerCase().includes(filter.toLowerCase()));
+        countBadge.textContent = filtered.length;
+        
+        if (filtered.length === 0 && games.length > 0) {
+            list.innerHTML = '<li style="opacity: 0.5; padding-top: 20px;">No games found</li>';
+            return;
         }
 
-        search.addEventListener('input', e => render(e.target.value));
-        list.addEventListener('scroll', () => {
-            scrollBtn.style.display = list.scrollTop > 200 ? 'flex' : 'none';
+        filtered.forEach(g => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = g.url;
+            a.target = '_blank';
+            a.textContent = g.name;
+            li.appendChild(a);
+            list.appendChild(li);
         });
-        scrollBtn.addEventListener('click', () => {
-            list.scrollTo({ top: 0, behavior: 'smooth' });
-        });
-    </script>
+    }
+
+    search.addEventListener('input', e => render(e.target.value));
+    list.addEventListener('scroll', () => {
+        scrollBtn.style.display = list.scrollTop > 200 ? 'flex' : 'none';
+    });
+    scrollBtn.addEventListener('click', () => {
+        list.scrollTo({ top: 0, behavior: 'smooth' });
+    });
+</script>
 </body>
 </html>
