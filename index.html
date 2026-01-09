@@ -8,22 +8,12 @@
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap");
         
-        * { 
-            margin: 0; 
-            padding: 0; 
-            box-sizing: border-box; 
-            font-family: "Inter", sans-serif; 
-        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Inter", sans-serif; }
         
         body { 
-            height: 100vh; 
-            background: #000; 
-            color: #fff; 
-            display: flex; 
-            flex-direction: column;
-            align-items: center; 
-            overflow: hidden; 
-            -webkit-font-smoothing: antialiased;
+            height: 100vh; background: #000; color: #fff; 
+            display: flex; flex-direction: column; align-items: center; 
+            overflow: hidden; -webkit-font-smoothing: antialiased;
         }
 
         body::before { 
@@ -34,142 +24,88 @@
         }
         @keyframes floatBG { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-2%, -2%); } }
 
+        /* --- MINIMALIST SCROLLBAR --- */
+        ul::-webkit-scrollbar { width: 5px; }
+        ul::-webkit-scrollbar-track { background: transparent; }
+        ul::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        ul:hover::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); }
+
         /* --- BANNER & CLOAK --- */
         #announcementBanner {
-            width: 100%;
-            background: rgba(255, 255, 255, 0.05);
-            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 10px 20px;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 0.85rem;
-            color: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 1001;
-            position: relative;
+            width: 100%; background: rgba(255, 255, 255, 0.05); border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 20px; display: flex; justify-content: center; align-items: center;
+            font-size: 0.85rem; color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px);
+            z-index: 1001; position: relative;
         }
-
-        #announcementBanner b { cursor: pointer; text-decoration: underline; margin-left: 5px; }
         
         .dismiss-btn {
-            position: absolute;
-            right: 20px;
-            background: rgba(255,255,255,0.1);
-            border: none;
-            color: white;
-            padding: 2px 8px;
-            border-radius: 6px;
-            font-size: 0.7rem;
-            cursor: pointer;
-            font-weight: 600;
+            position: absolute; right: 20px; background: rgba(255,255,255,0.1);
+            border: none; color: white; padding: 2px 8px; border-radius: 6px;
+            font-size: 0.7rem; cursor: pointer;
         }
 
         .cloak-container {
-            position: absolute;
-            top: 60px;
-            right: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: flex-end;
-            gap: 10px;
-            z-index: 100;
-            transition: top 0.3s ease;
-        }
-
-        .cloak-main {
-            display: flex;
-            align-items: center;
-            gap: 10px;
+            position: absolute; top: 60px; right: 20px; display: flex;
+            flex-direction: column; align-items: flex-end; gap: 10px; z-index: 100; transition: top 0.3s ease;
         }
 
         #cloakOptions {
-            display: none;
-            flex-direction: column;
-            gap: 12px;
-            background: rgba(15, 15, 15, 0.95);
-            padding: 15px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px);
-            width: 220px;
-            box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            display: none; flex-direction: column; gap: 12px; background: rgba(15, 15, 15, 0.95);
+            padding: 15px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px); width: 220px; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
         }
 
         .cloak-group { display: flex; flex-direction: column; gap: 5px; }
-        
-        .label-row {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
+        .label-row { display: flex; justify-content: space-between; align-items: center; }
         .cloak-group label { font-size: 0.65rem; color: rgba(255,255,255,0.4); font-weight: 700; text-transform: uppercase; }
-        
-        .set-btn {
-            font-size: 0.65rem;
-            color: #2ecc71;
-            background: none;
-            border: none;
-            cursor: pointer;
-            font-weight: 700;
-            text-transform: uppercase;
-            padding: 2px 0;
-        }
-        .set-btn:hover { text-decoration: underline; }
-
-        .cloak-input {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 6px;
-            padding: 8px;
-            color: white;
-            font-size: 0.8rem;
-            outline: none;
-            width: 100%;
-        }
+        .set-btn { font-size: 0.65rem; color: #2ecc71; background: none; border: none; cursor: pointer; font-weight: 700; text-transform: uppercase; }
+        .cloak-input { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; padding: 8px; color: white; font-size: 0.8rem; outline: none; width: 100%; }
 
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
-        .slider {
-            position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0;
-            background-color: rgba(255, 255, 255, 0.1); transition: .4s; border-radius: 24px;
-        }
-        .slider:before {
-            position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px;
-            background-color: white; transition: .4s; border-radius: 50%;
-        }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255, 255, 255, 0.1); transition: .4s; border-radius: 24px; }
+        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
         input:checked + .slider { background-color: #2ecc71; }
         input:checked + .slider:before { transform: translateX(20px); }
 
-        /* --- LIST & SEARCH --- */
+        /* --- MAIN LAYOUT --- */
         .container { 
             width: 100%; max-width: 520px; padding: 2rem 1.25rem; 
             display: flex; flex-direction: column; align-items: center; gap: 1.25rem;
-            flex-grow: 1; justify-content: center;
+            flex-grow: 1; justify-content: center; position: relative;
         }
         .logo { width: 80px; filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.25)); }
+        h1 { font-size: 2.1rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+        .count-badge { font-size: 0.9rem; background: rgba(255, 255, 255, 0.15); padding: 4px 10px; border-radius: 20px; color: rgba(255, 255, 255, 0.8); }
+        
         #search { 
             width: 100%; padding: 0.85rem 1rem; border-radius: 12px; 
             border: 1px solid rgba(255,255,255,0.1); background: rgba(255, 255, 255, 0.08); 
-            color: white; text-align: center; outline: none;
+            color: white; text-align: center; outline: none; backdrop-filter: blur(10px);
         }
-        ul { width: 100%; list-style: none; display: flex; flex-direction: column; gap: 0.7rem; max-height: 40vh; overflow-y: auto; padding-right: 5px; }
-        a { display: block; padding: 1rem; border-radius: 12px; color: white; background: rgba(255, 255, 255, 0.06); text-decoration: none; font-weight: 600; border: 1px solid rgba(255,255,255,0.05); text-align: center; }
-        
-        footer { padding: 20px; font-size: 0.8rem; color: rgba(255,255,255,0.4); }
+
+        ul { width: 100%; list-style: none; display: flex; flex-direction: column; gap: 0.7rem; max-height: 45vh; overflow-y: auto; padding-right: 8px; }
+
+        a { 
+            display: block; padding: 1rem; border-radius: 12px; color: white; 
+            background: rgba(255, 255, 255, 0.06); text-decoration: none; font-weight: 600; 
+            border: 1px solid rgba(255,255,255,0.05); text-align: center; transition: 0.2s;
+        }
+        a:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
+
+        footer { width: 100%; padding: 20px; text-align: center; font-size: 0.85rem; color: rgba(255, 255, 255, 0.5); }
     </style>
 </head>
 <body>
 
     <div id="announcementBanner">
-        <span>New update- Links, 100+ new games, and more <b onclick="toggleUpdateModal()">Learn more</b></span>
-        <button class="dismiss-btn" onclick="hideBanner()">Dismiss</button>
+        <span>Quackmath Updates Live</span>
+        <button class="dismiss-btn" onclick="document.getElementById('announcementBanner').style.display='none'; document.getElementById('cloakContainer').style.top='20px';">Dismiss</button>
     </div>
 
     <div class="cloak-container" id="cloakContainer">
-        <div class="cloak-main">
-            <span style="font-size: 0.85rem; font-weight: 600; color: rgba(255,255,255,0.6)">Toggle Cloak</span>
+        <div class="cloak-main" style="display:flex; align-items:center; gap:10px;">
+            <span style="font-size:0.85rem; font-weight:600; color:rgba(255,255,255,0.6)">Toggle Cloak</span>
             <label class="switch">
                 <input type="checkbox" id="cloakToggle">
                 <span class="slider"></span>
@@ -177,25 +113,19 @@
         </div>
         <div id="cloakOptions">
             <div class="cloak-group">
-                <div class="label-row">
-                    <label>Tab Name</label>
-                    <button class="set-btn" onclick="updateTitle()">Set</button>
-                </div>
-                <input type="text" id="customTitleInput" class="cloak-input" placeholder="Google">
+                <div class="label-row"><label>Tab Name</label><button class="set-btn" onclick="updateTitle()">Set</button></div>
+                <input type="text" id="customTitleInput" class="cloak-input" placeholder="e.g. Google">
             </div>
             <div class="cloak-group">
-                <div class="label-row">
-                    <label>Favicon (URL/Site)</label>
-                    <button class="set-btn" onclick="updateIcon()">Set</button>
-                </div>
-                <input type="text" id="customFaviconInput" class="cloak-input" placeholder="google.com">
+                <div class="label-row"><label>Favicon (URL/Site)</label><button class="set-btn" onclick="updateIcon()">Set</button></div>
+                <input type="text" id="customFaviconInput" class="cloak-input" placeholder="e.g. classroom.google.com">
             </div>
         </div>
     </div>
 
     <div class="container">
         <img src="https://ik.imagekit.io/quackmath/goose%20(1).png" class="logo">
-        <h1 style="font-size: 2rem;">Quackmath</h1>
+        <h1>Quackmath <span id="gameCount" class="count-badge">0</span></h1>
         <input type="text" id="search" placeholder="Search games...">
         <ul id="gameList"></ul>
     </div>
@@ -203,88 +133,88 @@
     <footer>Made with ♡ by Quackmath</footer>
 
 <script>
-    const titleInput = document.getElementById('customTitleInput');
-    const iconInput = document.getElementById('customFaviconInput');
+    const list = document.getElementById('gameList');
+    const search = document.getElementById('search');
+    const countBadge = document.getElementById('gameCount');
     const cloakToggle = document.getElementById('cloakToggle');
     const cloakOptions = document.getElementById('cloakOptions');
     
     const originalTitle = "Quackmath";
     const originalFavicon = "https://ik.imagekit.io/quackmath/goose%20(1).png";
-
-    function hideBanner() {
-        document.getElementById('announcementBanner').style.display = 'none';
-        document.getElementById('cloakContainer').style.top = '20px';
-    }
+    const blockList = ['new website', 'howo.pages.dev', 'itafricagroup', 'leeschoolsk12', 'frogiesarcade', 'bostoncareercounselor', 'travelpage.biz', 'neo-space.space', 'dj-jam.be', 'cloe.', 'adaptor.', 'berkatdoa', 'cbu.net', 'geographyles', 'i5.ca', 'forms.gle', 'discord.gg', 'report abuse', 'learn more'];
 
     // --- CLOAK LOGIC ---
-
     function updateTitle() {
-        const val = titleInput.value || "Clever | Portal";
+        const val = document.getElementById('customTitleInput').value.trim() || "Google";
         localStorage.setItem('customCloakTitle', val);
         if (cloakToggle.checked) document.title = val;
     }
 
     function updateIcon() {
-        let val = iconInput.value || "clever.com";
-        // If it's a domain, use Google Favicon API
-        if (!val.startsWith('http') && !val.startsWith('data:')) {
-            val = `https://www.google.com/s2/favicons?sz=64&domain=${val}`;
-        }
-        localStorage.setItem('customCloakIcon', val);
-        if (cloakToggle.checked) document.getElementById('favicon').href = val;
+        let val = document.getElementById('customFaviconInput').value.trim().toLowerCase() || "google.com";
+        // Subdomain Fix: strip protocols and www so the API focuses on the provided domain string
+        let domain = val.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split('/')[0];
+        const finalIconUrl = `https://www.google.com/s2/favicons?sz=128&domain=${domain}`;
+        
+        localStorage.setItem('customCloakIcon', finalIconUrl);
+        if (cloakToggle.checked) document.getElementById('favicon').href = finalIconUrl;
     }
 
     cloakToggle.addEventListener('change', () => {
         const isEnabled = cloakToggle.checked;
         localStorage.setItem('quackCloak', isEnabled);
         cloakOptions.style.display = isEnabled ? 'flex' : 'none';
-        
         if (isEnabled) {
-            document.title = localStorage.getItem('customCloakTitle') || "Clever | Portal";
-            document.getElementById('favicon').href = localStorage.getItem('customCloakIcon') || "https://www.google.com/s2/favicons?sz=64&domain=clever.com";
+            document.title = localStorage.getItem('customCloakTitle') || "Google";
+            document.getElementById('favicon').href = localStorage.getItem('customCloakIcon') || "https://www.google.com/s2/favicons?sz=128&domain=google.com";
         } else {
             document.title = originalTitle;
             document.getElementById('favicon').href = originalFavicon;
         }
     });
 
-    // Load saved data
-    window.onload = () => {
-        const savedTitle = localStorage.getItem('customCloakTitle');
-        const savedIcon = localStorage.getItem('customCloakIcon');
-        const isCloaked = localStorage.getItem('quackCloak') === 'true';
-
-        if (savedTitle) titleInput.value = savedTitle;
-        if (savedIcon) iconInput.value = savedIcon.includes('domain=') ? savedIcon.split('domain=')[1] : savedIcon;
-        
-        cloakToggle.checked = isCloaked;
-        if (isCloaked) {
-            cloakOptions.style.display = 'flex';
-            document.title = savedTitle || "Clever | Portal";
-            document.getElementById('favicon').href = savedIcon || "https://www.google.com/s2/favicons?sz=64&domain=clever.com";
-        }
-    };
-
-    // --- GAME LIST FETCHING (SIMPLIFIED) ---
+    // --- GAME LIST LOGIC ---
+    let games = [];
     fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub')
         .then(r => r.text())
         .then(html => {
             const doc = new DOMParser().parseFromString(html, 'text/html');
             const links = doc.querySelectorAll('a');
-            const list = document.getElementById('gameList');
             links.forEach(link => {
-                const name = link.innerText.trim();
-                if (name.length > 2) {
-                    const li = document.createElement('li');
-                    const a = document.createElement('a');
-                    a.href = link.href;
-                    a.target = "_blank";
-                    a.textContent = name;
-                    li.appendChild(a);
-                    list.appendChild(li);
-                }
+                let name = link.innerText.trim();
+                let url = link.href.toLowerCase();
+                // Filter: Check both name and URL against blocklist
+                if (blockList.some(term => url.includes(term) || name.toLowerCase().includes(term))) return;
+                if (name.length > 2) games.push({ name: name, url: link.href });
             });
+            render();
         });
+
+    function render(filter = '') {
+        list.innerHTML = '';
+        const filtered = games.filter(g => g.name.toLowerCase().includes(filter.toLowerCase()));
+        countBadge.textContent = filtered.length;
+        filtered.forEach(g => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = g.url; a.target = "_blank"; a.textContent = g.name;
+            li.appendChild(a); list.appendChild(li);
+        });
+    }
+
+    search.addEventListener('input', e => render(e.target.value));
+
+    // Restore state
+    window.onload = () => {
+        const isCloaked = localStorage.getItem('quackCloak') === 'true';
+        cloakToggle.checked = isCloaked;
+        document.getElementById('customTitleInput').value = localStorage.getItem('customCloakTitle') || "";
+        if (isCloaked) {
+            cloakOptions.style.display = 'flex';
+            document.title = localStorage.getItem('customCloakTitle') || "Google";
+            document.getElementById('favicon').href = localStorage.getItem('customCloakIcon') || "https://www.google.com/s2/favicons?sz=128&domain=google.com";
+        }
+    };
 </script>
 </body>
 </html>
