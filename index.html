@@ -56,7 +56,7 @@
         ul::-webkit-scrollbar-thumb, #themeMenu::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
         ul:hover::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); }
 
-        /* --- UI COMPONENTS --- */
+        /* --- UI --- */
         #announcementBanner {
             width: 100%; background: rgba(255, 255, 255, 0.05); border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding: 10px 20px; display: flex; justify-content: center; align-items: center;
@@ -65,11 +65,12 @@
 
         .cloak-container { position: absolute; top: 60px; right: 20px; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; z-index: 100; }
         
+        /* Fixed Button Spacing */
         .ui-btn {
             background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.7); padding: 8px 15px; border-radius: 10px;
+            color: rgba(255, 255, 255, 0.7); padding: 8px 12px; border-radius: 10px;
             font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: 0.2s;
-            backdrop-filter: blur(5px); min-width: 130px; text-align: right;
+            backdrop-filter: blur(5px); min-width: 130px; text-align: center; /* Centered text */
         }
         .ui-btn:hover { background: rgba(255, 255, 255, 0.12); color: white; }
 
@@ -78,14 +79,14 @@
             padding: 8px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); width: 170px;
             box-shadow: 0 10px 30px rgba(0,0,0,0.5); max-height: 250px; overflow-y: auto;
         }
-        .theme-opt { padding: 10px; border-radius: 8px; font-size: 0.75rem; cursor: pointer; transition: 0.2s; }
+        .theme-opt { padding: 10px; border-radius: 8px; font-size: 0.75rem; cursor: pointer; transition: 0.2s; text-align: left; }
         .theme-opt:hover { background: rgba(255,255,255,0.08); }
 
-        /* --- MAIN LAYOUT --- */
         .container { width: 100%; max-width: 520px; padding: 2rem 1.25rem; flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
         .logo { width: 80px; filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.25)); }
         h1 { font-size: 2.1rem; font-weight: 700; margin: 10px 0; display: flex; align-items: center; gap: 10px; }
         .count-badge { font-size: 0.9rem; background: rgba(255, 255, 255, 0.15); padding: 4px 10px; border-radius: 20px; color: rgba(255, 255, 255, 0.8); }
+        
         #search { width: 100%; padding: 0.85rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255, 255, 255, 0.08); color: white; text-align: center; outline: none; margin-bottom: 20px; }
         
         ul { width: 100%; list-style: none; display: flex; flex-direction: column; gap: 0.7rem; max-height: 40vh; overflow-y: auto; overflow-x: hidden; padding-right: 8px; }
@@ -118,7 +119,7 @@
         
         <div id="cloakInputs">
             <input type="text" id="customTitle" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:10px; color:white; border-radius:8px; font-size:0.8rem; outline: none;" placeholder="Tab Name">
-            <button onclick="setTab()" class="ui-btn" style="text-align: center;">Update Tab</button>
+            <button onclick="setTab()" class="ui-btn">Update Tab</button>
         </div>
 
         <button class="ui-btn" onclick="toggleThemeMenu()">Change Theme</button>
@@ -201,20 +202,15 @@
                 let name = g.innerText.trim();
                 let lowerName = name.toLowerCase();
 
-                // Skip if in exclude list
                 if (exclude.some(word => lowerName.includes(word)) || name === "") return;
 
-                // Strip .html and cl prefix
                 if (name.toLowerCase().endsWith(".html")) name = name.slice(0, -5);
                 if (name.toLowerCase().startsWith("cl")) name = name.slice(2);
 
                 const li = document.createElement('li');
                 const a = document.createElement('a');
-                a.href = g.href; 
-                a.target = "_blank"; 
-                a.innerText = name.trim();
-                li.appendChild(a); 
-                list.appendChild(li);
+                a.href = g.href; a.target = "_blank"; a.innerText = name.trim();
+                li.appendChild(a); list.appendChild(li);
                 count++;
             });
             document.getElementById('gameCount').innerText = count;
