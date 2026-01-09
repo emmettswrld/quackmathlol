@@ -177,6 +177,7 @@
 
         document.getElementById('cloakToggle').addEventListener('change', (e) => {
             const active = e.target.checked;
+            // Only hide inputs if they are visible, otherwise show them
             document.getElementById('cloakInputs').style.display = active ? 'flex' : 'none';
             if(!active) { 
                 document.title = "Quackmath"; 
@@ -200,7 +201,7 @@
         function applyPreset(name, icon) {
             document.getElementById('customTitle').value = name;
             document.getElementById('customFavicon').value = icon;
-            setTab(); // This now calls setTab which handles closing
+            setTab(); 
         }
 
         function setTab() {
@@ -209,9 +210,8 @@
             if(title) document.title = title;
             if(icon) updateFavicon(icon);
             
-            // Close the dialog and turn off the toggle
+            // Just hide the inputs, leave the switch state alone
             document.getElementById('cloakInputs').style.display = 'none';
-            document.getElementById('cloakToggle').checked = false;
         }
 
         document.getElementById('search').addEventListener('keyup', (e) => {
