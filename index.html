@@ -22,15 +22,6 @@
                         radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.08), transparent 45%); 
             animation: floatBG 25s linear infinite; z-index: -1; 
         }
-        @keyframes floatBG { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-2%, -2%); } }
-
-        /* --- MINIMALIST SCROLLBAR --- */
-        ul::-webkit-scrollbar { width: 5px; }
-        ul::-webkit-scrollbar-track { background: transparent; }
-        ul::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
-        
-        .scroll-area::-webkit-scrollbar { width: 4px; }
-        .scroll-area::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
 
         /* --- UI ELEMENTS --- */
         #announcementBanner {
@@ -58,11 +49,8 @@
             backdrop-filter: blur(15px); width: 220px; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
         }
 
-        .cloak-group { display: flex; flex-direction: column; gap: 5px; }
-        .label-row { display: flex; justify-content: space-between; align-items: center; }
-        .cloak-group label { font-size: 0.65rem; color: rgba(255,255,255,0.4); font-weight: 700; text-transform: uppercase; }
-        .set-btn { font-size: 0.65rem; color: #2ecc71; background: none; border: none; cursor: pointer; font-weight: 700; text-transform: uppercase; }
         .cloak-input { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; padding: 8px; color: white; font-size: 0.8rem; outline: none; width: 100%; }
+        .set-btn { font-size: 0.65rem; color: #2ecc71; background: none; border: none; cursor: pointer; font-weight: 700; text-transform: uppercase; }
 
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -77,20 +65,14 @@
             display: flex; flex-direction: column; align-items: center; gap: 1.25rem;
             flex-grow: 1; justify-content: center; position: relative;
         }
-        .logo { width: 80px; filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.25)); }
-        h1 { font-size: 2.1rem; font-weight: 700; display: flex; align-items: center; gap: 10px; }
-        .count-badge { font-size: 0.9rem; background: rgba(255, 255, 255, 0.15); padding: 4px 10px; border-radius: 20px; color: rgba(255, 255, 255, 0.8); }
         
-        #search { 
-            width: 100%; padding: 0.85rem 1rem; border-radius: 12px; 
-            border: 1px solid rgba(255,255,255,0.1); background: rgba(255, 255, 255, 0.08); 
-            color: white; text-align: center; outline: none; backdrop-filter: blur(10px);
-        }
-
         ul { 
             width: 100%; list-style: none; display: flex; flex-direction: column; gap: 0.7rem; 
             max-height: 45vh; overflow-y: auto; overflow-x: hidden; padding-right: 8px; 
         }
+
+        /* KILL HORIZONTAL SCROLL */
+        ul li { width: 100%; overflow: hidden; }
 
         a { 
             display: block; padding: 1rem; border-radius: 12px; color: white; 
@@ -100,7 +82,13 @@
         }
         a:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
 
-        footer { width: 100%; padding: 20px; text-align: center; font-size: 0.85rem; color: rgba(255, 255, 255, 0.5); }
+        #search { 
+            width: 100%; padding: 0.85rem 1rem; border-radius: 12px; 
+            border: 1px solid rgba(255,255,255,0.1); background: rgba(255, 255, 255, 0.08); 
+            color: white; text-align: center; outline: none; backdrop-filter: blur(10px);
+        }
+
+        .count-badge { font-size: 0.9rem; background: rgba(255, 255, 255, 0.15); padding: 4px 10px; border-radius: 20px; color: rgba(255, 255, 255, 0.8); }
     </style>
 </head>
 <body>
@@ -131,33 +119,26 @@
     </div>
 
     <div class="cloak-container" id="cloakContainer">
-        <div class="cloak-main" style="display:flex; align-items:center; gap:10px;">
+        <div style="display:flex; align-items:center; gap:10px;">
             <span style="font-size:0.85rem; font-weight:600; color:rgba(255,255,255,0.6)">Toggle Cloak</span>
-            <label class="switch">
-                <input type="checkbox" id="cloakToggle">
-                <span class="slider"></span>
-            </label>
+            <label class="switch"><input type="checkbox" id="cloakToggle"><span class="slider"></span></label>
         </div>
         <div id="cloakOptions">
-            <div class="cloak-group">
-                <div class="label-row"><label>Tab Name</label><button class="set-btn" onclick="updateTitle()">Set</button></div>
-                <input type="text" id="customTitleInput" class="cloak-input" placeholder="Google">
-            </div>
-            <div class="cloak-group">
-                <div class="label-row"><label>Favicon (URL/Site)</label><button class="set-btn" onclick="updateIcon()">Set</button></div>
-                <input type="text" id="customFaviconInput" class="cloak-input" placeholder="classroom.google.com">
-            </div>
+            <div style="display:flex; justify-content:space-between;"><label style="font-size:0.65rem; color:rgba(255,255,255,0.4);">Tab Name</label><button class="set-btn" onclick="updateTitle()">Set</button></div>
+            <input type="text" id="customTitleInput" class="cloak-input" placeholder="Google">
+            <div style="display:flex; justify-content:space-between; margin-top:5px;"><label style="font-size:0.65rem; color:rgba(255,255,255,0.4);">Favicon URL</label><button class="set-btn" onclick="updateIcon()">Set</button></div>
+            <input type="text" id="customFaviconInput" class="cloak-input" placeholder="classroom.google.com">
         </div>
     </div>
 
     <div class="container">
-        <img src="https://ik.imagekit.io/quackmath/goose%20(1).png" class="logo">
+        <img src="https://ik.imagekit.io/quackmath/goose%20(1).png" style="width:80px;">
         <h1>Quackmath <span id="gameCount" class="count-badge">0</span></h1>
         <input type="text" id="search" placeholder="Search games...">
         <ul id="gameList"></ul>
     </div>
 
-    <footer>Made with ♡ by Quackmath</footer>
+    <footer style="padding:20px; font-size:0.85rem; color:rgba(255,255,255,0.5);">Made with ♡ by Quackmath</footer>
 
 <script>
     const list = document.getElementById('gameList');
@@ -167,8 +148,6 @@
     
     const originalTitle = "Quackmath";
     const originalFavicon = "https://ik.imagekit.io/quackmath/goose%20(1).png";
-    
-    const blockTerms = ['new website', 'howo.pages.dev', 'itafricagroup', 'leeschoolsk12', 'frogiesarcade', 'bostoncareercounselor', 'travelpage.biz', 'neo-space.space', 'dj-jam.be', 'cloe.', 'adaptor.', 'berkatdoa', 'cbu.net', 'geographyles', 'i5.ca', 'forms.gle', 'discord.gg', 'report abuse', 'learn more'];
 
     function toggleUpdateModal() {
         const modal = document.getElementById('updateModal');
@@ -219,20 +198,18 @@
             links.forEach(link => {
                 let name = link.innerText.trim();
                 let url = link.href.toLowerCase();
-                
-                // 1. Process specific 'cl(Game Name).html' format
-                if (name.toLowerCase().startsWith('cl(') && name.toLowerCase().endsWith(').html')) {
-                    // This regex grabs everything inside the first set of parentheses
-                    const match = name.match(/\(([^)]+)\)/);
-                    if (match && match[1]) {
-                        name = match[1]; // Set name to just the stuff inside ()
-                    }
+
+                // DYNAMIC CLEANER: Strips cl(...) and .html
+                if (name.includes('cl(') && name.includes(').html')) {
+                    const extracted = name.match(/\(([^)]+)\)/);
+                    if (extracted) name = extracted[1];
                 }
-                
-                // 2. Final Filter: Check remaining blockTerms
-                if (blockTerms.some(term => url.includes(term.toLowerCase()) || name.toLowerCase().includes(term.toLowerCase()))) return;
-                
-                if (name.length > 1) games.push({ name: name, url: link.href });
+
+                // Generic Filter for junk
+                const junk = ['forms.gle', 'discord.gg', 'report abuse', 'howo.pages.dev'];
+                if (junk.some(t => url.includes(t)) || name.length < 2) return;
+
+                games.push({ name: name, url: link.href });
             });
             render();
         });
