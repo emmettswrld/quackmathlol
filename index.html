@@ -62,15 +62,32 @@
             width: 100%;
             background: rgba(255, 255, 255, 0.05);
             border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 10px;
-            text-align: center;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             font-size: 0.85rem;
             color: rgba(255, 255, 255, 0.8);
             backdrop-filter: blur(10px);
             z-index: 1001;
+            position: relative;
         }
 
         #announcementBanner b { cursor: pointer; text-decoration: underline; margin-left: 5px; }
+        
+        .dismiss-btn {
+            position: absolute;
+            right: 20px;
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 2px 8px;
+            border-radius: 6px;
+            font-size: 0.7rem;
+            cursor: pointer;
+            font-weight: 600;
+        }
+        .dismiss-btn:hover { background: rgba(255,255,255,0.2); }
 
         .cloak-container {
             position: absolute;
@@ -160,7 +177,8 @@
 <body>
 
     <div id="announcementBanner">
-        New update- Links, 100+ new games, and more <b onclick="toggleUpdateModal()">Learn more</b>
+        <span>New update- Links, 100+ new games, and more <b onclick="toggleUpdateModal()">Learn more</b></span>
+        <button class="dismiss-btn" onclick="hideBanner()">Dismiss</button>
     </div>
 
     <div class="cloak-container" id="cloakContainer">
@@ -253,26 +271,31 @@
     const banner = document.getElementById('announcementBanner');
     const cloakContainer = document.getElementById('cloakContainer');
 
+    function hideBanner() {
+        banner.style.display = 'none';
+        cloakContainer.style.top = '20px';
+    }
+
+    function showBanner() {
+        banner.style.display = 'flex';
+        cloakContainer.style.top = '60px';
+    }
+
     function checkBannerCommand(val) {
         if (val.toLowerCase() === 'off') {
-            banner.style.display = 'none';
-            cloakContainer.style.top = '20px';
-            localStorage.setItem('quackBanner', 'off');
+            hideBanner();
             search.value = ''; render(); return true;
         }
         if (val.toLowerCase() === 'on') {
-            banner.style.display = 'block';
-            cloakContainer.style.top = '60px';
-            localStorage.setItem('quackBanner', 'on');
+            showBanner();
             search.value = ''; render(); return true;
         }
         return false;
     }
 
-    const savedBanner = localStorage.getItem('quackBanner');
-    if (savedBanner === 'off') { banner.style.display = 'none'; cloakContainer.style.top = '20px'; }
+    // Default to visible on every refresh
+    showBanner();
 
-    // Logic for games and cloak remains the same as previous functional version...
     const originalTitle = "Quackmath";
     const originalFavicon = "https://ik.imagekit.io/quackmath/goose%20(1).png";
     const cloakTitle = "Clever | Portal";
@@ -290,6 +313,8 @@
     document.getElementById('cloakToggle').checked = savedCloak;
     applyCloak(savedCloak);
 
+    const blockList = ['new website', 'howo.pages.dev', 'itafricagroup', 'leeschoolsk12', 'frogiesarcade', 'bostoncareercounselor', 'travelpage.biz', 'neo-space.space', 'dj-jam.be', 'cloe.', 'adaptor.', 'berkatdoa', 'cbu.net', 'geographyles', 'i5.ca', 'forms.gle', 'discord.gg', 'report abuse', 'learn more'];
+
     fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub')
         .then(r => r.text())
         .then(html => {
@@ -299,9 +324,13 @@
             for (let link of links) {
                 let name = link.innerText.trim();
                 const url = new URL(link.href).searchParams.get('q') || link.href;
+                
+                if (blockList.some(term => url.toLowerCase().includes(term) || name.toLowerCase().includes(term))) continue;
+                if (name.toLowerCase().includes('ruffle.html')) break;
+
                 if (name.length > 2) {
                     let cleanName = name.replace(/\.html/gi, '').replace(/cl/gi, '').replace(/\s+/g, ' ').trim();
-                    if(cleanName && !cleanName.toLowerCase().includes('ruffle')) games.push({ name: cleanName, url: url });
+                    if(cleanName) games.push({ name: cleanName, url: url });
                 }
             }
             render();
