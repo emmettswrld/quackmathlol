@@ -153,19 +153,62 @@
             cursor: pointer; transition: 0.3s;
         }
         .modal-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px var(--accent-color); }
+
+        /* FOOTER STYLES */
+        footer {
+            width: 100%; padding: 20px; text-align: center;
+            font-size: 0.85rem; color: rgba(255, 255, 255, 0.4);
+            background: transparent; z-index: 10;
+        }
+        .more-links-btn {
+            background: none; border: none; color: rgba(255, 255, 255, 0.6);
+            text-decoration: underline; cursor: pointer; font-size: 0.85rem;
+            margin-left: 5px; transition: color 0.2s;
+        }
+        .more-links-btn:hover { color: var(--accent-color); }
+
+        /* LINKS MODAL GRID */
+        .links-grid { display: flex; flex-direction: column; gap: 10px; }
+        .link-item {
+            display: flex; align-items: center; justify-content: center;
+            padding: 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1); color: white;
+            text-decoration: none; font-weight: 600; font-size: 0.9rem;
+            transition: all 0.3s;
+        }
+        .link-item:hover {
+            background: rgba(255, 255, 255, 0.1);
+            transform: scale(1.02);
+            border-color: var(--accent-color);
+            box-shadow: 0 0 15px rgba(var(--accent-rgb), 0.2);
+        }
     </style>
 </head>
 <body>
 
     <div id="announcementBanner">
-        <span>New update- Links, new themes, 100+ new games, and more <b onclick="toggleUpdateModal()">Learn more</b></span>
+        <span>New update- Links, new themes, 100+ new games, and more <b onclick="toggleModal('updateModal')">Learn more</b></span>
     </div>
 
     <div id="updateModal" class="modal-overlay">
         <div class="modal-content">
-            <h2>Latest Update</h2>
-            <p>We've added 100+ new games, fresh color themes to customize your experience, and an updated cloak system! -The Quackmath Team</p>
-            <button class="modal-btn" onclick="toggleUpdateModal()">Got it</button>
+            <h2>Updates are Live!</h2>
+            <p>We've added 100+ new games, fresh color themes to customize your experience, and updated proxy links for better accessibility. Explore the lists below!</p>
+            <button class="modal-btn" onclick="toggleModal('updateModal')">Got it</button>
+        </div>
+    </div>
+
+    <div id="linksModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Our Network</h2>
+            <div class="links-grid">
+                <a href="https://quackmath.vercel.app" target="_blank" class="link-item">Quackmath (Main)</a>
+                <a href="https://quackscience.vercel.app" target="_blank" class="link-item">Quackscience</a>
+                <a href="https://quackhistory.vercel.app" target="_blank" class="link-item">Quackhistory</a>
+                <a href="https://quackenglish.vercel.app" target="_blank" class="link-item">Quackenglish</a>
+                <a href="https://quackfitness.vercel.app" target="_blank" class="link-item">Quackfitness</a>
+            </div>
+            <button class="modal-btn" onclick="toggleModal('linksModal')" style="margin-top: 20px; background: rgba(255,255,255,0.1); color: white;">Close</button>
         </div>
     </div>
 
@@ -237,9 +280,13 @@
         <ul id="gameList"></ul>
     </div>
 
+    <footer>
+        Made with ♡ by Quackmath - <button class="more-links-btn" onclick="toggleModal('linksModal')">More Links</button>
+    </footer>
+
     <script>
-        function toggleUpdateModal() {
-            const modal = document.getElementById('updateModal');
+        function toggleModal(id) {
+            const modal = document.getElementById(id);
             if (modal.classList.contains('active')) {
                 modal.classList.remove('active');
                 setTimeout(() => { modal.style.display = 'none'; }, 300);
