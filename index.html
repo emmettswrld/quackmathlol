@@ -92,7 +92,6 @@
         a { display: block; padding: 1rem; border-radius: 12px; text-decoration: none; color: white; background: rgba(255, 255, 255, 0.06); transition: 0.2s; border: 1px solid rgba(255,255,255,0.05); text-align: center; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         a:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
 
-        /* Expanded Cloak Inputs */
         #cloakInputs { display: none; flex-direction: column; gap: 10px; background: rgba(15, 15, 15, 0.95); padding: 15px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); width: 220px; margin-bottom: 5px; }
         .cloak-field { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:10px; color:white; border-radius:8px; font-size:0.8rem; outline: none; }
         
@@ -172,15 +171,26 @@
             document.getElementById('cloakInputs').style.display = active ? 'flex' : 'none';
             if(!active) { 
                 document.title = "Quackmath"; 
-                document.getElementById('favicon').href = "https://ik.imagekit.io/quackmath/goose%20(1).png"; 
+                updateFavicon("https://ik.imagekit.io/quackmath/goose%20(1).png");
             }
         });
+
+        // FORCE REPLACE FAVICON LOGIC
+        function updateFavicon(url) {
+            let link = document.querySelector("link[rel~='icon']");
+            if (!link) {
+                link = document.createElement('link');
+                link.rel = 'icon';
+                document.head.appendChild(link);
+            }
+            link.href = url;
+        }
 
         function setTab() {
             const title = document.getElementById('customTitle').value;
             const icon = document.getElementById('customFavicon').value;
             if(title) document.title = title;
-            if(icon) document.getElementById('favicon').href = icon;
+            if(icon) updateFavicon(icon);
         }
 
         document.getElementById('search').addEventListener('keyup', (e) => {
