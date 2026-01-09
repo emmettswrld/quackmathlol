@@ -30,12 +30,25 @@
             --accent-color: #2ecc71;
         }
 
+        /* Existing Themes */
         body.theme-emerald { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(46, 204, 113, 0.15), transparent 40%), radial-gradient(circle at 80% 70%, rgba(0, 255, 100, 0.05), transparent 45%); --accent-color: #2ecc71; }
         body.theme-rose { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(255, 0, 150, 0.12), transparent 40%), radial-gradient(circle at 80% 70%, rgba(142, 68, 173, 0.1), transparent 45%); --accent-color: #e91e63; }
         body.theme-amber { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(243, 156, 18, 0.15), transparent 40%), radial-gradient(circle at 80% 70%, rgba(211, 84, 0, 0.1), transparent 45%); --accent-color: #f39c12; }
         body.theme-void { --bg-gradient: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.03), transparent 50%); --accent-color: #ffffff; }
         body.theme-crimson { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(231, 76, 60, 0.15), transparent 40%), radial-gradient(circle at 80% 70%, rgba(192, 57, 43, 0.1), transparent 45%); --accent-color: #e74c3c; }
         body.theme-nebula { --bg-gradient: radial-gradient(circle at 30% 20%, rgba(155, 89, 182, 0.15), transparent 40%), radial-gradient(circle at 70% 80%, rgba(52, 152, 219, 0.15), transparent 40%); --accent-color: #9b59b6; }
+
+        /* 10 NEW THEMES */
+        body.theme-cyber { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(0, 255, 255, 0.15), transparent 40%), radial-gradient(circle at 80% 70%, rgba(255, 0, 255, 0.15), transparent 45%); --accent-color: #00ffff; }
+        body.theme-forest { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(39, 174, 96, 0.1), transparent 40%), radial-gradient(circle at 80% 70%, rgba(20, 90, 50, 0.2), transparent 45%); --accent-color: #27ae60; }
+        body.theme-ocean { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(41, 128, 185, 0.15), transparent 40%), radial-gradient(circle at 80% 70%, rgba(21, 67, 96, 0.2), transparent 45%); --accent-color: #3498db; }
+        body.theme-sunset { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(230, 126, 34, 0.15), transparent 40%), radial-gradient(circle at 80% 70%, rgba(192, 57, 43, 0.15), transparent 45%); --accent-color: #e67e22; }
+        body.theme-gold { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(241, 196, 15, 0.12), transparent 40%), radial-gradient(circle at 80% 70%, rgba(183, 149, 11, 0.1), transparent 45%); --accent-color: #f1c40f; }
+        body.theme-mint { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(162, 217, 206, 0.1), transparent 40%), radial-gradient(circle at 80% 70%, rgba(22, 160, 133, 0.1), transparent 45%); --accent-color: #1abc9c; }
+        body.theme-lavender { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(215, 189, 226, 0.1), transparent 40%), radial-gradient(circle at 80% 70%, rgba(125, 60, 152, 0.1), transparent 45%); --accent-color: #af7ac5; }
+        body.theme-slate { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(149, 165, 166, 0.1), transparent 40%), radial-gradient(circle at 80% 70%, rgba(44, 62, 80, 0.2), transparent 45%); --accent-color: #95a5a6; }
+        body.theme-toxic { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(173, 255, 47, 0.1), transparent 40%), radial-gradient(circle at 80% 70%, rgba(0, 100, 0, 0.2), transparent 45%); --accent-color: #adff2f; }
+        body.theme-midnight { --bg-gradient: radial-gradient(circle at 50% 50%, rgba(25, 25, 112, 0.2), transparent 60%); --accent-color: #191970; }
 
         @keyframes floatBG { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-2%, -2%); } }
 
@@ -58,15 +71,18 @@
             background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1);
             color: rgba(255, 255, 255, 0.7); padding: 8px 15px; border-radius: 10px;
             font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: 0.2s;
-            backdrop-filter: blur(5px); min-width: 120px; text-align: right;
+            backdrop-filter: blur(5px); min-width: 130px; text-align: right;
         }
         .ui-btn:hover { background: rgba(255, 255, 255, 0.12); color: white; }
 
         #themeMenu {
             display: none; flex-direction: column; gap: 4px; background: rgba(15, 15, 15, 0.95);
-            padding: 8px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); width: 150px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+            padding: 8px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); width: 160px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5); max-height: 300px; overflow-y: auto;
         }
+        #themeMenu::-webkit-scrollbar { width: 3px; }
+        #themeMenu::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+
         .theme-opt {
             padding: 10px; border-radius: 8px; font-size: 0.75rem; cursor: pointer; border: 1px solid transparent; transition: 0.2s;
         }
@@ -82,7 +98,7 @@
         ul { 
             width: 100%; list-style: none; display: flex; flex-direction: column; 
             gap: 0.7rem; max-height: 40vh; overflow-y: auto; 
-            overflow-x: hidden; /* Removes horizontal scroll */
+            overflow-x: hidden;
             margin-top: 20px; padding-right: 8px; 
         }
         
@@ -102,7 +118,7 @@
 <body>
 
     <div id="announcementBanner">
-        <span>New update- Links, 100+ new games, and more <b onclick="alert('Updates are live!')">Learn more</b></span>
+        <span>Updates are live! <b onclick="alert('Enjoy the new themes!')">Learn more</b></span>
     </div>
 
     <div class="cloak-container">
@@ -121,13 +137,23 @@
 
         <button class="ui-btn" onclick="toggleThemeMenu()">Change Theme</button>
         <div id="themeMenu">
-            <div class="theme-opt" onclick="setTheme('default')">🔵 Midnight</div>
+            <div class="theme-opt" onclick="setTheme('default')">🔵 Midnight (Orig)</div>
             <div class="theme-opt" onclick="setTheme('emerald')">🟢 Emerald</div>
             <div class="theme-opt" onclick="setTheme('rose')">🌸 Rose</div>
             <div class="theme-opt" onclick="setTheme('amber')">🟠 Amber</div>
             <div class="theme-opt" onclick="setTheme('crimson')">🔴 Crimson</div>
             <div class="theme-opt" onclick="setTheme('nebula')">🍇 Nebula</div>
             <div class="theme-opt" onclick="setTheme('void')">⚪ Void</div>
+            <div class="theme-opt" onclick="setTheme('cyber')">🤖 Cyberpunk</div>
+            <div class="theme-opt" onclick="setTheme('forest')">🌲 Forest</div>
+            <div class="theme-opt" onclick="setTheme('ocean')">🌊 Ocean</div>
+            <div class="theme-opt" onclick="setTheme('sunset')">🌅 Sunset</div>
+            <div class="theme-opt" onclick="setTheme('gold')">👑 Gold</div>
+            <div class="theme-opt" onclick="setTheme('mint')">🍃 Mint</div>
+            <div class="theme-opt" onclick="setTheme('lavender')">🔮 Lavender</div>
+            <div class="theme-opt" onclick="setTheme('slate')">🌑 Slate</div>
+            <div class="theme-opt" onclick="setTheme('toxic')">☢️ Toxic</div>
+            <div class="theme-opt" onclick="setTheme('midnight')">🌌 Deep Space</div>
         </div>
     </div>
 
@@ -139,7 +165,6 @@
     </div>
 
     <script>
-        // --- THEME LOGIC ---
         function toggleThemeMenu() {
             const menu = document.getElementById('themeMenu');
             menu.style.display = menu.style.display === 'flex' ? 'none' : 'flex';
@@ -152,7 +177,6 @@
             document.getElementById('themeMenu').style.display = 'none';
         }
 
-        // --- CLOAK LOGIC ---
         document.getElementById('cloakToggle').addEventListener('change', (e) => {
             const active = e.target.checked;
             document.getElementById('cloakInputs').style.display = active ? 'flex' : 'none';
@@ -168,14 +192,12 @@
             document.getElementById('favicon').href = "https://www.google.com/favicon.ico";
         }
 
-        // --- SEARCH & REDIRECT ---
         document.getElementById('search').addEventListener('keyup', (e) => {
             if (e.key === 'Enter' && e.target.value.toLowerCase().trim() === 'admin') {
                 window.location.href = 'https://quackmath-admin.vercel.app';
             }
         });
 
-        // --- FETCH GAMES ---
         async function fetchGames() {
             const r = await fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub');
             const html = await r.text();
@@ -192,7 +214,6 @@
             });
         }
 
-        // Initialize
         const savedTheme = localStorage.getItem('quackTheme');
         if(savedTheme) setTheme(savedTheme);
         fetchGames();
