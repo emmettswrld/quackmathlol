@@ -16,225 +16,181 @@
             overflow: hidden; -webkit-font-smoothing: antialiased;
         }
 
-        body::before { 
-            content: ""; position: absolute; width: 120%; height: 120%; 
-            background: radial-gradient(circle at 20% 30%, rgba(0, 150, 255, 0.15), transparent 40%), 
-                        radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.08), transparent 45%); 
-            animation: floatBG 25s linear infinite; z-index: -1; 
-        }
+        /* --- SCROLLBARS --- */
+        ul::-webkit-scrollbar { width: 8px; }
+        ul::-webkit-scrollbar-track { background: rgba(255, 255, 255, 0.05); }
+        ul::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.2); border-radius: 10px; border: 2px solid #000; }
+        ul::-webkit-scrollbar-thumb:hover { background: rgba(255, 255, 255, 0.4); }
 
-        /* --- UI ELEMENTS --- */
+        /* --- UI --- */
         #announcementBanner {
             width: 100%; background: rgba(255, 255, 255, 0.05); border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding: 10px 20px; display: flex; justify-content: center; align-items: center;
-            font-size: 0.85rem; color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px);
-            z-index: 1001; position: relative;
+            font-size: 0.85rem; color: rgba(255, 255, 255, 0.8); z-index: 1001; position: relative;
         }
-        #announcementBanner b { cursor: pointer; text-decoration: underline; margin-left: 5px; }
         
-        .dismiss-btn {
-            position: absolute; right: 20px; background: rgba(255,255,255,0.1);
-            border: none; color: white; padding: 2px 8px; border-radius: 6px;
-            font-size: 0.7rem; cursor: pointer;
-        }
-
         .cloak-container {
             position: absolute; top: 60px; right: 20px; display: flex;
-            flex-direction: column; align-items: flex-end; gap: 10px; z-index: 100; transition: top 0.3s ease;
+            flex-direction: column; align-items: flex-end; gap: 10px; z-index: 100;
         }
 
         #cloakOptions {
-            display: none; flex-direction: column; gap: 12px; background: rgba(15, 15, 15, 0.95);
-            padding: 15px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(15px); width: 220px; box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+            display: none; flex-direction: column; gap: 8px; background: #111;
+            padding: 12px; border-radius: 10px; border: 1px solid #333; width: 180px;
         }
 
-        .cloak-input { background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 6px; padding: 8px; color: white; font-size: 0.8rem; outline: none; width: 100%; }
-        .set-btn { font-size: 0.65rem; color: #2ecc71; background: none; border: none; cursor: pointer; font-weight: 700; text-transform: uppercase; }
+        .cloak-input { background: #000; border: 1px solid #333; border-radius: 4px; padding: 4px; color: white; width: 100%; font-size: 0.75rem; }
+        .set-btn { color: #2ecc71; background: none; border: none; cursor: pointer; font-size: 0.65rem; font-weight: bold; }
 
-        .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
-        .switch input { opacity: 0; width: 0; height: 0; }
-        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255, 255, 255, 0.1); transition: .4s; border-radius: 24px; }
-        .slider:before { position: absolute; content: ""; height: 16px; width: 16px; left: 3px; bottom: 3px; background-color: white; transition: .4s; border-radius: 50%; }
-        input:checked + .slider { background-color: #2ecc71; }
-        input:checked + .slider:before { transform: translateX(20px); }
-
-        /* --- MAIN LAYOUT --- */
         .container { 
-            width: 100%; max-width: 520px; padding: 2rem 1.25rem; 
-            display: flex; flex-direction: column; align-items: center; gap: 1.25rem;
-            flex-grow: 1; justify-content: center; position: relative;
+            width: 100%; max-width: 480px; padding: 20px; 
+            display: flex; flex-direction: column; align-items: center; gap: 20px;
+            flex-grow: 1; justify-content: center;
         }
         
-        ul { 
-            width: 100%; list-style: none; display: flex; flex-direction: column; gap: 0.7rem; 
-            max-height: 45vh; overflow-y: auto; overflow-x: hidden; padding-right: 8px; 
-        }
-
-        /* KILL HORIZONTAL SCROLL */
-        ul li { width: 100%; overflow: hidden; }
-
-        a { 
-            display: block; padding: 1rem; border-radius: 12px; color: white; 
-            background: rgba(255, 255, 255, 0.06); text-decoration: none; font-weight: 600; 
-            border: 1px solid rgba(255,255,255,0.05); text-align: center; transition: 0.2s;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
-        }
-        a:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
+        h1 { font-size: 1.8rem; display: flex; align-items: center; gap: 10px; }
+        .count-badge { font-size: 0.75rem; background: #222; padding: 2px 8px; border-radius: 10px; color: #888; }
 
         #search { 
-            width: 100%; padding: 0.85rem 1rem; border-radius: 12px; 
-            border: 1px solid rgba(255,255,255,0.1); background: rgba(255, 255, 255, 0.08); 
-            color: white; text-align: center; outline: none; backdrop-filter: blur(10px);
+            width: 100%; padding: 12px; border-radius: 10px; 
+            border: 1px solid #222; background: #0a0a0a; color: white; text-align: center; outline: none;
+        }
+        #search:focus { border-color: #444; }
+
+        ul { 
+            width: 100%; list-style: none; display: flex; flex-direction: column; gap: 8px; 
+            max-height: 50vh; overflow-y: auto; padding-right: 5px;
         }
 
-        .count-badge { font-size: 0.9rem; background: rgba(255, 255, 255, 0.15); padding: 4px 10px; border-radius: 20px; color: rgba(255, 255, 255, 0.8); }
+        a { 
+            display: block; padding: 14px; border-radius: 10px; color: white; 
+            background: #0f0f0f; text-decoration: none; font-weight: 600; 
+            border: 1px solid #1a1a1a; text-align: center; transition: 0.15s;
+        }
+        a:hover { background: #161616; border-color: #333; transform: translateY(-1px); }
+
+        /* --- SWITCH --- */
+        .switch { position: relative; width: 34px; height: 18px; display: inline-block; }
+        .switch input { opacity: 0; width: 0; height: 0; }
+        .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background: #222; border-radius: 20px; transition: 0.3s; }
+        .slider:before { content: ""; position: absolute; height: 12px; width: 12px; left: 3px; bottom: 3px; background: white; border-radius: 50%; transition: 0.3s; }
+        input:checked + .slider { background: #2ecc71; }
+        input:checked + .slider:before { transform: translateX(16px); }
     </style>
 </head>
 <body>
 
     <div id="announcementBanner">
-        <span>New update- Links, 100+ new games, and more <b onclick="toggleUpdateModal()">Learn more</b></span>
-        <button class="dismiss-btn" onclick="document.getElementById('announcementBanner').style.display='none'; document.getElementById('cloakContainer').style.top='20px';">Dismiss</button>
+        <span>100+ New Games Added! <b style="cursor:pointer; text-decoration:underline; margin-left:5px;" onclick="toggleUpdateModal()">Details</b></span>
     </div>
 
-    <div id="updateModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); z-index:2000; justify-content:center; align-items:center; opacity:0; transition: opacity 0.3s ease;">
-        <div style="background:#111; border:1px solid rgba(255,255,255,0.1); padding:2.5rem; border-radius:24px; width:90%; max-width:450px; text-align:left; transform:scale(0.8); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);" id="updateModalContent">
-            <h2 style="margin-bottom:1rem; font-size:1.4rem; letter-spacing:-0.02em;">Update Details</h2>
-            <div class="scroll-area" style="font-size: 0.95rem; line-height: 1.6; color: rgba(255,255,255,0.7); max-height: 300px; overflow-y: auto; padding-right: 10px;">
-                <p>In this update we added several new links, 100 new games, and a new announcement banner. You can request updates in the Chat doc.</p>
-                <br>
-                <p>Please note: you must download the file and open it to play the game. These games do NOT show on Blocksi, GoGuardian, etc.</p>
-                <br>
-                <p>Patch notes: We patched several bugs with the errors getting to Drive links.</p>
-                <br>
-                <p>What's to come: Kart Bros, improved search, and more.</p>
-                <br>
-                <p>-The Quackmath Team</p>
-            </div>
-            <div style="text-align: center; margin-top: 1.5rem;">
-                <button onclick="toggleUpdateModal()" style="background:none; border:none; color:rgba(255,255,255,0.4); cursor:pointer; font-size:0.9rem; font-weight:600;">Dismiss</button>
-            </div>
+    <div id="updateModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); z-index:2000; justify-content:center; align-items:center;">
+        <div style="background:#111; padding:25px; border-radius:15px; border:1px solid #333; max-width:350px; width:90%;">
+            <h3 style="margin-bottom:10px;">Updates</h3>
+            <p style="color:#777; font-size:0.85rem; line-height:1.5;">- Fixed the "cl" naming bug.<br>- Improved scrolling performance.<br>- Optimized cloaking features.</p>
+            <button onclick="toggleUpdateModal()" style="margin-top:20px; background:#fff; color:#000; border:none; padding:8px; border-radius:5px; width:100%; cursor:pointer; font-weight:bold;">Got it</button>
         </div>
     </div>
 
-    <div class="cloak-container" id="cloakContainer">
-        <div style="display:flex; align-items:center; gap:10px;">
-            <span style="font-size:0.85rem; font-weight:600; color:rgba(255,255,255,0.6)">Toggle Cloak</span>
+    <div class="cloak-container">
+        <div style="display:flex; align-items:center; gap:8px;">
+            <span style="font-size:0.6rem; color:#444; font-weight:bold;">CLOAK</span>
             <label class="switch"><input type="checkbox" id="cloakToggle"><span class="slider"></span></label>
         </div>
         <div id="cloakOptions">
-            <div style="display:flex; justify-content:space-between;"><label style="font-size:0.65rem; color:rgba(255,255,255,0.4);">Tab Name</label><button class="set-btn" onclick="updateTitle()">Set</button></div>
+            <div style="display:flex; justify-content:space-between;"><label style="font-size:0.55rem; color:#555;">NAME</label><button class="set-btn" onclick="updateTitle()">SET</button></div>
             <input type="text" id="customTitleInput" class="cloak-input" placeholder="Google">
-            <div style="display:flex; justify-content:space-between; margin-top:5px;"><label style="font-size:0.65rem; color:rgba(255,255,255,0.4);">Favicon URL</label><button class="set-btn" onclick="updateIcon()">Set</button></div>
-            <input type="text" id="customFaviconInput" class="cloak-input" placeholder="classroom.google.com">
+            <div style="display:flex; justify-content:space-between; margin-top:4px;"><label style="font-size:0.55rem; color:#555;">DOMAIN</label><button class="set-btn" onclick="updateIcon()">SET</button></div>
+            <input type="text" id="customFaviconInput" class="cloak-input" placeholder="google.com">
         </div>
     </div>
 
     <div class="container">
-        <img src="https://ik.imagekit.io/quackmath/goose%20(1).png" style="width:80px;">
+        <img src="https://ik.imagekit.io/quackmath/goose%20(1).png" style="width:50px;">
         <h1>Quackmath <span id="gameCount" class="count-badge">0</span></h1>
         <input type="text" id="search" placeholder="Search games...">
         <ul id="gameList"></ul>
     </div>
-
-    <footer style="padding:20px; font-size:0.85rem; color:rgba(255,255,255,0.5);">Made with ♡ by Quackmath</footer>
 
 <script>
     const list = document.getElementById('gameList');
     const search = document.getElementById('search');
     const countBadge = document.getElementById('gameCount');
     const cloakToggle = document.getElementById('cloakToggle');
-    
-    const originalTitle = "Quackmath";
-    const originalFavicon = "https://ik.imagekit.io/quackmath/goose%20(1).png";
 
     function toggleUpdateModal() {
-        const modal = document.getElementById('updateModal');
-        const content = document.getElementById('updateModalContent');
-        if (modal.style.display === 'none') {
-            modal.style.display = 'flex';
-            setTimeout(() => { modal.style.opacity = '1'; content.style.transform = 'scale(1)'; }, 10);
-        } else {
-            modal.style.opacity = '0';
-            content.style.transform = 'scale(0.8)';
-            setTimeout(() => modal.style.display = 'none', 300);
-        }
+        const m = document.getElementById('updateModal');
+        m.style.display = (m.style.display === 'none' || m.style.display === '') ? 'flex' : 'none';
     }
 
     function updateTitle() {
         const val = document.getElementById('customTitleInput').value.trim() || "Google";
-        localStorage.setItem('customCloakTitle', val);
+        localStorage.setItem('qTitle', val);
         if (cloakToggle.checked) document.title = val;
     }
 
     function updateIcon() {
-        let val = document.getElementById('customFaviconInput').value.trim().toLowerCase() || "google.com";
-        let domain = val.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split('/')[0];
-        const finalIconUrl = `https://www.google.com/s2/favicons?sz=128&domain=${domain}`;
-        localStorage.setItem('customCloakIcon', finalIconUrl);
-        if (cloakToggle.checked) document.getElementById('favicon').href = finalIconUrl;
+        let val = document.getElementById('customFaviconInput').value.trim() || "google.com";
+        const url = `https://www.google.com/s2/favicons?sz=64&domain=${val}`;
+        localStorage.setItem('qIcon', url);
+        if (cloakToggle.checked) document.getElementById('favicon').href = url;
     }
 
     cloakToggle.addEventListener('change', () => {
-        const isEnabled = cloakToggle.checked;
-        localStorage.setItem('quackCloak', isEnabled);
-        document.getElementById('cloakOptions').style.display = isEnabled ? 'flex' : 'none';
-        if (isEnabled) {
-            document.title = localStorage.getItem('customCloakTitle') || "Google";
-            document.getElementById('favicon').href = localStorage.getItem('customCloakIcon') || "https://www.google.com/s2/favicons?sz=128&domain=google.com";
+        const active = cloakToggle.checked;
+        localStorage.setItem('qCloak', active);
+        document.getElementById('cloakOptions').style.display = active ? 'flex' : 'none';
+        if (active) {
+            document.title = localStorage.getItem('qTitle') || "Google";
+            document.getElementById('favicon').href = localStorage.getItem('qIcon') || "https://www.google.com/s2/favicons?sz=64&domain=google.com";
         } else {
-            document.title = originalTitle;
-            document.getElementById('favicon').href = originalFavicon;
+            document.title = "Quackmath";
+            document.getElementById('favicon').href = "https://ik.imagekit.io/quackmath/goose%20(1).png";
         }
     });
 
     let games = [];
     fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub')
-        .then(r => r.text())
+        .then(res => res.text())
         .then(html => {
             const doc = new DOMParser().parseFromString(html, 'text/html');
             const links = doc.querySelectorAll('a');
-            links.forEach(link => {
-                let name = link.innerText.trim();
-                let url = link.href.toLowerCase();
+            links.forEach(l => {
+                let name = l.innerText.trim();
+                let href = l.href;
 
-                // DYNAMIC CLEANER: Strips cl(...) and .html
-                if (name.includes('cl(') && name.includes(').html')) {
-                    const extracted = name.match(/\(([^)]+)\)/);
-                    if (extracted) name = extracted[1];
+                // THE TRIMMER: Slices off cl( and ).html
+                if (name.toLowerCase().startsWith('cl(') && name.toLowerCase().endsWith(').html')) {
+                    name = name.substring(3, name.length - 6);
                 }
 
-                // Generic Filter for junk
-                const junk = ['forms.gle', 'discord.gg', 'report abuse', 'howo.pages.dev'];
-                if (junk.some(t => url.includes(t)) || name.length < 2) return;
-
-                games.push({ name: name, url: link.href });
+                if (name.length < 2 || name.includes('Report Abuse')) return;
+                games.push({ name, href });
             });
             render();
         });
 
-    function render(filter = '') {
+    function render(val = '') {
         list.innerHTML = '';
-        const filtered = games.filter(g => g.name.toLowerCase().includes(filter.toLowerCase()));
-        countBadge.textContent = filtered.length;
+        const filtered = games.filter(g => g.name.toLowerCase().includes(val.toLowerCase()));
+        countBadge.innerText = filtered.length;
         filtered.forEach(g => {
             const li = document.createElement('li');
             const a = document.createElement('a');
-            a.href = g.url; a.target = "_blank"; a.textContent = g.name;
-            li.appendChild(a); list.appendChild(li);
+            a.href = g.href; a.target = "_blank"; a.innerText = g.name;
+            li.appendChild(a);
+            list.appendChild(li);
         });
     }
 
     search.addEventListener('input', e => render(e.target.value));
 
     window.onload = () => {
-        const isCloaked = localStorage.getItem('quackCloak') === 'true';
-        cloakToggle.checked = isCloaked;
-        if (isCloaked) {
+        if (localStorage.getItem('qCloak') === 'true') {
+            cloakToggle.checked = true;
             document.getElementById('cloakOptions').style.display = 'flex';
-            document.title = localStorage.getItem('customCloakTitle') || "Google";
-            document.getElementById('favicon').href = localStorage.getItem('customCloakIcon') || "https://www.google.com/s2/favicons?sz=128&domain=google.com";
+            document.title = localStorage.getItem('qTitle') || "Google";
+            document.getElementById('favicon').href = localStorage.getItem('qIcon') || "https://www.google.com/s2/favicons?sz=64&domain=google.com";
         }
     };
 </script>
