@@ -34,14 +34,35 @@
         }
         @keyframes floatBG { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-2%, -2%); } }
 
+        /* Announcement Banner */
+        #announcementBanner {
+            width: 100%;
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px;
+            text-align: center;
+            font-size: 0.85rem;
+            color: rgba(255, 255, 255, 0.8);
+            backdrop-filter: blur(10px);
+            z-index: 1001;
+            display: block; /* Shown by default */
+        }
+
+        #announcementBanner b {
+            cursor: pointer;
+            text-decoration: underline;
+            margin-left: 5px;
+        }
+
         .cloak-container {
             position: absolute;
-            top: 20px;
+            top: 60px; /* Adjusted for banner */
             right: 20px;
             display: flex;
             align-items: center;
             gap: 10px;
             z-index: 100;
+            transition: top 0.3s ease;
         }
 
         .cloak-label {
@@ -205,7 +226,11 @@
 </head>
 <body>
 
-    <div class="cloak-container">
+    <div id="announcementBanner">
+        New update! <b onclick="toggleUpdateModal()">Learn more</b>
+    </div>
+
+    <div class="cloak-container" id="cloakContainer">
         <span class="cloak-label">Toggle Cloak</span>
         <label class="switch">
             <input type="checkbox" id="cloakToggle">
@@ -226,10 +251,9 @@
 
     <button id="scrollTop" title="Go to top">↑</button>
 
-<div id="linksModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); z-index:1000; justify-content:center; align-items:center; opacity:0; transition: opacity 0.3s ease;">
+<div id="linksModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); z-index:2000; justify-content:center; align-items:center; opacity:0; transition: opacity 0.3s ease;">
     <div style="background:#111; border:1px solid rgba(255,255,255,0.1); padding:2rem; border-radius:24px; width:90%; max-width:320px; text-align:center; transform:scale(0.8); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);" id="modalContent">
         <h2 style="margin-bottom:1.5rem; font-size:1.4rem; letter-spacing:-0.02em;">Quackmath Links</h2>
-        
         <div style="display:flex; flex-direction:column; gap:10px;">
             <a href="https://quackmath.vercel.app" target="_blank">Quackmath (Main)</a>
             <a href="https://quackenglish.vercel.app" target="_blank">Quackenglish</a>
@@ -237,15 +261,31 @@
             <a href="https://quackfitness.vercel.app" target="_blank">Quackfitness</a>
             <a href="https://quackscience.vercel.app" target="_blank">Quackscience</a>
         </div>
-
         <button onclick="toggleModal()" style="margin-top:1.5rem; background:none; border:none; color:rgba(255,255,255,0.4); cursor:pointer; font-size:0.9rem; font-weight:600;">Close</button>
         <p style="margin-top: 1rem; font-size: 0.75rem; color: rgba(255,255,255,0.3); font-weight: 500;">Suggest links in the Chat</p>
+    </div>
+</div>
+
+<div id="updateModal" style="display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.85); backdrop-filter:blur(10px); z-index:2000; justify-content:center; align-items:center; opacity:0; transition: opacity 0.3s ease;">
+    <div style="background:#111; border:1px solid rgba(255,255,255,0.1); padding:2.5rem; border-radius:24px; width:90%; max-width:450px; text-align:left; transform:scale(0.8); transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);" id="updateModalContent">
+        <h2 style="margin-bottom:1rem; font-size:1.4rem; letter-spacing:-0.02em;">Update Details</h2>
+        <div style="font-size: 0.95rem; line-height: 1.6; color: rgba(255,255,255,0.7); max-height: 300px; overflow-y: auto;">
+            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.</p>
+            <br>
+            <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+            <br>
+            <p>At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident.</p>
+        </div>
+        <div style="text-align: center; margin-top: 1.5rem;">
+            <button onclick="toggleUpdateModal()" style="background:none; border:none; color:rgba(255,255,255,0.4); cursor:pointer; font-size:0.9rem; font-weight:600;">Dismiss</button>
+        </div>
     </div>
 </div>
 
 <footer>Made with ♡ by Quackmath — <button onclick="toggleModal()" style="background:none; border:none; color:inherit; font:inherit; font-weight:bold; cursor:pointer; text-decoration:none;">More Links</button></footer>
 
 <script>
+    // General Modal Toggle Logic
     function toggleModal() {
         const modal = document.getElementById('linksModal');
         const content = document.getElementById('modalContent');
@@ -258,8 +298,21 @@
         }
     }
 
+    function toggleUpdateModal() {
+        const modal = document.getElementById('updateModal');
+        const content = document.getElementById('updateModalContent');
+        if (modal.style.display === 'none' || modal.style.display === '') {
+            modal.style.display = 'flex';
+            setTimeout(() => { modal.style.opacity = '1'; content.style.transform = 'scale(1)'; }, 10);
+        } else {
+            modal.style.opacity = '0'; content.style.transform = 'scale(0.8)';
+            setTimeout(() => { modal.style.display = 'none'; }, 300);
+        }
+    }
+
     window.onclick = function(event) {
         if (event.target == document.getElementById('linksModal')) toggleModal();
+        if (event.target == document.getElementById('updateModal')) toggleUpdateModal();
     }
 
     const list = document.getElementById('gameList');
@@ -267,6 +320,8 @@
     const countBadge = document.getElementById('gameCount');
     const scrollBtn = document.getElementById('scrollTop');
     const cloakToggle = document.getElementById('cloakToggle');
+    const banner = document.getElementById('announcementBanner');
+    const cloakContainer = document.getElementById('cloakContainer');
     
     const originalTitle = "Quackmath";
     const originalFavicon = "https://ik.imagekit.io/quackmath/goose%20(1).png";
@@ -274,6 +329,34 @@
     const cloakFavicon = "https://ik.imagekit.io/quackmath/images__1_-removebg-preview.png";
 
     let games = [];
+
+    // Banner Visibility Secret Commands
+    function checkBannerCommand(val) {
+        if (val.toLowerCase() === 'off') {
+            banner.style.display = 'none';
+            cloakContainer.style.top = '20px';
+            localStorage.setItem('quackBanner', 'off');
+            search.value = ''; // Clear search
+            render(); 
+            return true;
+        }
+        if (val.toLowerCase() === 'on') {
+            banner.style.display = 'block';
+            cloakContainer.style.top = '60px';
+            localStorage.setItem('quackBanner', 'on');
+            search.value = ''; // Clear search
+            render();
+            return true;
+        }
+        return false;
+    }
+
+    // Load Banner State
+    const savedBanner = localStorage.getItem('quackBanner');
+    if (savedBanner === 'off') {
+        banner.style.display = 'none';
+        cloakContainer.style.top = '20px';
+    }
 
     function applyCloak(isCloaked) {
         document.title = isCloaked ? cloakTitle : originalTitle;
@@ -326,7 +409,12 @@
         });
     }
 
-    search.addEventListener('input', e => render(e.target.value));
+    search.addEventListener('input', e => {
+        if (!checkBannerCommand(e.target.value)) {
+            render(e.target.value);
+        }
+    });
+
     list.addEventListener('scroll', () => { scrollBtn.style.display = list.scrollTop > 200 ? 'flex' : 'none'; });
     scrollBtn.addEventListener('click', () => { list.scrollTo({ top: 0, behavior: 'smooth' }); });
 </script>
