@@ -30,7 +30,7 @@
             --accent-color: #2ecc71;
         }
 
-        /* Themes */
+        /* Themes (Same as before) */
         body.theme-emerald { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(46, 204, 113, 0.15), transparent 40%), radial-gradient(circle at 80% 70%, rgba(0, 255, 100, 0.05), transparent 45%); --accent-color: #2ecc71; }
         body.theme-rose { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(255, 0, 150, 0.12), transparent 40%), radial-gradient(circle at 80% 70%, rgba(142, 68, 173, 0.1), transparent 45%); --accent-color: #e91e63; }
         body.theme-amber { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(243, 156, 18, 0.15), transparent 40%), radial-gradient(circle at 80% 70%, rgba(211, 84, 0, 0.1), transparent 45%); --accent-color: #f39c12; }
@@ -92,9 +92,13 @@
         a { display: block; padding: 1rem; border-radius: 12px; text-decoration: none; color: white; background: rgba(255, 255, 255, 0.06); transition: 0.2s; border: 1px solid rgba(255,255,255,0.05); text-align: center; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         a:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
 
-        #cloakInputs { display: none; flex-direction: column; gap: 10px; background: rgba(15, 15, 15, 0.95); padding: 15px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); width: 220px; margin-bottom: 5px; }
-        .cloak-field { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:10px; color:white; border-radius:8px; font-size:0.8rem; outline: none; }
+        #cloakInputs { display: none; flex-direction: column; gap: 8px; background: rgba(15, 15, 15, 0.95); padding: 15px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); width: 220px; margin-bottom: 5px; }
+        .cloak-field { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:8px; color:white; border-radius:8px; font-size:0.8rem; outline: none; }
         
+        .preset-row { display: flex; gap: 5px; margin-top: 5px; }
+        .preset-btn { flex: 1; padding: 5px; font-size: 0.65rem; background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.1); color: #ccc; border-radius: 5px; cursor: pointer; }
+        .preset-btn:hover { background: rgba(255,255,255,0.2); color: white; }
+
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255, 255, 255, 0.1); transition: .4s; border-radius: 24px; }
@@ -121,7 +125,12 @@
         <div id="cloakInputs">
             <input type="text" id="customTitle" class="cloak-field" placeholder="Tab Name">
             <input type="text" id="customFavicon" class="cloak-field" placeholder="Favicon URL">
-            <button onclick="setTab()" class="ui-btn">Update Tab</button>
+            <div class="preset-row">
+                <button class="preset-btn" onclick="applyPreset('Google', 'https://www.google.com/favicon.ico')">Google</button>
+                <button class="preset-btn" onclick="applyPreset('My Drive', 'https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png')">Drive</button>
+                <button class="preset-btn" onclick="applyPreset('Classes', 'https://www.gstatic.com/classroom/favicon.png')">Classroom</button>
+            </div>
+            <button onclick="setTab()" class="ui-btn" style="margin-top: 5px;">Update Tab</button>
         </div>
 
         <button class="ui-btn" onclick="toggleThemeMenu()">Change Theme</button>
@@ -175,15 +184,24 @@
             }
         });
 
-        // FORCE REPLACE FAVICON LOGIC
         function updateFavicon(url) {
-            let link = document.querySelector("link[rel~='icon']");
+            let link = document.querySelector("link[rel*='icon']");
             if (!link) {
                 link = document.createElement('link');
                 link.rel = 'icon';
                 document.head.appendChild(link);
             }
             link.href = url;
+            // Force browser to refresh icon by removing and re-adding
+            const parent = link.parentNode;
+            parent.removeChild(link);
+            parent.appendChild(link);
+        }
+
+        function applyPreset(name, icon) {
+            document.getElementById('customTitle').value = name;
+            document.getElementById('customFavicon').value = icon;
+            setTab();
         }
 
         function setTab() {
