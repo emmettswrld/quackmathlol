@@ -164,23 +164,19 @@
     const search = document.getElementById('search');
     const countBadge = document.getElementById('gameCount');
     const cloakToggle = document.getElementById('cloakToggle');
-    const cloakOptions = document.getElementById('cloakOptions');
     
     const originalTitle = "Quackmath";
     const originalFavicon = "https://ik.imagekit.io/quackmath/goose%20(1).png";
     
-    // Updated Blocklist with 'cl' and '.html'
-    const blockList = ['cl', '.html', 'new website', 'howo.pages.dev', 'itafricagroup', 'leeschoolsk12', 'frogiesarcade', 'bostoncareercounselor', 'travelpage.biz', 'neo-space.space', 'dj-jam.be', 'cloe.', 'adaptor.', 'berkatdoa', 'cbu.net', 'geographyles', 'i5.ca', 'forms.gle', 'discord.gg', 'report abuse', 'learn more'];
+    // PRECISION FILTER: Only block exact matches for junk links
+    const blockList = ['new website', 'howo.pages.dev', 'itafricagroup', 'leeschoolsk12', 'frogiesarcade', 'bostoncareercounselor', 'travelpage.biz', 'neo-space.space', 'dj-jam.be', 'cloe.', 'adaptor.', 'berkatdoa', 'cbu.net', 'geographyles', 'i5.ca', 'forms.gle', 'discord.gg', 'report abuse', 'learn more'];
 
     function toggleUpdateModal() {
         const modal = document.getElementById('updateModal');
         const content = document.getElementById('updateModalContent');
         if (modal.style.display === 'none') {
             modal.style.display = 'flex';
-            setTimeout(() => {
-                modal.style.opacity = '1';
-                content.style.transform = 'scale(1)';
-            }, 10);
+            setTimeout(() => { modal.style.opacity = '1'; content.style.transform = 'scale(1)'; }, 10);
         } else {
             modal.style.opacity = '0';
             content.style.transform = 'scale(0.8)';
@@ -188,7 +184,6 @@
         }
     }
 
-    // --- CLOAK LOGIC ---
     function updateTitle() {
         const val = document.getElementById('customTitleInput').value.trim() || "Google";
         localStorage.setItem('customCloakTitle', val);
@@ -199,7 +194,6 @@
         let val = document.getElementById('customFaviconInput').value.trim().toLowerCase() || "google.com";
         let domain = val.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split('/')[0];
         const finalIconUrl = `https://www.google.com/s2/favicons?sz=128&domain=${domain}`;
-        
         localStorage.setItem('customCloakIcon', finalIconUrl);
         if (cloakToggle.checked) document.getElementById('favicon').href = finalIconUrl;
     }
@@ -207,7 +201,7 @@
     cloakToggle.addEventListener('change', () => {
         const isEnabled = cloakToggle.checked;
         localStorage.setItem('quackCloak', isEnabled);
-        cloakOptions.style.display = isEnabled ? 'flex' : 'none';
+        document.getElementById('cloakOptions').style.display = isEnabled ? 'flex' : 'none';
         if (isEnabled) {
             document.title = localStorage.getItem('customCloakTitle') || "Google";
             document.getElementById('favicon').href = localStorage.getItem('customCloakIcon') || "https://www.google.com/s2/favicons?sz=128&domain=google.com";
@@ -217,7 +211,6 @@
         }
     });
 
-    // --- GAME LIST LOGIC ---
     let games = [];
     fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub')
         .then(r => r.text())
@@ -227,6 +220,7 @@
             links.forEach(link => {
                 let name = link.innerText.trim();
                 let url = link.href.toLowerCase();
+                // Filter only junk links, allowed .html and cl content
                 if (blockList.some(term => url.includes(term) || name.toLowerCase().includes(term))) return;
                 if (name.length > 2) games.push({ name: name, url: link.href });
             });
@@ -250,9 +244,8 @@
     window.onload = () => {
         const isCloaked = localStorage.getItem('quackCloak') === 'true';
         cloakToggle.checked = isCloaked;
-        document.getElementById('customTitleInput').value = localStorage.getItem('customCloakTitle') || "";
         if (isCloaked) {
-            cloakOptions.style.display = 'flex';
+            document.getElementById('cloakOptions').style.display = 'flex';
             document.title = localStorage.getItem('customCloakTitle') || "Google";
             document.getElementById('favicon').href = localStorage.getItem('customCloakIcon') || "https://www.google.com/s2/favicons?sz=128&domain=google.com";
         }
