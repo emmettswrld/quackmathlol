@@ -49,7 +49,7 @@
         body.theme-ruby { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(224, 17, 95, 0.15), transparent 40%), radial-gradient(circle at 80% 70%, rgba(128, 0, 0, 0.2), transparent 45%); --accent-color: #e0115f; }
         body.theme-electric { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(125, 249, 255, 0.15), transparent 40%), radial-gradient(circle at 80% 70%, rgba(0, 0, 255, 0.15), transparent 45%); --accent-color: #7df9ff; }
         body.theme-plasma { --bg-gradient: radial-gradient(circle at 50% 50%, rgba(255, 0, 255, 0.1), rgba(0, 0, 255, 0.1), transparent 70%); --accent-color: #ff00ff; }
-        body.theme-blood { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(138, 3, 3, 0.2), transparent 40%), radial-gradient(circle at 80% 70%, rgba(0, 0, 0, 0.4), transparent 45%); --accent-color: #8a0303; }
+        body.theme-blood { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(138, 3, 3, 0.2), transparent 40%), radial-gradient(circle at 80% 70%, rgba(0, 0,  black, 0.4), transparent 45%); --accent-color: #8a0303; }
         body.theme-solar { --bg-gradient: radial-gradient(circle at 50% 50%, rgba(255, 140, 0, 0.2), rgba(255, 69, 0, 0.1), transparent 70%); --accent-color: #ff8c00; }
         body.theme-deepsea { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(0, 0, 139, 0.2), transparent 40%), radial-gradient(circle at 80% 70%, rgba(0, 8, 20, 0.5), transparent 45%); --accent-color: #00008b; }
         body.theme-matrix { --bg-gradient: radial-gradient(circle at 50% 50%, rgba(0, 255, 0, 0.05), transparent 60%); --accent-color: #00ff00; }
@@ -78,9 +78,17 @@
             width: 100%; background: rgba(255, 255, 255, 0.05); border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding: 10px 20px; display: flex; justify-content: center; align-items: center;
             font-size: 0.85rem; color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); z-index: 1001; position: relative;
+            transition: opacity 0.4s ease, transform 0.4s ease;
         }
 
         #announcementBanner b { cursor: pointer; text-decoration: underline; color: #fff; margin-left: 5px; }
+
+        .dismiss-btn {
+            position: absolute; right: 20px; background: rgba(255, 255, 255, 0.1);
+            border: none; color: white; padding: 4px 10px; border-radius: 6px;
+            cursor: pointer; font-size: 0.7rem; font-weight: 700; transition: 0.2s;
+        }
+        .dismiss-btn:hover { background: rgba(255, 255, 255, 0.2); }
 
         .cloak-container { position: absolute; top: 60px; right: 20px; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; z-index: 100; }
         
@@ -188,6 +196,7 @@
 
     <div id="announcementBanner">
         <span>New update- Links, new themes, 100+ new games, new disguise system, and more <b onclick="toggleModal('updateModal')">Learn more</b></span>
+        <button class="dismiss-btn" onclick="dismissBanner()">Dismiss</button>
     </div>
 
     <div id="updateModal" class="modal-overlay">
@@ -275,7 +284,7 @@
 
     <div class="container">
         <img src="https://ik.imagekit.io/quackmath/goose%20(1).png" class="logo">
-        <h1>Quackmath <span id="gameCount" class="count-badge">0</span></h1>
+        <h1>Quackmath <span id="gameCount" class="count-badge">0 games</span></h1>
         <input type="text" id="search" placeholder="Search games...">
         <ul id="gameList"></ul>
     </div>
@@ -285,6 +294,16 @@
     </footer>
 
     <script>
+        // Dismiss functionality
+        function dismissBanner() {
+            const banner = document.getElementById('announcementBanner');
+            banner.style.opacity = '0';
+            banner.style.transform = 'translateY(-100%)';
+            setTimeout(() => {
+                banner.style.display = 'none';
+            }, 400);
+        }
+
         function toggleModal(id) {
             const modal = document.getElementById(id);
             if (modal.classList.contains('active')) {
@@ -375,7 +394,7 @@
                 li.appendChild(a); list.appendChild(li);
                 count++;
             });
-            document.getElementById('gameCount').innerText = count;
+            document.getElementById('gameCount').innerText = count + " games";
         }
 
         const savedTheme = localStorage.getItem('quackTheme');
