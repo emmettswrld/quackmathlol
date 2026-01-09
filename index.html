@@ -65,12 +65,11 @@
 
         .cloak-container { position: absolute; top: 60px; right: 20px; display: flex; flex-direction: column; align-items: flex-end; gap: 8px; z-index: 100; }
         
-        /* Fixed Button Spacing */
         .ui-btn {
             background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1);
             color: rgba(255, 255, 255, 0.7); padding: 8px 12px; border-radius: 10px;
             font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: 0.2s;
-            backdrop-filter: blur(5px); min-width: 130px; text-align: center; /* Centered text */
+            backdrop-filter: blur(5px); min-width: 130px; text-align: center;
         }
         .ui-btn:hover { background: rgba(255, 255, 255, 0.12); color: white; }
 
@@ -93,7 +92,10 @@
         a { display: block; padding: 1rem; border-radius: 12px; text-decoration: none; color: white; background: rgba(255, 255, 255, 0.06); transition: 0.2s; border: 1px solid rgba(255,255,255,0.05); text-align: center; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         a:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
 
+        /* Expanded Cloak Inputs */
         #cloakInputs { display: none; flex-direction: column; gap: 10px; background: rgba(15, 15, 15, 0.95); padding: 15px; border-radius: 12px; border: 1px solid rgba(255, 255, 255, 0.1); width: 220px; margin-bottom: 5px; }
+        .cloak-field { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:10px; color:white; border-radius:8px; font-size:0.8rem; outline: none; }
+        
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
         .slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: rgba(255, 255, 255, 0.1); transition: .4s; border-radius: 24px; }
@@ -118,7 +120,8 @@
         </div>
         
         <div id="cloakInputs">
-            <input type="text" id="customTitle" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.1); padding:10px; color:white; border-radius:8px; font-size:0.8rem; outline: none;" placeholder="Tab Name">
+            <input type="text" id="customTitle" class="cloak-field" placeholder="Tab Name">
+            <input type="text" id="customFavicon" class="cloak-field" placeholder="Favicon URL">
             <button onclick="setTab()" class="ui-btn">Update Tab</button>
         </div>
 
@@ -167,13 +170,17 @@
         document.getElementById('cloakToggle').addEventListener('change', (e) => {
             const active = e.target.checked;
             document.getElementById('cloakInputs').style.display = active ? 'flex' : 'none';
-            if(!active) { document.title = "Quackmath"; document.getElementById('favicon').href = "https://ik.imagekit.io/quackmath/goose%20(1).png"; }
+            if(!active) { 
+                document.title = "Quackmath"; 
+                document.getElementById('favicon').href = "https://ik.imagekit.io/quackmath/goose%20(1).png"; 
+            }
         });
 
         function setTab() {
             const title = document.getElementById('customTitle').value;
+            const icon = document.getElementById('customFavicon').value;
             if(title) document.title = title;
-            document.getElementById('favicon').href = "https://www.google.com/favicon.ico";
+            if(icon) document.getElementById('favicon').href = icon;
         }
 
         document.getElementById('search').addEventListener('keyup', (e) => {
