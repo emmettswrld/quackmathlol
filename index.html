@@ -34,7 +34,6 @@
         }
         @keyframes floatBG { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-2%, -2%); } }
 
-        /* --- CLEAN SCROLLBAR STYLES --- */
         ul::-webkit-scrollbar, 
         .scroll-area::-webkit-scrollbar {
             width: 5px;
@@ -57,7 +56,6 @@
             background: rgba(255, 255, 255, 0.25);
         }
 
-        /* --- BANNER & CLOAK --- */
         #announcementBanner {
             width: 100%;
             background: rgba(255, 255, 255, 0.05);
@@ -87,7 +85,6 @@
             cursor: pointer;
             font-weight: 600;
         }
-        .dismiss-btn:hover { background: rgba(255,255,255,0.2); }
 
         .cloak-container {
             position: absolute;
@@ -155,7 +152,6 @@
         input:checked + .slider { background-color: #2ecc71; }
         input:checked + .slider:before { transform: translateX(20px); }
 
-        /* --- LAYOUT --- */
         .container { 
             width: 100%; max-width: 520px; padding: 2rem 1.25rem; 
             display: flex; flex-direction: column; align-items: center; gap: 1.25rem;
@@ -242,7 +238,7 @@
                     <span>Favicon URL</span>
                     <button class="cloak-set-btn" onclick="setCustomFavicon()">SET</button>
                 </div>
-                <input type="text" id="customFaviconInput" class="cloak-box" placeholder="google.com">
+                <input type="text" id="customFaviconInput" class="cloak-box" placeholder="classroom.google.com">
             </div>
         </div>
     </div>
@@ -340,13 +336,11 @@
         cloakContainer.style.top = '60px';
     }
 
-    // Default to visible on every refresh
     showBanner();
 
     const originalTitle = "Quackmath";
     const originalFavicon = "https://ik.imagekit.io/quackmath/goose%20(1).png";
     
-    // Custom Set Functions
     function setCustomTitle() {
         const val = document.getElementById('customTitleInput').value.trim() || "Google";
         localStorage.setItem('customCloakTitle', val);
@@ -355,7 +349,7 @@
 
     function setCustomFavicon() {
         let val = document.getElementById('customFaviconInput').value.trim().toLowerCase() || "google.com";
-        // Convert plain domain to favicon URL
+        // Handles subdomains by cleaning only the protocol and trailing slashes
         let domain = val.replace(/^(?:https?:\/\/)?(?:www\.)?/i, "").split('/')[0];
         const finalUrl = `https://www.google.com/s2/favicons?sz=128&domain=${domain}`;
         localStorage.setItem('customCloakFavicon', finalUrl);
@@ -364,10 +358,8 @@
 
     function applyCloak(isCloaked) {
         cloakInputs.style.display = isCloaked ? 'flex' : 'none';
-        
         const savedTitle = localStorage.getItem('customCloakTitle') || "Clever | Portal";
         const savedFavicon = localStorage.getItem('customCloakFavicon') || "https://ik.imagekit.io/quackmath/images__1_-removebg-preview.png";
-
         document.title = isCloaked ? savedTitle : originalTitle;
         document.getElementById('favicon').href = isCloaked ? savedFavicon : originalFavicon;
         localStorage.setItem('quackCloak', isCloaked);
@@ -375,7 +367,6 @@
 
     document.getElementById('cloakToggle').addEventListener('change', (e) => applyCloak(e.target.checked));
     
-    // Initial Cloak Load
     const savedCloak = localStorage.getItem('quackCloak') === 'true';
     document.getElementById('cloakToggle').checked = savedCloak;
     applyCloak(savedCloak);
@@ -397,7 +388,6 @@
                 if (name.toLowerCase().includes('ruffle.html')) break;
 
                 if (name.length > 2) {
-                    // Logic to trim cl( ... ) and .html
                     let cleanName = name;
                     if (cleanName.toLowerCase().startsWith('cl(') && cleanName.toLowerCase().endsWith(').html')) {
                         cleanName = cleanName.slice(3, -6);
