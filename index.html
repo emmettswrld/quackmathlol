@@ -29,7 +29,7 @@
             --accent-color: #2ecc71;
         }
 
-        /* ALL THEMES */
+        /* THEMES */
         body.theme-emerald { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(46, 204, 113, 0.15), transparent 40%), radial-gradient(circle at 80% 70%, rgba(0, 255, 100, 0.05), transparent 45%); --accent-color: #2ecc71; }
         body.theme-rose { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(255, 0, 150, 0.12), transparent 40%), radial-gradient(circle at 80% 70%, rgba(142, 68, 173, 0.1), transparent 45%); --accent-color: #e91e63; }
         body.theme-amber { --bg-gradient: radial-gradient(circle at 20% 30%, rgba(243, 156, 18, 0.15), transparent 40%), radial-gradient(circle at 80% 70%, rgba(211, 84, 0, 0.1), transparent 45%); --accent-color: #f39c12; }
@@ -145,14 +145,13 @@
         input:checked + .slider:before { transform: translateX(20px); }
 
         footer { width: 100%; padding: 20px; text-align: center; font-size: 0.85rem; color: rgba(255, 255, 255, 0.4); }
-        .more-links-footer { color: rgba(255, 255, 255, 0.6); text-decoration: underline; cursor: pointer; background: none; border: none; font-size: 0.85rem; }
         .modal-btn { width: 100%; padding: 12px; border-radius: 12px; border: none; background: var(--accent-color); color: #000; font-weight: 700; cursor: pointer; transition: 0.3s; margin-top: 10px; }
     </style>
 </head>
 <body>
 
     <div id="announcementBanner">
-        <span>Testing <b onclick="toggleModal('updateModal')" style="cursor:pointer; text-decoration:underline; color:#fff;">Learn more</b></span>
+        <span>New update: New settings menu, some new games, 10 new themes, and more <b onclick="toggleModal('updateModal')" style="cursor:pointer; text-decoration:underline; color:#fff;">Learn more</b></span>
         <button class="dismiss-btn" onclick="dismissBanner()">Dismiss</button>
     </div>
 
@@ -166,6 +165,7 @@
         <div class="modal-content">
             <button class="close-x" onclick="saveAndClose()">×</button>
             <h2 style="color:var(--accent-color);">Settings</h2>
+            
             <div class="settings-section">
                 <span class="settings-label">Tab Cloak</span>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
@@ -186,11 +186,13 @@
                     <button onclick="setTab()" class="modal-btn" style="padding:8px; font-size:0.8rem;">Update Tab</button>
                 </div>
             </div>
+
             <div class="settings-section">
                 <span class="settings-label">Panic Button</span>
                 <input type="text" id="panicUrl" class="setting-input" placeholder="Redirect URL">
                 <input type="text" id="panicKey" class="setting-input" placeholder="Panic Key">
             </div>
+
             <div class="settings-section">
                 <span class="settings-label">Themes</span>
                 <div id="settingsThemeList">
@@ -238,20 +240,8 @@
     <div id="updateModal" class="modal-overlay">
         <div class="modal-content">
             <button class="close-x" onclick="toggleModal('updateModal')">×</button>
-            <h2 style="color:var(--accent-color);">Downtime Update</h2>
-            <p style="color:rgba(255,255,255,0.7);">We are aware of the website being down on some devices. -The Quackmath Team</p>
-        </div>
-    </div>
-
-    <div id="linksModal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="close-x" onclick="toggleModal('linksModal')">×</button>
-            <h2 style="color:var(--accent-color);">Other Links</h2>
-            <ul style="max-height: 50vh; list-style: none; padding: 0;">
-                <li><a href="https://discord.gg/quackmath" target="_blank">Discord Server</a></li>
-                <li><a href="https://github.com/quackmath" target="_blank">GitHub Repo</a></li>
-                <li><a href="https://forms.gle/feedback" target="_blank">Request a Game</a></li>
-            </ul>
+            <h2 style="color:var(--accent-color);">Latest Update</h2>
+            <p style="color:rgba(255,255,255,0.7);">We added many things in this update including: New games and themes, new settings menu, bug fixes, and more. We are currently working on a proxy, an AI, and more. -The Quackmath Team</p>
         </div>
     </div>
 
@@ -262,9 +252,7 @@
         <ul id="gameList"></ul>
     </div>
 
-    <footer>
-        Made with ♡ by Quackmath - <button class="more-links-footer" onclick="toggleModal('linksModal')">More Links</button>
-    </footer>
+    <footer>Made with ♡ by Quackmath</footer>
 
     <script>
         let panicKey = localStorage.getItem('panicKey') || '';
@@ -346,9 +334,17 @@
             
             doc.querySelectorAll('a').forEach(g => {
                 let name = g.innerText.trim();
+                
+                // Cleanup logic
                 if (["report abuse", "learn more", "new website"].some(w => name.toLowerCase().includes(w)) || name === "") return;
                 
-                if (name.toLowerCase().endsWith(".html")) name = name.slice(0, -5);
+                // Remove .html suffix
+                if (name.toLowerCase().endsWith(".html")) {
+                    name = name.slice(0, -5);
+                }
+                
+                // Remove prefixes (cl, g, etc.) followed by a space or hyphen
+                // This regex handles "cl game", "cl-game", "clgame" etc.
                 name = name.replace(/^(cl|g|v|p|m)[-\s]?/i, "");
                 
                 const li = document.createElement('li');
