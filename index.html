@@ -74,12 +74,12 @@
         ul::-webkit-scrollbar-thumb, #themeMenu::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
         ul:hover::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); }
 
-#announcementBanner {
-    width: 100%; background: rgba(220, 38, 38, 0.95); border-bottom: 1px solid rgba(255, 255, 255, 0.2);
-    padding: 10px 20px; display: flex; justify-content: center; align-items: center;
-    font-size: 0.85rem; color: rgba(255, 255, 255, 1); backdrop-filter: blur(10px); z-index: 1001; position: relative;
-    transition: opacity 0.4s ease, transform 0.4s ease;
-}
+        #announcementBanner {
+            width: 100%; background: rgba(255, 255, 255, 0.05); border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 10px 20px; display: flex; justify-content: center; align-items: center;
+            font-size: 0.85rem; color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); z-index: 1001; position: relative;
+            transition: opacity 0.4s ease, transform 0.4s ease;
+        }
 
         #announcementBanner b { cursor: pointer; text-decoration: underline; color: #fff; margin-left: 5px; }
 
@@ -195,7 +195,7 @@
 <body>
 
     <div id="announcementBanner">
-        <span>Servers down on some devices <b onclick="toggleModal('updateModal')">Learn more</b></span>
+        <span>Testing <b onclick="toggleModal('updateModal')">Learn more</b></span>
         <button class="dismiss-btn" onclick="dismissBanner()">Dismiss</button>
     </div>
 
