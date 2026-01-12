@@ -1,4 +1,4 @@
-v<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -145,6 +145,7 @@ v<!DOCTYPE html>
         input:checked + .slider:before { transform: translateX(20px); }
 
         footer { width: 100%; padding: 20px; text-align: center; font-size: 0.85rem; color: rgba(255, 255, 255, 0.4); }
+        .more-links-footer { color: rgba(255, 255, 255, 0.6); text-decoration: underline; cursor: pointer; background: none; border: none; font-size: 0.85rem; margin-left: 5px; }
         .modal-btn { width: 100%; padding: 12px; border-radius: 12px; border: none; background: var(--accent-color); color: #000; font-weight: 700; cursor: pointer; transition: 0.3s; margin-top: 10px; }
     </style>
 </head>
@@ -165,7 +166,6 @@ v<!DOCTYPE html>
         <div class="modal-content">
             <button class="close-x" onclick="saveAndClose()">×</button>
             <h2 style="color:var(--accent-color);">Settings</h2>
-            
             <div class="settings-section">
                 <span class="settings-label">Tab Cloak</span>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
@@ -186,13 +186,11 @@ v<!DOCTYPE html>
                     <button onclick="setTab()" class="modal-btn" style="padding:8px; font-size:0.8rem;">Update Tab</button>
                 </div>
             </div>
-
             <div class="settings-section">
                 <span class="settings-label">Panic Button</span>
                 <input type="text" id="panicUrl" class="setting-input" placeholder="Redirect URL">
                 <input type="text" id="panicKey" class="setting-input" placeholder="Panic Key">
             </div>
-
             <div class="settings-section">
                 <span class="settings-label">Themes</span>
                 <div id="settingsThemeList">
@@ -245,6 +243,20 @@ v<!DOCTYPE html>
         </div>
     </div>
 
+    <div id="linksModal" class="modal-overlay">
+        <div class="modal-content">
+            <button class="close-x" onclick="toggleModal('linksModal')">×</button>
+            <h2 style="color:var(--accent-color);">More Links</h2>
+            <ul style="max-height: 50vh; list-style: none; padding: 0; margin-top: 15px;">
+                <li><a href="https://Quackmath.vercel.app" target="_blank">Quackmath</a></li>
+                <li><a href="https://quackenglish.vercel.app" target="_blank">Quackenglish</a></li>
+                <li><a href="https://quackhistory.vercel.app" target="_blank">Quackhistory</a></li>
+                <li><a href="https://quackscience.vercel.app" target="_blank">Quackscience</a></li>
+                <li><a href="https://quackfitness.vercel.app" target="_blank">Quackfitness</a></li>
+            </ul>
+        </div>
+    </div>
+
     <div class="container">
         <img src="https://ik.imagekit.io/quackmath/goose%20(1).png" class="logo">
         <h1>Quackmath <span id="gameCount" class="count-badge">0 games</span></h1>
@@ -252,7 +264,9 @@ v<!DOCTYPE html>
         <ul id="gameList"></ul>
     </div>
 
-    <footer>Made with ♡ by Quackmath</footer>
+    <footer>
+        Made with ♡ by Quackmath - <button class="more-links-footer" onclick="toggleModal('linksModal')">More Links</button>
+    </footer>
 
     <script>
         let panicKey = localStorage.getItem('panicKey') || '';
@@ -334,17 +348,9 @@ v<!DOCTYPE html>
             
             doc.querySelectorAll('a').forEach(g => {
                 let name = g.innerText.trim();
-                
-                // Cleanup logic
                 if (["report abuse", "learn more", "new website"].some(w => name.toLowerCase().includes(w)) || name === "") return;
                 
-                // Remove .html suffix
-                if (name.toLowerCase().endsWith(".html")) {
-                    name = name.slice(0, -5);
-                }
-                
-                // Remove prefixes (cl, g, etc.) followed by a space or hyphen
-                // This regex handles "cl game", "cl-game", "clgame" etc.
+                if (name.toLowerCase().endsWith(".html")) name = name.slice(0, -5);
                 name = name.replace(/^(cl|g|v|p|m)[-\s]?/i, "");
                 
                 const li = document.createElement('li');
