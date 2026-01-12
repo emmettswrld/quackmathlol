@@ -1,4 +1,4 @@
-v<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -69,33 +69,38 @@ v<!DOCTYPE html>
 
         @keyframes floatBG { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-2%, -2%); } }
 
-        /* SCROLLBARS */
-        * { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.1) transparent; }
-        ::-webkit-scrollbar { width: 4px; height: 0px; }
-        ::-webkit-scrollbar-track { background: transparent; }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        ul::-webkit-scrollbar { width: 4px; }
+        ul::-webkit-scrollbar-track { background: transparent; }
+        ul::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.1); border-radius: 10px; }
+        ul:hover::-webkit-scrollbar-thumb { background: rgba(255, 255, 255, 0.3); }
 
         #announcementBanner {
             width: 100%; background: rgba(255, 255, 255, 0.05); border-bottom: 1px solid rgba(255, 255, 255, 0.1);
             padding: 10px 20px; display: flex; justify-content: center; align-items: center;
             font-size: 0.85rem; color: rgba(255, 255, 255, 0.8); backdrop-filter: blur(10px); z-index: 1001; position: relative;
+            transition: opacity 0.4s ease, transform 0.4s ease;
         }
+
+        #announcementBanner b { cursor: pointer; text-decoration: underline; color: #fff; margin-left: 5px; }
 
         .dismiss-btn {
             position: absolute; right: 20px; background: rgba(255, 255, 255, 0.1);
-            border: none; color: white; padding: 4px 10px; border-radius: 6px; cursor: pointer; font-size: 0.7rem;
+            border: none; color: white; padding: 4px 10px; border-radius: 6px;
+            cursor: pointer; font-size: 0.7rem; font-weight: 700; transition: 0.2s;
         }
+        .dismiss-btn:hover { background: rgba(255, 255, 255, 0.2); }
 
-        .nav-container { position: absolute; top: 60px; right: 20px; z-index: 100; }
+        .nav-container { position: absolute; top: 60px; right: 20px; display: flex; align-items: center; gap: 10px; z-index: 100; }
         
         .ui-btn {
             background: rgba(255, 255, 255, 0.06); border: 1px solid rgba(255, 255, 255, 0.1);
-            color: rgba(255, 255, 255, 0.7); padding: 10px; border-radius: 12px;
-            cursor: pointer; transition: 0.2s; backdrop-filter: blur(5px);
+            color: rgba(255, 255, 255, 0.7); padding: 8px 12px; border-radius: 10px;
+            font-size: 0.75rem; font-weight: 600; cursor: pointer; transition: 0.2s;
+            backdrop-filter: blur(5px); min-width: 40px; text-align: center;
             display: flex; align-items: center; justify-content: center;
         }
-        .ui-btn:hover { background: rgba(255, 255, 255, 0.12); color: white; transform: rotate(5deg); }
-        .ui-btn svg { width: 20px; height: 20px; fill: currentColor; }
+        .ui-btn:hover { background: rgba(255, 255, 255, 0.12); color: white; }
+        .ui-btn svg { width: 16px; height: 16px; fill: currentColor; }
 
         .container { width: 100%; max-width: 520px; padding: 2rem 1.25rem; flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
         .logo { width: 80px; filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.25)); }
@@ -105,37 +110,8 @@ v<!DOCTYPE html>
         #search { width: 100%; padding: 0.85rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255, 255, 255, 0.08); color: white; text-align: center; outline: none; margin-bottom: 20px; }
         
         ul { width: 100%; list-style: none; display: flex; flex-direction: column; gap: 0.7rem; max-height: 40vh; overflow-y: auto; overflow-x: hidden; padding-right: 8px; }
-        a { display: block; padding: 1rem; border-radius: 12px; text-decoration: none; color: white; background: rgba(255, 255, 255, 0.06); transition: 0.2s; border: 1px solid rgba(255,255,255,0.05); text-align: center; font-weight: 600; }
+        a { display: block; padding: 1rem; border-radius: 12px; text-decoration: none; color: white; background: rgba(255, 255, 255, 0.06); transition: 0.2s; border: 1px solid rgba(255,255,255,0.05); text-align: center; font-weight: 600; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
         a:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
-
-        .modal-overlay {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px);
-            z-index: 2000; justify-content: center; align-items: center; opacity: 0; transition: 0.3s;
-        }
-        .modal-overlay.active { display: flex; opacity: 1; }
-        .modal-content {
-            position: relative; background: rgba(15, 15, 15, 0.95); border: 1px solid rgba(255, 255, 255, 0.1);
-            padding: 40px 30px 30px; border-radius: 24px; max-width: 420px; width: 90%;
-            text-align: center; transform: scale(0.9); transition: 0.3s;
-            max-height: 85vh; overflow-y: auto; overflow-x: hidden;
-        }
-        .modal-overlay.active .modal-content { transform: scale(1); }
-        
-        .close-x {
-            position: absolute; top: 15px; right: 15px; background: none; border: none;
-            color: rgba(255,255,255,0.3); font-size: 24px; cursor: pointer; transition: 0.2s;
-            line-height: 1; padding: 5px;
-        }
-        .close-x:hover { color: white; transform: scale(1.1); }
-
-        .settings-section { margin-bottom: 25px; text-align: left; }
-        .settings-label { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 10px; display: block; }
-        .setting-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 10px; color: white; border-radius: 8px; margin-bottom: 8px; outline: none; }
-        
-        #settingsThemeList { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; max-height: 200px; overflow-y: auto; }
-        .theme-opt { padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px; font-size: 0.75rem; cursor: pointer; transition: 0.2s; border: 1px solid transparent; }
-        .theme-opt:hover { background: rgba(255,255,255,0.1); border-color: var(--accent-color); }
 
         .switch { position: relative; display: inline-block; width: 44px; height: 24px; }
         .switch input { opacity: 0; width: 0; height: 0; }
@@ -144,32 +120,89 @@ v<!DOCTYPE html>
         input:checked + .slider { background-color: var(--accent-color); }
         input:checked + .slider:before { transform: translateX(20px); }
 
-        footer { width: 100%; padding: 20px; text-align: center; font-size: 0.85rem; color: rgba(255, 255, 255, 0.4); }
-        .modal-btn { width: 100%; padding: 12px; border-radius: 12px; border: none; background: var(--accent-color); color: #000; font-weight: 700; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+        /* MODAL ANIMATED STYLES */
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0); backdrop-filter: blur(0px);
+            z-index: 2000; justify-content: center; align-items: center;
+            transition: all 0.3s ease;
+        }
+        .modal-overlay.active {
+            display: flex; background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(8px);
+        }
+        .modal-content {
+            background: rgba(20, 20, 20, 0.95); border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 30px; border-radius: 24px; max-width: 400px; width: 90%;
+            text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            transform: scale(0.9) translateY(20px); opacity: 0;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            max-height: 85vh; overflow-y: auto;
+        }
+        .modal-overlay.active .modal-content {
+            transform: scale(1) translateY(0); opacity: 1;
+        }
+        .modal-content h2 { margin-bottom: 20px; font-weight: 700; color: var(--accent-color); font-size: 1.5rem; }
+        .modal-btn {
+            width: 100%; padding: 12px; border-radius: 12px; border: none;
+            background: var(--accent-color); color: #000; font-weight: 700;
+            cursor: pointer; transition: 0.3s; margin-top: 10px;
+        }
+        .modal-btn:hover { transform: translateY(-2px); box-shadow: 0 5px 15px var(--accent-color); }
+
+        /* SETTINGS SPECIFIC */
+        .settings-section { margin-bottom: 25px; text-align: left; }
+        .settings-label { font-size: 0.75rem; font-weight: 800; text-transform: uppercase; color: rgba(255,255,255,0.4); margin-bottom: 10px; display: block; }
+        .setting-input { width: 100%; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1); padding: 10px; color: white; border-radius: 8px; margin-bottom: 8px; outline: none; font-size: 0.85rem; }
+        
+        #settingsThemeList { display: grid; grid-template-columns: repeat(2, 1fr); gap: 6px; max-height: 180px; overflow-y: auto; padding-right: 5px; }
+        .theme-opt { padding: 10px; background: rgba(255,255,255,0.05); border-radius: 8px; font-size: 0.75rem; cursor: pointer; transition: 0.2s; border: 1px solid transparent; }
+        .theme-opt:hover { background: rgba(255,255,255,0.1); border-color: var(--accent-color); }
+
+        footer { width: 100%; padding: 20px; text-align: center; font-size: 0.85rem; color: rgba(255, 255, 255, 0.4); z-index: 10; }
+        .more-links-btn { background: none; border: none; color: rgba(255, 255, 255, 0.6); text-decoration: underline; cursor: pointer; font-size: 0.85rem; margin-left: 5px; }
+
+        .links-grid { display: flex; flex-direction: column; gap: 10px; }
+        .link-item { display: flex; align-items: center; justify-content: center; padding: 12px; border-radius: 12px; background: rgba(255, 255, 255, 0.05); border: 1px solid rgba(255, 255, 255, 0.1); color: white; text-decoration: none; font-weight: 600; font-size: 0.9rem; transition: 0.3s; }
+        .link-item:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--accent-color); }
     </style>
 </head>
 <body>
 
     <div id="announcementBanner">
-        <span>New update: New settings menu, some new games, 10 new themes, and more <b onclick="toggleModal('updateModal')" style="cursor:pointer; text-decoration:underline; color:#fff;">Learn more</b></span>
+        <span>Testing <b onclick="toggleModal('updateModal')">Learn more</b></span>
         <button class="dismiss-btn" onclick="dismissBanner()">Dismiss</button>
     </div>
 
-    <div class="nav-container">
-        <button class="ui-btn" onclick="toggleModal('settingsModal')">
-            <svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.81,11.69,4.81,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.5c-1.93,0-3.5-1.57-3.5-3.5 s1.57-3.5,3.5-3.5s3.5,1.57,3.5,3.5S13.93,15.5,12,15.5z"/></svg>
-        </button>
+    <div id="updateModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Latest Update</h2>
+            <p style="color:rgba(255,255,255,0.7); margin-bottom:20px;">We added new themes, new games, new settings menu, and more.</p>
+            <button class="modal-btn" onclick="toggleModal('updateModal')">Got it</button>
+        </div>
+    </div>
+
+    <div id="linksModal" class="modal-overlay">
+        <div class="modal-content">
+            <h2>Quackmath Links</h2>
+            <div class="links-grid">
+                <a href="https://quackmath.vercel.app" target="_blank" class="link-item">Quackmath (Main)</a>
+                <a href="https://quackscience.vercel.app" target="_blank" class="link-item">Quackscience</a>
+                <a href="https://quackhistory.vercel.app" target="_blank" class="link-item">Quackhistory</a>
+                <a href="https://quackenglish.vercel.app" target="_blank" class="link-item">Quackenglish</a>
+                <a href="https://quackfitness.vercel.app" target="_blank" class="link-item">Quackfitness</a>
+            </div>
+            <button class="modal-btn" onclick="toggleModal('linksModal')" style="background: rgba(255,255,255,0.1); color: white;">Close</button>
+        </div>
     </div>
 
     <div id="settingsModal" class="modal-overlay">
         <div class="modal-content">
-            <button class="close-x" onclick="saveAndClose()">×</button>
-            <h2 style="color:var(--accent-color);">Settings</h2>
+            <h2>Settings</h2>
             
             <div class="settings-section">
                 <span class="settings-label">Tab Cloak</span>
                 <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:12px;">
-                    <span style="font-size:0.85rem;">Enable Cloak</span>
+                    <span style="font-size:0.85rem; color:rgba(255,255,255,0.6);">Enable Cloaking</span>
                     <label class="switch">
                         <input type="checkbox" id="cloakToggle">
                         <span class="slider"></span>
@@ -178,23 +211,23 @@ v<!DOCTYPE html>
                 <div id="cloakInputs" style="display:none; flex-direction:column; gap:8px;">
                     <input type="text" id="customTitle" class="setting-input" placeholder="Tab Name">
                     <input type="text" id="customFavicon" class="setting-input" placeholder="Favicon URL">
-                    <div style="display:flex; gap:5px;">
-                        <button class="ui-btn" style="flex:1; font-size:0.65rem;" onclick="applyPreset('Google', 'https://www.google.com/favicon.ico')">Google</button>
-                        <button class="ui-btn" style="flex:1; font-size:0.65rem;" onclick="applyPreset('My Drive', 'https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png')">Drive</button>
-                        <button class="ui-btn" style="flex:1; font-size:0.65rem;" onclick="applyPreset('Classes', 'https://www.gstatic.com/classroom/favicon.png')">Classroom</button>
+                    <div style="display:flex; gap:5px; margin-bottom:5px;">
+                        <button class="ui-btn" style="flex:1;" onclick="applyPreset('Google', 'https://www.google.com/favicon.ico')">Google</button>
+                        <button class="ui-btn" style="flex:1;" onclick="applyPreset('My Drive', 'https://ssl.gstatic.com/docs/doclist/images/drive_2022q3_32dp.png')">Drive</button>
                     </div>
-                    <button onclick="setTab()" class="modal-btn" style="padding:8px; font-size:0.8rem;">Update Tab</button>
+                    <button onclick="setTab()" class="modal-btn" style="padding:8px; font-size:0.8rem;">Save Tab</button>
                 </div>
             </div>
 
             <div class="settings-section">
-                <span class="settings-label">Panic Button</span>
-                <input type="text" id="panicUrl" class="setting-input" placeholder="Redirect URL">
-                <input type="text" id="panicKey" class="setting-input" placeholder="Panic Key">
+                <span class="settings-label">Panic Key</span>
+                <input type="text" id="panicUrl" class="setting-input" placeholder="Redirect URL (e.g. google.com)">
+                <input type="text" id="panicKey" class="setting-input" placeholder="Panic Key (e.g. ` or Esc)">
+                <p style="font-size:0.65rem; color:rgba(255,255,255,0.3); text-align:center;">Instantly redirects when pressed.</p>
             </div>
 
             <div class="settings-section">
-                <span class="settings-label">Themes</span>
+                <span class="settings-label">Theme</span>
                 <div id="settingsThemeList">
                     <div class="theme-opt" onclick="setTheme('default')">🔵 Midnight</div>
                     <div class="theme-opt" onclick="setTheme('emerald')">🟢 Emerald</div>
@@ -203,46 +236,29 @@ v<!DOCTYPE html>
                     <div class="theme-opt" onclick="setTheme('crimson')">🔴 Crimson</div>
                     <div class="theme-opt" onclick="setTheme('nebula')">🍇 Nebula</div>
                     <div class="theme-opt" onclick="setTheme('cyber')">🤖 Cyber</div>
-                    <div class="theme-opt" onclick="setTheme('void')">⚪ Void</div>
-                    <div class="theme-opt" onclick="setTheme('forest')">🌲 Forest</div>
-                    <div class="theme-opt" onclick="setTheme('ocean')">🌊 Ocean</div>
-                    <div class="theme-opt" onclick="setTheme('sunset')">🌅 Sunset</div>
-                    <div class="theme-opt" onclick="setTheme('gold')">👑 Gold</div>
-                    <div class="theme-opt" onclick="setTheme('mint')">🍃 Mint</div>
-                    <div class="theme-opt" onclick="setTheme('lavender')">🔮 Lavender</div>
-                    <div class="theme-opt" onclick="setTheme('slate')">🌑 Slate</div>
                     <div class="theme-opt" onclick="setTheme('toxic')">☢️ Toxic</div>
-                    <div class="theme-opt" onclick="setTheme('ruby')">💎 Ruby</div>
-                    <div class="theme-opt" onclick="setTheme('electric')">⚡ Electric</div>
-                    <div class="theme-opt" onclick="setTheme('plasma')">⚛️ Plasma</div>
-                    <div class="theme-opt" onclick="setTheme('blood')">🩸 Blood</div>
-                    <div class="theme-opt" onclick="setTheme('solar')">☀️ Solar</div>
-                    <div class="theme-opt" onclick="setTheme('deepsea')">🐳 Deep Sea</div>
                     <div class="theme-opt" onclick="setTheme('matrix')">📟 Matrix</div>
-                    <div class="theme-opt" onclick="setTheme('coffee')">☕ Espresso</div>
-                    <div class="theme-opt" onclick="setTheme('nordic')">❄️ Nordic</div>
-                    <div class="theme-opt" onclick="setTheme('dracula')">🧛 Dracula</div>
-                    <div class="theme-opt" onclick="setTheme('sakura')">🌸 Sakura</div>
-                    <div class="theme-opt" onclick="setTheme('jungle')">🎋 Jungle</div>
-                    <div class="theme-opt" onclick="setTheme('hacker')">⌨️ Hacker</div>
-                    <div class="theme-opt" onclick="setTheme('royal')">🏰 Royal</div>
-                    <div class="theme-opt" onclick="setTheme('glacier')">🏔️ Glacier</div>
-                    <div class="theme-opt" onclick="setTheme('volcano')">🌋 Volcano</div>
-                    <div class="theme-opt" onclick="setTheme('space')">🌌 Space</div>
-                    <div class="theme-opt" onclick="setTheme('neon')">💖 Neon</div>
-                    <div class="theme-opt" onclick="setTheme('inferno')">🔥 Inferno</div>
                     <div class="theme-opt" onclick="setTheme('candy')">🍭 Candy</div>
                 </div>
             </div>
+
+            <div class="settings-section">
+                <span class="settings-label">Advanced</span>
+                <button class="ui-btn" style="width:100%;" onclick="clearQuackCache()">Clear Site Cache</button>
+            </div>
+
+            <button class="modal-btn" onclick="saveSettings()" style="background:rgba(255,255,255,0.1); color:white;">Close</button>
         </div>
     </div>
 
-    <div id="updateModal" class="modal-overlay">
-        <div class="modal-content">
-            <button class="close-x" onclick="toggleModal('updateModal')">×</button>
-            <h2 style="color:var(--accent-color);">Latest Update</h2>
-            <p style="color:rgba(255,255,255,0.7);">We added many things in this update including: New games and themes, new settings menu, bug fixes, and more. We are currently working on a proxy, an AI, and more. -The Quackmath Team</p>
-        </div>
+    <div class="nav-container">
+        <label class="switch" title="Quick Cloak">
+            <input type="checkbox" id="quickCloakToggle">
+            <span class="slider"></span>
+        </label>
+        <button class="ui-btn" onclick="toggleModal('settingsModal')" title="Settings">
+            <svg viewBox="0 0 24 24"><path d="M19.14,12.94c0.04-0.3,0.06-0.61,0.06-0.94c0-0.32-0.02-0.64-0.07-0.94l2.03-1.58c0.18-0.14,0.23-0.41,0.12-0.61 l-1.92-3.32c-0.12-0.22-0.37-0.29-0.59-0.22l-2.39,0.96c-0.5-0.38-1.03-0.7-1.62-0.94L14.4,2.81c-0.04-0.24-0.24-0.41-0.48-0.41 h-3.84c-0.24,0-0.43,0.17-0.47,0.41L9.25,5.35C8.66,5.59,8.12,5.92,7.63,6.29L5.24,5.33c-0.22-0.08-0.47,0-0.59,0.22L2.74,8.87 C2.62,9.08,2.66,9.34,2.86,9.48l2.03,1.58C4.84,11.36,4.81,11.69,4.81,12s0.02,0.64,0.07,0.94l-2.03,1.58 c-0.18,0.14-0.23,0.41-0.12,0.61l1.92,3.32c0.12,0.22,0.37,0.29,0.59,0.22l2.39-0.96c0.5,0.38,1.03,0.7,1.62,0.94l0.36,2.54 c0.05,0.24,0.24,0.41,0.48,0.41h3.84c0.24,0,0.44-0.17,0.47-0.41l0.36-2.54c0.59-0.24,1.13-0.56,1.62-0.94l2.39,0.96 c0.22,0.08,0.47,0,0.59-0.22l1.92-3.32c0.12-0.22,0.07-0.47-0.12-0.61L19.14,12.94z M12,15.5c-1.93,0-3.5-1.57-3.5-3.5 s1.57-3.5,3.5-3.5s3.5,1.57,3.5,3.5S13.93,15.5,12,15.5z"/></svg>
+        </button>
     </div>
 
     <div class="container">
@@ -252,24 +268,43 @@ v<!DOCTYPE html>
         <ul id="gameList"></ul>
     </div>
 
-    <footer>Made with ♡ by Quackmath</footer>
+    <footer>
+        Made with ♡ by Quackmath - <button class="more-links-btn" onclick="toggleModal('linksModal')">More Links</button>
+    </footer>
 
     <script>
+        // Tab & Panic Logic
         let panicKey = localStorage.getItem('panicKey') || '';
         let panicUrl = localStorage.getItem('panicUrl') || 'https://google.com';
 
         window.addEventListener('keydown', (e) => {
             if (panicKey && e.key === panicKey) {
-                window.location.href = panicUrl.startsWith('http') ? panicUrl : 'https://' + panicUrl;
+                let url = panicUrl;
+                if (!url.startsWith('http')) url = 'https://' + url;
+                window.location.href = url;
             }
         });
 
-        function saveAndClose() {
+        function saveSettings() {
             panicKey = document.getElementById('panicKey').value;
             panicUrl = document.getElementById('panicUrl').value;
             localStorage.setItem('panicKey', panicKey);
             localStorage.setItem('panicUrl', panicUrl);
             toggleModal('settingsModal');
+        }
+
+        function clearQuackCache() {
+            if(confirm("This will refresh the page and clear saved settings. Continue?")) {
+                localStorage.clear();
+                window.location.reload();
+            }
+        }
+
+        // Previous Functionality
+        function dismissBanner() {
+            const banner = document.getElementById('announcementBanner');
+            banner.style.opacity = '0'; banner.style.transform = 'translateY(-100%)';
+            setTimeout(() => { banner.style.display = 'none'; }, 400);
         }
 
         function toggleModal(id) {
@@ -289,8 +324,17 @@ v<!DOCTYPE html>
             localStorage.setItem('quackTheme', t);
         }
 
+        // Cloak Logic
         document.getElementById('cloakToggle').addEventListener('change', (e) => {
             document.getElementById('cloakInputs').style.display = e.target.checked ? 'flex' : 'none';
+        });
+
+        document.getElementById('quickCloakToggle').addEventListener('change', (e) => {
+            if(e.target.checked) setTab();
+            else {
+                document.title = "Quackmath";
+                updateFavicon("https://ik.imagekit.io/quackmath/goose%20(1).png");
+            }
         });
 
         function updateFavicon(url) {
@@ -308,19 +352,15 @@ v<!DOCTYPE html>
         function setTab() {
             const title = document.getElementById('customTitle').value;
             const icon = document.getElementById('customFavicon').value;
-            if(title) document.title = title;
-            if(icon) updateFavicon(icon);
+            if(title) { document.title = title; localStorage.setItem('cloakTitle', title); }
+            if(icon) { updateFavicon(icon); localStorage.setItem('cloakIcon', icon); }
         }
 
-        function dismissBanner() {
-            const b = document.getElementById('announcementBanner');
-            b.style.opacity = '0';
-            setTimeout(() => { b.style.display = 'none'; }, 400);
-        }
-
+        // Game Fetching
         document.getElementById('search').addEventListener('keyup', (e) => {
             const term = e.target.value.toLowerCase().trim();
-            document.querySelectorAll('#gameList li').forEach(li => {
+            const links = document.querySelectorAll('#gameList li');
+            links.forEach(li => {
                 li.style.display = li.innerText.toLowerCase().includes(term) ? "block" : "none";
             });
         });
@@ -330,23 +370,13 @@ v<!DOCTYPE html>
             const html = await r.text();
             const doc = new DOMParser().parseFromString(html, 'text/html');
             const list = document.getElementById('gameList');
+            const rawLinks = doc.querySelectorAll('a');
+            const exclude = ["report abuse", "learn more", "new website"];
             let count = 0; list.innerHTML = "";
-            
-            doc.querySelectorAll('a').forEach(g => {
+            rawLinks.forEach(g => {
                 let name = g.innerText.trim();
-                
-                // Cleanup logic
-                if (["report abuse", "learn more", "new website"].some(w => name.toLowerCase().includes(w)) || name === "") return;
-                
-                // Remove .html suffix
-                if (name.toLowerCase().endsWith(".html")) {
-                    name = name.slice(0, -5);
-                }
-                
-                // Remove prefixes (cl, g, etc.) followed by a space or hyphen
-                // This regex handles "cl game", "cl-game", "clgame" etc.
-                name = name.replace(/^(cl|g|v|p|m)[-\s]?/i, "");
-                
+                if (exclude.some(word => name.toLowerCase().includes(word)) || name === "") return;
+                if (name.toLowerCase().endsWith(".html")) name = name.slice(0, -5);
                 const li = document.createElement('li');
                 const a = document.createElement('a');
                 a.href = g.href; a.target = "_blank"; a.innerText = name;
@@ -356,6 +386,7 @@ v<!DOCTYPE html>
             document.getElementById('gameCount').innerText = count + " games";
         }
 
+        // Init
         const savedTheme = localStorage.getItem('quackTheme');
         if(savedTheme) setTheme(savedTheme);
         document.getElementById('panicKey').value = panicKey;
