@@ -30,7 +30,7 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* WELCOME SCREEN */
+        /* WELCOME SCREEN - EXACT SPACING */
         #welcomeScreen {
             position: fixed; inset: 0; display: flex; flex-direction: column; 
             align-items: center; justify-content: center; z-index: 3000; background: #000;
@@ -59,10 +59,11 @@
             animation: fadeInSlide 0.6s ease-out forwards;
         }
 
-        /* 4 COLUMN GRID */
+        /* HARD 4-COLUMN GRID */
         #gameList { 
             width: 100%; display: grid !important; 
-            grid-template-columns: repeat(4, 1fr) !important; 
+            grid-template-columns: 23.5% 23.5% 23.5% 23.5% !important; 
+            justify-content: space-between !important;
             gap: 15px; list-style: none; overflow-y: auto; flex-grow: 1; padding: 10px;
         }
 
@@ -76,12 +77,42 @@
             transition: all 0.3s ease;
         }
 
-        /* GLOW EFFECT ON GAME BUTTONS */
-        #gameList li a:hover { 
-            background: rgba(255, 255, 255, 0.1); 
+        /* GLOW EFFECTS */
+        #gameList li a:hover, .intro-btn:hover { 
             border-color: #ff9800; 
-            box-shadow: 0 0 15px rgba(255, 152, 0, 0.3);
+            box-shadow: 0 0 15px rgba(255, 152, 0, 0.4);
             transform: translateY(-3px); 
+        }
+
+        /* PROXY CENTERED */
+        #proxySection {
+            width: 100%; height: 80%; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; /* Centers the search bar vertically/horizontally */
+        }
+
+        #search, #proxySearch { 
+            width: 100%; max-width: 600px; padding: 18px; border-radius: 12px; 
+            background: #111; color: #fff; border: 1px solid #333; text-align: center; 
+            transition: all 0.3s ease; outline: none;
+        }
+        #search:focus, #proxySearch:focus {
+            border-color: #ff9800;
+            box-shadow: 0 0 20px rgba(255, 152, 0, 0.3);
+        }
+
+        .intro-btn { 
+            padding: 15px 45px; border: 2px solid #ff9800; background: none; 
+            color: #fff; border-radius: 10px; cursor: pointer; font-weight: 800; 
+            transition: all 0.3s ease;
+        }
+        .intro-btn:hover { background: #ff9800; color: #000; }
+
+        /* EXIT BUTTON */
+        .close-frame { 
+            position: fixed; bottom: 20px; right: 20px; z-index: 4001; 
+            padding: 8px 16px; background: #000; color: #fff; 
+            border: 1px solid #444; font-weight: 700; cursor: pointer; 
+            border-radius: 6px; font-size: 0.75rem; text-transform: uppercase;
         }
 
         .footnote { 
@@ -89,41 +120,8 @@
             color: rgba(255, 255, 255, 0.2); font-weight: 800; text-transform: uppercase; 
         }
 
-        /* PROXY SYSTEM */
         #proxyFrameContainer { display: none; position: fixed; inset: 0; background: #000; z-index: 4000; }
         #proxyFrame { width: 100%; height: 100%; border: none; }
-        
-        .close-frame { 
-            position: fixed; bottom: 20px; right: 20px; z-index: 4001; 
-            padding: 8px 16px; background: #000; color: #fff; 
-            border: 1px solid #444; font-weight: 700; cursor: pointer; 
-            border-radius: 6px; font-size: 0.75rem; text-transform: uppercase;
-            transition: all 0.3s ease;
-        }
-        .close-frame:hover { border-color: #ff9800; box-shadow: 0 0 10px rgba(255, 152, 0, 0.4); }
-
-        /* INPUT GLOW */
-        #search, #proxySearch { 
-            width: 100%; max-width: 600px; padding: 15px; border-radius: 12px; 
-            background: #111; color: #fff; border: 1px solid #333; text-align: center; 
-            margin-bottom: 20px; transition: all 0.3s ease; outline: none;
-        }
-        #search:focus, #proxySearch:focus {
-            border-color: #ff9800;
-            box-shadow: 0 0 15px rgba(255, 152, 0, 0.2);
-        }
-
-        /* MAIN BUTTON GLOW */
-        .intro-btn { 
-            padding: 15px 45px; border: 2px solid #ff9800; background: none; 
-            color: #fff; border-radius: 10px; cursor: pointer; font-weight: 800; 
-            transition: all 0.3s ease;
-        }
-        .intro-btn:hover { 
-            background: #ff9800; 
-            color: #000; 
-            box-shadow: 0 0 20px rgba(255, 152, 0, 0.5);
-        }
     </style>
 </head>
 <body>
@@ -147,9 +145,9 @@
             <div class="footnote">Made by Quackmath Studios</div>
         </div>
 
-        <div id="proxySection" style="width: 100%; display: none; flex-direction: column; align-items: center;">
-            <h1 style="margin-bottom: 20px; font-size: 2.5rem;">Project Proxy</h1>
-            <input type="text" id="proxySearch" placeholder="Enter URL (e.g. google.com)">
+        <div id="proxySection" style="display: none;">
+            <h1 style="margin-bottom: 30px; font-size: 2.5rem;">Project Proxy</h1>
+            <input type="text" id="proxySearch" placeholder="Enter URL and press Enter...">
         </div>
     </div>
 
@@ -159,11 +157,10 @@
     </div>
 
     <script>
-        // Start Animations Sequence
+        // Welcome Logic
         setTimeout(() => {
             const txt = document.getElementById('welcomeText');
             txt.style.animation = 'welcomeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards';
-            
             setTimeout(() => {
                 document.getElementById('welcomeLogo').style.opacity = '1';
                 document.getElementById('welcomeActions').style.display = 'flex';
@@ -187,6 +184,7 @@
             document.getElementById('welcomeScreen').style.display = 'flex';
         }
 
+        // Proxy Logic
         document.getElementById('proxySearch').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 let url = this.value.trim().replace(/^(?:https?:\/\/)?/i, "");
@@ -200,6 +198,7 @@
             document.getElementById('proxyFrame').src = "";
         }
 
+        // Library Logic + Filter
         async function fetchGames() {
             try {
                 const r = await fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub');
@@ -210,7 +209,7 @@
                     const name = g.innerText.trim();
                     if(!name || name.length < 2) return;
                     const li = document.createElement('li');
-                    li.style.animationDelay = (index * 0.05) + "s"; // Smooth staggered entrance
+                    li.style.animationDelay = (index * 0.03) + "s";
                     const a = document.createElement('a');
                     a.href = g.href; a.target = "_blank"; a.innerText = name;
                     li.appendChild(a); list.appendChild(li);
