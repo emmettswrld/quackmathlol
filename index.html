@@ -16,6 +16,20 @@
             overflow: hidden; -webkit-font-smoothing: antialiased;
         }
 
+        /* --- ANIMATIONS --- */
+        @keyframes welcomeIn { 
+            0% { transform: translate(-50px, -50%); opacity: 0; }
+            100% { transform: translate(0, -50%); opacity: 1; }
+        }
+        @keyframes welcomeUp {
+            0% { transform: translateY(-50%); }
+            100% { transform: translateY(-110%); }
+        }
+        @keyframes fadeInSlide {
+            from { opacity: 0; transform: translateY(25px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
         /* WELCOME SCREEN */
         #welcomeScreen {
             position: fixed; inset: 0; display: flex; flex-direction: column; 
@@ -23,40 +37,53 @@
         }
         
         #welcomeLogo {
-            width: 100px; margin-bottom: 80px !important; /* Raised far above text */
+            width: 100px; margin-bottom: 80px !important; opacity: 0;
             filter: drop-shadow(0 0 15px rgba(255, 152, 0, 0.2));
+            transition: opacity 0.8s ease;
         }
 
-        #welcomeText { font-size: 3.5rem; font-weight: 900; margin-bottom: 0; }
+        #welcomeText { 
+            font-size: 3.5rem; font-weight: 900; position: absolute; top: 50%;
+            animation: welcomeIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+        }
 
         #welcomeActions { 
-            display: flex; gap: 15px; margin-top: 80px !important; /* Balanced distance below text */
+            display: none; gap: 15px; margin-top: 80px !important; 
+            animation: fadeInSlide 0.8s ease-out forwards;
         }
 
         /* MAIN INTERFACE */
         .container { 
             width: 100%; max-width: 1400px; height: 100vh; padding: 20px; 
             display: none; flex-direction: column; align-items: center; 
+            animation: fadeInSlide 0.6s ease-out forwards;
         }
 
-        /* 4 COLUMN GRID - FORCED */
+        /* 4 COLUMN GRID */
         #gameList { 
             width: 100%; display: grid !important; 
-            grid-template-columns: 23.5% 23.5% 23.5% 23.5% !important; 
-            justify-content: space-between !important;
+            grid-template-columns: repeat(4, 1fr) !important; 
             gap: 15px; list-style: none; overflow-y: auto; flex-grow: 1; padding: 10px;
         }
 
+        #gameList li { animation: fadeInSlide 0.5s ease-out forwards; opacity: 0; }
+        
         #gameList li a { 
             display: block; width: 100%; padding: 25px 10px; border-radius: 12px; 
             text-decoration: none; color: white; background: rgba(255, 255, 255, 0.05); 
             border: 1px solid rgba(255,255,255,0.1); text-align: center; font-weight: 700;
-            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis; 
+            transition: all 0.3s ease;
         }
 
-        #gameList li a:hover { background: rgba(255, 255, 255, 0.1); border-color: #ff9800; }
+        /* GLOW EFFECT ON GAME BUTTONS */
+        #gameList li a:hover { 
+            background: rgba(255, 255, 255, 0.1); 
+            border-color: #ff9800; 
+            box-shadow: 0 0 15px rgba(255, 152, 0, 0.3);
+            transform: translateY(-3px); 
+        }
 
-        /* FOOTER */
         .footnote { 
             width: 100%; text-align: center; padding: 20px 0; font-size: 0.75rem; 
             color: rgba(255, 255, 255, 0.2); font-weight: 800; text-transform: uppercase; 
@@ -67,20 +94,35 @@
         #proxyFrame { width: 100%; height: 100%; border: none; }
         
         .close-frame { 
-            position: fixed; bottom: 15px; right: 15px; z-index: 4001; 
-            padding: 6px 14px; background: #000; color: #fff; 
+            position: fixed; bottom: 20px; right: 20px; z-index: 4001; 
+            padding: 8px 16px; background: #000; color: #fff; 
             border: 1px solid #444; font-weight: 700; cursor: pointer; 
-            border-radius: 4px; font-size: 0.7rem; text-transform: uppercase;
+            border-radius: 6px; font-size: 0.75rem; text-transform: uppercase;
+            transition: all 0.3s ease;
+        }
+        .close-frame:hover { border-color: #ff9800; box-shadow: 0 0 10px rgba(255, 152, 0, 0.4); }
+
+        /* INPUT GLOW */
+        #search, #proxySearch { 
+            width: 100%; max-width: 600px; padding: 15px; border-radius: 12px; 
+            background: #111; color: #fff; border: 1px solid #333; text-align: center; 
+            margin-bottom: 20px; transition: all 0.3s ease; outline: none;
+        }
+        #search:focus, #proxySearch:focus {
+            border-color: #ff9800;
+            box-shadow: 0 0 15px rgba(255, 152, 0, 0.2);
         }
 
-        /* ELEMENTS */
-        #search, #proxySearch { 
-            width: 100%; max-width: 600px; padding: 15px; border-radius: 10px; 
-            background: #111; color: #fff; border: 1px solid #333; text-align: center; margin-bottom: 20px;
-        }
+        /* MAIN BUTTON GLOW */
         .intro-btn { 
             padding: 15px 45px; border: 2px solid #ff9800; background: none; 
             color: #fff; border-radius: 10px; cursor: pointer; font-weight: 800; 
+            transition: all 0.3s ease;
+        }
+        .intro-btn:hover { 
+            background: #ff9800; 
+            color: #000; 
+            box-shadow: 0 0 20px rgba(255, 152, 0, 0.5);
         }
     </style>
 </head>
@@ -117,6 +159,17 @@
     </div>
 
     <script>
+        // Start Animations Sequence
+        setTimeout(() => {
+            const txt = document.getElementById('welcomeText');
+            txt.style.animation = 'welcomeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+            
+            setTimeout(() => {
+                document.getElementById('welcomeLogo').style.opacity = '1';
+                document.getElementById('welcomeActions').style.display = 'flex';
+            }, 700);
+        }, 1000);
+
         function openMode(mode) {
             document.getElementById('welcomeScreen').style.display = 'none';
             document.getElementById('main').style.display = 'flex';
@@ -134,7 +187,6 @@
             document.getElementById('welcomeScreen').style.display = 'flex';
         }
 
-        // Proxy Logic
         document.getElementById('proxySearch').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 let url = this.value.trim().replace(/^(?:https?:\/\/)?/i, "");
@@ -148,17 +200,17 @@
             document.getElementById('proxyFrame').src = "";
         }
 
-        // Library Fetch
         async function fetchGames() {
             try {
                 const r = await fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub');
                 const html = await r.text();
                 const doc = new DOMParser().parseFromString(html, 'text/html');
                 const list = document.getElementById('gameList');
-                doc.querySelectorAll('a').forEach(g => {
+                doc.querySelectorAll('a').forEach((g, index) => {
                     const name = g.innerText.trim();
                     if(!name || name.length < 2) return;
                     const li = document.createElement('li');
+                    li.style.animationDelay = (index * 0.05) + "s"; // Smooth staggered entrance
                     const a = document.createElement('a');
                     a.href = g.href; a.target = "_blank"; a.innerText = name;
                     li.appendChild(a); list.appendChild(li);
