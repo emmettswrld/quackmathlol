@@ -3,209 +3,119 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="pageTitle">Quackmath</title>
-    <link id="favicon" rel="icon" type="image/png" href="https://ik.imagekit.io/quackmath/goose%20(1).png">
+    <title>Quackmath</title>
+    <link rel="icon" type="image/png" href="https://ik.imagekit.io/quackmath/goose%20(1).png">
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap");
         
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: "Inter", sans-serif; }
+        * { margin: 0; padding: 0; box-sizing: border-box !important; font-family: "Inter", sans-serif; }
         
         body { 
-            height: 100vh; background: #000; color: #fff; 
+            height: 100vh; background: #000 !important; color: #fff; 
             display: flex; flex-direction: column; align-items: center; 
-            overflow: hidden; -webkit-font-smoothing: antialiased;
+            overflow: hidden;
         }
 
-        :root {
-            --bg-gradient: radial-gradient(circle at 20% 30%, rgba(255, 255, 255, 0.05), transparent 40%);
-            --accent-color: #ff9800;
-        }
-
-        body::before { 
-            content: ""; position: absolute; width: 100%; height: 100%; 
-            background: var(--bg-gradient); z-index: -1; 
-        }
-
-        /* ANIMATIONS */
-        @keyframes welcomeIn { 
-            0% { transform: translate(-50px, -50%); opacity: 0; }
-            100% { transform: translate(0, -50%); opacity: 1; }
-        }
-        @keyframes welcomeUp {
-            0% { transform: translateY(-50%); }
-            100% { transform: translateY(-110%); }
-        }
-        @keyframes fadeInSlide {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-
-        /* WELCOME SCREEN */
+        /* WELCOME SCREEN - LOGO & BUTTONS SYMMETRY */
         #welcomeScreen {
             position: fixed; inset: 0; display: flex; flex-direction: column; 
             align-items: center; justify-content: center; z-index: 3000; background: #000;
         }
         
-        /* LOGO - Balanced spacing (Exactly 70px from text center) */
         #welcomeLogo {
-            width: 100px; margin-bottom: 70px; opacity: 0;
-            filter: drop-shadow(0 0 15px rgba(255, 152, 0, 0.2));
-            z-index: 3001;
+            width: 100px; 
+            margin-bottom: 80px !important; /* RAISED LOGO */
+            opacity: 0;
+            animation: fadeInSlide 0.8s ease 1.5s forwards;
         }
 
         #welcomeText { 
-            font-size: 3.5rem; font-weight: 900; position: absolute; top: 50%;
-            animation: welcomeIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+            font-size: 3.5rem; font-weight: 900; 
+            position: relative;
+            z-index: 3002;
         }
 
-        /* BUTTONS - Balanced spacing (Exactly 70px from text center) */
         #welcomeActions { 
-            display: none; gap: 15px; margin-top: 70px; 
-            animation: fadeInSlide 0.8s ease-out forwards;
+            display: flex; gap: 15px; 
+            margin-top: 80px !important; /* MATCHING BUTTON DISTANCE */
+            opacity: 0;
+            animation: fadeInSlide 0.8s ease 1.5s forwards;
         }
 
-        /* CONTAINER - Forced Wide for 4 Columns */
-        .container { 
-            width: 98%; max-width: 1500px; height: 100vh; padding: 1rem; 
-            display: none; flex-direction: column; align-items: center; 
-            animation: fadeInSlide 0.5s ease-out forwards;
-        }
-        
-        #search, #proxySearch { 
-            width: 100%; max-width: 800px; padding: 1.4rem; border-radius: 12px; 
-            border: 1px solid rgba(255,255,255,0.1); background: rgba(255, 255, 255, 0.08); 
-            color: white; text-align: center; outline: none; margin-bottom: 20px; font-size: 1.4rem;
-        }
-
-        #homeSection {
-            width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center;
+        /* GRID FIX - 4 COLUMNS NO MATTER WHAT */
+        #gameList { 
+            width: 100% !important;
+            display: grid !important; 
+            grid-template-columns: 23% 23% 23% 23% !important; /* HARD 4 COLUMNS */
+            justify-content: center !important;
+            gap: 15px !important; 
+            list-style: none;
+            overflow-y: auto;
+            max-height: 60vh;
+            padding: 20px;
         }
 
-        /* HARD 4-COLUMN GRID - NO COMPROMISE */
-        ul { 
-            width: 100%; list-style: none; display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            grid-auto-rows: min-content;
-            gap: 15px; flex-grow: 1; overflow-y: auto; overflow-x: hidden; 
-            padding: 10px; margin-bottom: 10px;
-        }
-
-        li a { 
-            display: block; width: 100%; padding: 1.8rem 0.5rem; border-radius: 12px; 
+        #gameList li a { 
+            display: block; width: 100%; padding: 20px 10px; border-radius: 12px; 
             text-decoration: none; color: white; background: rgba(255, 255, 255, 0.05); 
-            transition: 0.2s; border: 1px solid rgba(255,255,255,0.05); 
-            text-align: center; font-weight: 700; font-size: 1rem;
+            border: 1px solid rgba(255,255,255,0.1); text-align: center; font-weight: 700;
             overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
-        li a:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--accent-color); }
 
-        /* BUTTONS & FOOTER */
-        .intro-btn { 
-            padding: 15px 45px; border-radius: 12px; border: 2px solid var(--accent-color); 
-            background: transparent; color: white; font-weight: 800; cursor: pointer; 
-            transition: 0.3s; font-size: 1.1rem;
-        }
-        .intro-btn:hover { background: var(--accent-color); color: #000; }
-
-        .back-nav {
-            align-self: flex-start; margin-bottom: 10px; background: rgba(255,255,255,0.05); 
-            border: 1px solid rgba(255,255,255,0.1); color: #888; padding: 8px 20px; 
-            border-radius: 30px; cursor: pointer; font-weight: 600;
-        }
-
+        /* FOOTER */
         .footnote { 
-            width: 100%; text-align: center; padding: 15px 0; font-size: 0.8rem; 
-            color: rgba(255, 255, 255, 0.3); font-weight: 700; 
-            letter-spacing: 1.5px; text-transform: uppercase;
+            position: absolute; bottom: 10px; width: 100%; text-align: center;
+            font-size: 0.75rem; color: rgba(255,255,255,0.3); font-weight: 800; 
+            text-transform: uppercase; letter-spacing: 1px;
         }
 
-        /* PROXY */
+        /* PROXY EXIT - BOTTOM RIGHT & SMALL */
+        .close-frame { 
+            position: fixed; bottom: 15px; right: 15px; z-index: 4001; 
+            padding: 5px 12px; background: #000; color: #fff; 
+            border: 1px solid #444; font-weight: 700; cursor: pointer; 
+            border-radius: 4px; font-size: 0.7rem;
+        }
+
+        /* ANIMATIONS */
+        @keyframes fadeInSlide { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+        .container { width: 100%; max-width: 1400px; display: none; flex-direction: column; align-items: center; padding: 20px; }
         #proxyFrameContainer { display: none; position: fixed; inset: 0; background: #000; z-index: 4000; }
         #proxyFrame { width: 100%; height: 100%; border: none; }
-        
-        .close-frame { 
-            position: fixed; bottom: 20px; right: 20px; z-index: 4001; 
-            padding: 8px 18px; background: #000; color: #fff; 
-            border: 1px solid #555; font-weight: 800; cursor: pointer; 
-            border-radius: 4px; font-size: 0.75rem; text-transform: uppercase;
-        }
+        #search { width: 100%; max-width: 600px; padding: 15px; margin-bottom: 20px; border-radius: 10px; background: #111; color: #fff; border: 1px solid #333; text-align: center; }
     </style>
 </head>
 <body>
 
     <div id="welcomeScreen">
-        <img id="welcomeLogo" src="https://ik.imagekit.io/quackmath/goose%20(1).png" alt="Logo">
+        <img id="welcomeLogo" src="https://ik.imagekit.io/quackmath/goose%20(1).png">
         <h1 id="welcomeText">Welcome to Quackmath</h1>
         <div id="welcomeActions">
-            <button class="intro-btn" onclick="startMode('games')">Games</button>
-            <button class="intro-btn" onclick="startMode('proxy')">Proxy</button>
+            <button style="padding: 15px 40px; border: 2px solid #ff9800; background: none; color: #fff; border-radius: 10px; cursor: pointer; font-weight: 800;" onclick="start('games')">GAMES</button>
+            <button style="padding: 15px 40px; border: 2px solid #ff9800; background: none; color: #fff; border-radius: 10px; cursor: pointer; font-weight: 800;" onclick="start('proxy')">PROXY</button>
         </div>
     </div>
 
-    <div class="container" id="mainContainer">
-        <button class="back-nav" onclick="goHome()">← Back</button>
-        
-        <div id="homeSection" style="display:none;">
-            <h1 style="margin-bottom:15px; font-weight:900; font-size: 2.5rem; text-align: center;">Project Library</h1>
-            <input type="text" id="search" placeholder="Search library...">
+    <div class="container" id="main">
+        <button onclick="location.reload()" style="align-self: flex-start; color: #666; background: none; border: none; cursor: pointer; margin-bottom: 10px;">← BACK</button>
+        <div id="homeSection" style="width: 100%;">
+            <h1 style="text-align: center; margin-bottom: 20px;">Project Library</h1>
+            <center><input type="text" id="search" placeholder="Search..."></center>
             <ul id="gameList"></ul>
             <div class="footnote">Made by Quackmath Studios</div>
-        </div>
-
-        <div id="proxySection" style="display:none; text-align:center; width: 100%;">
-            <h1 style="margin-bottom:25px; font-weight:900; font-size: 2.5rem;">Project Proxy</h1>
-            <input type="text" id="proxySearch" placeholder="Enter URL...">
         </div>
     </div>
 
     <div id="proxyFrameContainer">
-        <button class="close-frame" onclick="closeProxy()">Exit</button>
-        <iframe id="proxyFrame" src=""></iframe>
+        <button class="close-frame" onclick="location.reload()">EXIT</button>
+        <iframe id="proxyFrame"></iframe>
     </div>
 
     <script>
-        // Intro Sequence Logic
-        setTimeout(() => {
-            const welcomeText = document.getElementById('welcomeText');
-            welcomeText.style.animation = 'welcomeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards';
-            
-            setTimeout(() => {
-                const logo = document.getElementById('welcomeLogo');
-                logo.style.opacity = '1';
-                logo.style.transition = 'opacity 0.8s ease';
-                document.getElementById('welcomeActions').style.display = 'flex';
-            }, 700);
-        }, 1000);
-
-        function startMode(mode) {
+        function start(mode) {
             document.getElementById('welcomeScreen').style.display = 'none';
-            document.getElementById('mainContainer').style.display = 'flex';
-            if(mode === 'games') {
-                document.getElementById('homeSection').style.display = 'flex';
-                document.getElementById('proxySection').style.display = 'none';
-            } else {
-                document.getElementById('homeSection').style.display = 'none';
-                document.getElementById('proxySection').style.display = 'block';
-            }
-        }
-
-        function goHome() {
-            document.getElementById('mainContainer').style.display = 'none';
-            document.getElementById('welcomeScreen').style.display = 'flex';
-        }
-
-        document.getElementById('proxySearch').addEventListener('keypress', (e) => {
-            if (e.key === 'Enter') {
-                let url = e.target.value.trim().replace(/^(?:https?:\/\/)?/i, "");
-                if(!url) return;
-                document.getElementById('proxyFrame').src = `https://brunysixl.work/active/embed.html?p=http://${url}`;
-                document.getElementById('proxyFrameContainer').style.display = 'block';
-            }
-        });
-
-        function closeProxy() {
-            document.getElementById('proxyFrameContainer').style.display = 'none';
-            document.getElementById('proxyFrame').src = "";
+            document.getElementById('main').style.display = 'flex';
         }
 
         async function fetchGames() {
@@ -214,30 +124,14 @@
                 const html = await r.text();
                 const doc = new DOMParser().parseFromString(html, 'text/html');
                 const list = document.getElementById('gameList');
-                
                 doc.querySelectorAll('a').forEach(g => {
-                    let name = g.innerText.trim();
-                    const forbidden = ["report abuse", "learn more", "new website", "chat"];
-                    if (forbidden.some(word => name.toLowerCase().includes(word)) || name === "") return;
-                    if (name.toLowerCase().endsWith(".html")) name = name.slice(0, -5);
-                    name = name.replace(/^cl[-\s]?/i, ""); 
-                    if (name.toLowerCase() === "gdlite") name = "Geometry Dash";
-
                     const li = document.createElement('li');
                     const a = document.createElement('a');
-                    a.href = g.href; a.target = "_blank"; a.innerText = name;
+                    a.href = g.href; a.target = "_blank"; a.innerText = g.innerText;
                     li.appendChild(a); list.appendChild(li);
                 });
             } catch(e) {}
         }
-        
-        document.getElementById('search').addEventListener('input', (e) => {
-            const val = e.target.value.toLowerCase();
-            document.querySelectorAll('#gameList li').forEach(li => {
-                li.style.display = li.innerText.toLowerCase().includes(val) ? "block" : "none";
-            });
-        });
-
         fetchGames();
     </script>
 </body>
