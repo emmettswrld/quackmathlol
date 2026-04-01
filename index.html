@@ -22,15 +22,15 @@
             100% { transform: translate(0, -50%); opacity: 1; }
         }
         @keyframes welcomeUp {
-            0% { transform: translateY(-50%); }
-            100% { transform: translateY(-110%); }
+            0% { transform: translate(0, -50%); }
+            100% { transform: translate(0, -110%); } /* Using translate only to prevent "nudging" */
         }
         @keyframes fadeInSlide {
             from { opacity: 0; transform: translateY(25px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* WELCOME SCREEN - THE REQUESTED SPACING */
+        /* WELCOME SCREEN */
         #welcomeScreen {
             position: fixed; inset: 0; display: flex; flex-direction: column; 
             align-items: center; justify-content: center; z-index: 3000; background: #000;
@@ -38,20 +38,24 @@
         
         #welcomeLogo {
             width: 100px; 
-            margin-bottom: 80px !important; /* RAISED 80px ABOVE TEXT */
+            margin-bottom: 80px !important; 
             opacity: 0;
             filter: drop-shadow(0 0 15px rgba(255, 152, 0, 0.2));
             transition: opacity 0.8s ease;
         }
 
         #welcomeText { 
-            font-size: 3.5rem; font-weight: 900; position: absolute; top: 50%;
+            font-size: 3.5rem; font-weight: 900; 
+            position: absolute; left: 50%; top: 50%;
+            transform: translate(0, -50%); /* Start point */
+            width: 100%; text-align: center;
             animation: welcomeIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+            pointer-events: none;
         }
 
         #welcomeActions { 
             display: none; gap: 15px; 
-            margin-top: 80px !important; /* LOWERED 80px BELOW TEXT */
+            margin-top: 80px !important; 
             animation: fadeInSlide 0.8s ease-out forwards;
         }
 
@@ -65,12 +69,11 @@
         /* HARD 4-COLUMN GRID */
         #gameList { 
             width: 100%; display: grid !important; 
-            grid-template-columns: 23.5% 23.5% 23.5% 23.5% !important; 
-            justify-content: space-between !important;
+            grid-template-columns: repeat(4, 1fr) !important; 
             gap: 15px; list-style: none; overflow-y: auto; flex-grow: 1; padding: 10px;
         }
 
-        #gameList li { animation: fadeInSlide 0.5s ease-out forwards; opacity: 0; }
+        #gameList li { opacity: 1; display: block; } /* Default to visible */
         
         #gameList li a { 
             display: block; width: 100%; padding: 25px 10px; border-radius: 12px; 
@@ -81,7 +84,7 @@
         }
 
         /* GLOW EFFECTS */
-        #gameList li a:hover, .intro-btn:hover { 
+        #gameList li a:hover, .intro-btn:hover, .back-btn:hover { 
             border-color: #ff9800; 
             box-shadow: 0 0 15px rgba(255, 152, 0, 0.4);
             transform: translateY(-3px); 
@@ -96,7 +99,7 @@
         #search, #proxySearch { 
             width: 100%; max-width: 600px; padding: 18px; border-radius: 12px; 
             background: #111; color: #fff; border: 1px solid #333; text-align: center; 
-            transition: all 0.3s ease; outline: none;
+            transition: all 0.3s ease; outline: none; margin-bottom: 20px;
         }
         #search:focus, #proxySearch:focus {
             border-color: #ff9800;
@@ -110,15 +113,18 @@
         }
         .intro-btn:hover { background: #ff9800; color: #000; }
 
-        /* EXIT BUTTON - SMALL & BOTTOM RIGHT */
+        .back-btn {
+            align-self: flex-start; color: #888; background: rgba(255,255,255,0.05); 
+            border: 1px solid #333; padding: 8px 20px; border-radius: 30px; 
+            cursor: pointer; font-weight: 700; margin-bottom: 10px; transition: 0.3s;
+        }
+
         .close-frame { 
             position: fixed; bottom: 20px; right: 20px; z-index: 4001; 
             padding: 8px 16px; background: #000; color: #fff; 
             border: 1px solid #444; font-weight: 700; cursor: pointer; 
             border-radius: 6px; font-size: 0.75rem; text-transform: uppercase;
-            transition: all 0.3s ease;
         }
-        .close-frame:hover { border-color: #ff9800; box-shadow: 0 0 10px rgba(255, 152, 0, 0.4); }
 
         .footnote { 
             width: 100%; text-align: center; padding: 20px 0; font-size: 0.75rem; 
@@ -141,17 +147,17 @@
     </div>
 
     <div class="container" id="main">
-        <button onclick="goBack()" style="align-self: flex-start; color: #666; background: none; border: none; cursor: pointer; margin-bottom: 10px; font-weight: 700;">← BACK</button>
+        <button class="back-btn" onclick="goBack()">← BACK</button>
         
         <div id="homeSection" style="width: 100%; display: none; flex-direction: column; align-items: center; height: 100%;">
-            <h1 style="margin-bottom: 20px; font-size: 2.5rem;">Project Library</h1>
-            <input type="text" id="search" placeholder="Search games...">
+            <h1 style="margin-bottom: 20px; font-size: 2.5rem; font-weight: 900;">Project Library</h1>
+            <input type="text" id="search" placeholder="Search library...">
             <ul id="gameList"></ul>
             <div class="footnote">Made by Quackmath Studios</div>
         </div>
 
         <div id="proxySection" style="display: none;">
-            <h1 style="margin-bottom: 30px; font-size: 2.5rem;">Project Proxy</h1>
+            <h1 style="margin-bottom: 30px; font-size: 2.5rem; font-weight: 900;">Project Proxy</h1>
             <input type="text" id="proxySearch" placeholder="Enter URL and press Enter...">
         </div>
     </div>
@@ -162,8 +168,10 @@
     </div>
 
     <script>
+        // Welcome Logic - Fixed the "Nudge"
         setTimeout(() => {
             const txt = document.getElementById('welcomeText');
+            txt.style.left = "0"; // Centering via width now
             txt.style.animation = 'welcomeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards';
             setTimeout(() => {
                 document.getElementById('welcomeLogo').style.opacity = '1';
@@ -188,6 +196,7 @@
             document.getElementById('welcomeScreen').style.display = 'flex';
         }
 
+        // Proxy Enter Logic
         document.getElementById('proxySearch').addEventListener('keypress', function (e) {
             if (e.key === 'Enter') {
                 let url = this.value.trim().replace(/^(?:https?:\/\/)?/i, "");
@@ -201,30 +210,47 @@
             document.getElementById('proxyFrame').src = "";
         }
 
+        // Updated Robust Game Filter
+        document.getElementById('search').addEventListener('input', function() {
+            const filterValue = this.value.toLowerCase();
+            const items = document.querySelectorAll('#gameList li');
+            
+            items.forEach(item => {
+                const text = item.textContent || item.innerText;
+                if (text.toLowerCase().indexOf(filterValue) > -1) {
+                    item.style.display = ""; // Shows item
+                } else {
+                    item.style.display = "none"; // Hides item
+                }
+            });
+        });
+
+        // Game Fetching
         async function fetchGames() {
             try {
                 const r = await fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub');
                 const html = await r.text();
                 const doc = new DOMParser().parseFromString(html, 'text/html');
                 const list = document.getElementById('gameList');
+                
                 doc.querySelectorAll('a').forEach((g, index) => {
                     const name = g.innerText.trim();
-                    if(!name || name.length < 2) return;
+                    // Clean up specific document junk
+                    if(!name || name.length < 2 || name.toLowerCase().includes("report abuse")) return;
+                    
                     const li = document.createElement('li');
-                    li.style.animationDelay = (index * 0.03) + "s";
                     const a = document.createElement('a');
-                    a.href = g.href; a.target = "_blank"; a.innerText = name;
-                    li.appendChild(a); list.appendChild(li);
+                    a.href = g.href; 
+                    a.target = "_blank"; 
+                    a.innerText = name;
+                    
+                    li.appendChild(a); 
+                    list.appendChild(li);
                 });
-            } catch(e) {}
+            } catch(e) {
+                console.error("Fetch failed", e);
+            }
         }
-
-        document.getElementById('search').addEventListener('input', function() {
-            const val = this.value.toLowerCase();
-            document.querySelectorAll('#gameList li').forEach(li => {
-                li.style.display = li.innerText.toLowerCase().includes(val) ? "block" : "none";
-            });
-        });
 
         fetchGames();
     </script>
