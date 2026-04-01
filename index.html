@@ -13,7 +13,7 @@
         body { 
             height: 100vh; width: 100vw; background: #000; color: #fff; 
             display: flex; flex-direction: column; align-items: center; 
-            overflow: hidden; -webkit-font-smoothing: antialiased;
+            overflow-x: hidden; -webkit-font-smoothing: antialiased;
         }
 
         /* --- ANIMATIONS --- */
@@ -49,10 +49,10 @@
             animation: fadeInUp 0.5s ease forwards;
         }
 
-        /* THE 4-COLUMN GRID */
+        /* 4-COLUMN GRID */
         #gameList { 
             width: 100%; display: grid !important; 
-            grid-template-columns: repeat(4, 1fr) !important; 
+            grid-template-columns: repeat(4, minmax(0, 1fr)) !important; 
             gap: 20px; list-style: none; overflow-y: auto; overflow-x: hidden; 
             flex-grow: 1; padding: 10px 5px;
         }
@@ -187,23 +187,22 @@
                 const list = document.getElementById('gameList');
                 
                 doc.querySelectorAll('a').forEach(g => {
-                    let rawName = g.innerText.trim();
-                    if(!rawName || rawName.length < 2 || rawName.toLowerCase().includes("report abuse")) return;
+                    let name = g.innerText.trim();
+                    if(!name || name.length < 2 || name.toLowerCase().includes("report abuse")) return;
 
-                    // --- AGGRESSIVE CLEANING ---
-                    // 1. Remove "cl" from the start (case insensitive)
-                    let cleanName = rawName.replace(/^cl\s*/i, "");
-                    
-                    // 2. Remove ".html" from the end (case insensitive)
-                    cleanName = cleanName.replace(/\.html$/i, "");
-                    
-                    // 3. Remove specific junk phrases globally
-                    cleanName = cleanName.replace(/learn more|new website|chat/gi, "").trim();
+                    // --- CLEANING THE NAMES (NO REMOVAL OF LINKS) ---
+                    // Remove 'cl' prefix if it exists
+                    if(name.toLowerCase().startsWith('cl')) name = name.substring(2).trim();
+                    // Remove '.html' suffix if it exists
+                    if(name.toLowerCase().endsWith('.html')) name = name.substring(0, name.length - 5).trim();
+                    // Clean up specific words
+                    name = name.replace(/learn more/gi, "").replace(/new website/gi, "").replace(/chat/gi, "").trim();
 
-                    if (cleanName.length > 0) {
+                    // Only add if there is still a name left after cleaning
+                    if (name.length > 0) {
                         const li = document.createElement('li');
                         const a = document.createElement('a');
-                        a.href = g.href; a.target = "_blank"; a.innerText = cleanName;
+                        a.href = g.href; a.target = "_blank"; a.innerText = name;
                         li.appendChild(a); list.appendChild(li);
                     }
                 });
