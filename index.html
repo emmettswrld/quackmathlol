@@ -64,7 +64,7 @@
 
         /* CONTAINER */
         .container { 
-            width: 100%; height: 100vh; max-width: 1200px; padding: 1.5rem; 
+            width: 95%; max-width: 1400px; height: 100vh; padding: 1rem; 
             display: none; flex-direction: column; align-items: center; 
             animation: fadeInSlide 0.5s ease-out forwards;
         }
@@ -72,27 +72,27 @@
         #search, #proxySearch { 
             width: 100%; max-width: 700px; padding: 1.2rem; border-radius: 12px; 
             border: 1px solid rgba(255,255,255,0.1); background: rgba(255, 255, 255, 0.07); 
-            color: white; text-align: center; outline: none; margin-bottom: 20px; font-size: 1.2rem;
+            color: white; text-align: center; outline: none; margin-bottom: 15px; font-size: 1.2rem;
         }
 
-        /* HOME SECTION LAYOUT */
+        /* UPDATED HOME SECTION */
         #homeSection {
             width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center;
         }
 
-        /* STRICT 4 PER ROW - NO HORIZONTAL SCROLL */
+        /* FORCED 4 COLUMNS - STRETCH TO FIT */
         ul { 
             width: 100%; list-style: none; display: grid; 
-            grid-template-columns: repeat(4, 1fr); 
-            gap: 15px; flex-grow: 1; overflow-y: auto; overflow-x: hidden; 
-            padding: 5px; margin-bottom: 10px;
+            grid-template-columns: 1fr 1fr 1fr 1fr; /* Strict 4 Column Force */
+            gap: 12px; flex-grow: 1; overflow-y: auto; overflow-x: hidden; 
+            padding: 10px; margin-bottom: 10px;
         }
 
         li a { 
             display: block; width: 100%; padding: 1.5rem 0.5rem; border-radius: 12px; 
             text-decoration: none; color: white; background: rgba(255, 255, 255, 0.04); 
             transition: 0.2s; border: 1px solid rgba(255,255,255,0.02); 
-            text-align: center; font-weight: 700; font-size: 0.9rem;
+            text-align: center; font-weight: 700; font-size: 0.85rem;
             overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
         li a:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--accent-color); }
@@ -105,26 +105,28 @@
         .intro-btn:hover { background: var(--accent-color); color: #000; }
 
         .back-nav {
-            align-self: flex-start; margin-bottom: 10px; background: rgba(255,255,255,0.05); 
+            align-self: flex-start; margin-bottom: 5px; background: rgba(255,255,255,0.05); 
             border: 1px solid rgba(255,255,255,0.1); color: #888; padding: 6px 16px; 
-            border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 0.85rem;
+            border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 0.8rem;
         }
 
-        /* FIXED FOOTER */
+        /* FIXED FOOTER POSITION */
         .footnote { 
-            padding: 15px 0; font-size: 0.75rem; color: rgba(255, 255, 255, 0.2); 
-            font-weight: 600; letter-spacing: 1px; text-transform: uppercase;
+            width: 100%; text-align: center; padding: 10px 0; font-size: 0.7rem; 
+            color: rgba(255, 255, 255, 0.2); font-weight: 600; 
+            letter-spacing: 1px; text-transform: uppercase; border-top: 1px solid rgba(255,255,255,0.05);
         }
 
         /* PROXY OVERLAY */
         #proxyFrameContainer { display: none; position: fixed; inset: 0; background: #000; z-index: 4000; }
         #proxyFrame { width: 100%; height: 100%; border: none; }
         
+        /* Smaller Exit Button - Bottom Right */
         .close-frame { 
-            position: fixed; bottom: 20px; right: 20px; z-index: 4001; 
-            padding: 8px 16px; background: #000; color: #fff; 
+            position: fixed; bottom: 15px; right: 15px; z-index: 4001; 
+            padding: 6px 14px; background: #000; color: #fff; 
             border: 1px solid #444; font-weight: 700; cursor: pointer; 
-            border-radius: 6px; font-size: 0.8rem; text-transform: uppercase;
+            border-radius: 4px; font-size: 0.75rem; text-transform: uppercase;
         }
     </style>
 </head>
@@ -143,10 +145,10 @@
         <button class="back-nav" onclick="goHome()">← Back</button>
         
         <div id="homeSection" style="display:none;">
-            <h1 style="margin-bottom:15px; font-weight:900; font-size: 2.2rem; text-align: center;">Project Library</h1>
+            <h1 style="margin-bottom:10px; font-weight:900; font-size: 2rem; text-align: center;">Project Library</h1>
             <input type="text" id="search" placeholder="Search library...">
             <ul id="gameList"></ul>
-            <p class="footnote">MADE BY QUACKMATH STUDIOS</p>
+            <div class="footnote">Made by Quackmath Studios</div>
         </div>
 
         <div id="proxySection" style="display:none; text-align:center; width: 100%;">
@@ -161,7 +163,7 @@
     </div>
 
     <script>
-        // Welcome Sequence
+        // Intro Animation
         setTimeout(() => {
             const welcomeText = document.getElementById('welcomeText');
             welcomeText.style.animation = 'welcomeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards';
