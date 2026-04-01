@@ -49,12 +49,17 @@
             animation: fadeInUp 0.5s ease forwards;
         }
 
-        /* 4-COLUMN GRID */
+        /* HARD 4-COLUMN GRID - NO SCROLL */
         #gameList { 
-            width: 100%; display: grid !important; 
-            grid-template-columns: repeat(4, 1fr) !important; 
-            gap: 20px; list-style: none; overflow-y: auto; overflow-x: hidden; 
-            flex-grow: 1; padding: 10px 5px;
+            width: 100%; 
+            display: grid !important; 
+            grid-template-columns: repeat(4, minmax(0, 1fr)) !important; 
+            gap: 15px; 
+            list-style: none; 
+            overflow-y: auto; 
+            overflow-x: hidden; 
+            flex-grow: 1; 
+            padding: 10px 5px;
         }
 
         #gameList li a { 
@@ -80,12 +85,13 @@
         #search, #proxySearch { 
             width: 100%; max-width: 600px; padding: 18px; border-radius: 12px; 
             background: #111; color: #fff; border: 1px solid #333; text-align: center; 
-            transition: 0.3s; outline: none; margin-bottom: 10px;
+            transition: 0.3s; outline: none; margin-bottom: 25px;
         }
         #search:focus, #proxySearch:focus { border-color: #ff9800; box-shadow: 0 0 15px rgba(255, 152, 0, 0.2); }
 
+        /* The Footnote */
         .search-note {
-            font-size: 0.8rem; color: rgba(255,255,255,0.4); margin-bottom: 25px; font-weight: 600;
+            font-size: 0.8rem; color: rgba(255,255,255,0.3); margin-top: -15px; margin-bottom: 25px; font-weight: 600;
         }
 
         .intro-btn { 
@@ -103,7 +109,7 @@
 
         .footnote { 
             width: 100%; text-align: center; padding: 25px 0; font-size: 0.75rem; 
-            color: rgba(255, 255, 255, 0.2); font-weight: 800; text-transform: uppercase; 
+            color: rgba(255, 255, 255, 0.15); font-weight: 800; text-transform: uppercase; 
         }
 
         #proxyFrameContainer { display: none; position: fixed; inset: 0; background: #000; z-index: 4000; }
@@ -126,9 +132,8 @@
         <button class="back-btn" onclick="goBack()">← BACK</button>
         
         <div id="homeSection" style="width: 100%; display: none; flex-direction: column; align-items: center; height: 100%;">
-            <h1 style="margin-bottom: 20px; font-size: 2.8rem; font-weight: 900;">Games Library</h1>
+            <h1 style="margin-bottom: 25px; font-size: 2.8rem; font-weight: 900;">Games Library</h1>
             <input type="text" id="search" placeholder="Search for a project...">
-            <div class="search-note">Note: Some sites restrict access.</div>
             <ul id="gameList"></ul>
             <div class="footnote">Made by Quackmath Studios</div>
         </div>
@@ -176,6 +181,7 @@
             document.getElementById('proxyFrame').src = "";
         }
 
+        // Search Filter
         document.getElementById('search').addEventListener('input', function() {
             let val = this.value.toLowerCase().trim();
             let items = document.querySelectorAll('#gameList li');
@@ -185,6 +191,7 @@
             });
         });
 
+        // Data Fetching with Cleaning
         async function fetchGames() {
             try {
                 const r = await fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub');
