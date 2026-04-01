@@ -69,6 +69,33 @@
 
         @keyframes floatBG { 0%, 100% { transform: translate(0, 0); } 50% { transform: translate(-2%, -2%); } }
 
+        /* INTRO ANIMATIONS */
+        @keyframes welcomeIn { 
+            0% { transform: translateX(-50px); opacity: 0; }
+            100% { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes welcomeUp {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-50px); }
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        #welcomeScreen {
+            position: fixed; inset: 0; display: flex; flex-direction: column; 
+            align-items: center; justify-content: center; z-index: 3000; background: #000;
+        }
+        #welcomeText { 
+            font-size: 3rem; font-weight: 800; 
+            animation: welcomeIn 1.2s ease-out forwards; 
+        }
+        #welcomeActions { 
+            display: none; gap: 20px; margin-top: -20px; 
+            animation: fadeIn 0.8s ease forwards;
+        }
+
         /* SCROLLBARS */
         * { scrollbar-width: thin; scrollbar-color: rgba(255, 255, 255, 0.1) transparent; }
         ::-webkit-scrollbar { width: 4px; height: 0px; }
@@ -97,16 +124,21 @@
         .ui-btn:hover { background: rgba(255, 255, 255, 0.12); color: white; transform: rotate(5deg); }
         .ui-btn svg { width: 20px; height: 20px; fill: currentColor; }
 
-        .container { width: 100%; max-width: 520px; padding: 2rem 1.25rem; flex-grow: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; position: relative; }
+        .container { width: 100%; max-width: 800px; padding: 2rem 1.25rem; flex-grow: 1; display: none; flex-direction: column; align-items: center; position: relative; }
         .logo { width: 80px; filter: drop-shadow(0 0 12px rgba(255, 255, 255, 0.25)); }
         h1 { font-size: 2.1rem; font-weight: 700; margin: 10px 0; display: flex; align-items: center; gap: 10px; }
         .count-badge { font-size: 0.9rem; background: rgba(255, 255, 255, 0.15); padding: 4px 10px; border-radius: 20px; color: rgba(255, 255, 255, 0.8); }
         
-        #search { width: 100%; padding: 0.85rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255, 255, 255, 0.08); color: white; text-align: center; outline: none; margin-bottom: 20px; }
+        #search { width: 100%; max-width: 500px; padding: 0.85rem; border-radius: 12px; border: 1px solid rgba(255,255,255,0.1); background: rgba(255, 255, 255, 0.08); color: white; text-align: center; outline: none; margin-bottom: 20px; }
         
-        ul { width: 100%; list-style: none; display: flex; flex-direction: column; gap: 0.7rem; max-height: 40vh; overflow-y: auto; overflow-x: hidden; padding-right: 8px; }
-        a { display: block; padding: 1rem; border-radius: 12px; text-decoration: none; color: white; background: rgba(255, 255, 255, 0.06); transition: 0.2s; border: 1px solid rgba(255,255,255,0.05); text-align: center; font-weight: 600; }
+        /* EXPANDED LIST */
+        ul { width: 100%; list-style: none; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 1rem; max-height: 70vh; overflow-y: auto; padding: 10px; }
+        a { display: block; padding: 1.2rem; border-radius: 12px; text-decoration: none; color: white; background: rgba(255, 255, 255, 0.06); transition: 0.2s; border: 1px solid rgba(255,255,255,0.05); text-align: center; font-weight: 600; }
         a:hover { background: rgba(255, 255, 255, 0.12); transform: translateY(-2px); }
+
+        /* PROXY SECTION */
+        #proxySection { display: none; width: 100%; flex-direction: column; align-items: center; animation: fadeIn 0.5s ease; height: 100%; }
+        #proxyIframe { width: 100%; height: 80vh; border: none; border-radius: 15px; background: #fff; margin-top: 20px; display: none; animation: fadeIn 1s ease; }
 
         .modal-overlay {
             display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -120,7 +152,6 @@
             text-align: center; transform: scale(0.9); transition: 0.3s;
             max-height: 85vh; overflow-y: auto; overflow-x: hidden;
         }
-        .modal-overlay.active .modal-content { transform: scale(1); }
         
         .close-x {
             position: absolute; top: 15px; right: 15px; background: none; border: none;
@@ -147,11 +178,26 @@
         footer { width: 100%; padding: 20px; text-align: center; font-size: 0.85rem; color: rgba(255, 255, 255, 0.4); }
         .more-links-footer { color: rgba(255, 255, 255, 0.6); text-decoration: underline; cursor: pointer; background: none; border: none; font-size: 0.85rem; margin-left: 5px; }
         .modal-btn { width: 100%; padding: 12px; border-radius: 12px; border: none; background: var(--accent-color); color: #000; font-weight: 700; cursor: pointer; transition: 0.3s; margin-top: 10px; }
+    
+        .intro-btn { 
+            padding: 15px 40px; border-radius: 12px; border: 1px solid var(--accent-color); 
+            background: transparent; color: white; font-weight: 700; cursor: pointer; 
+            transition: 0.3s; font-size: 1rem;
+        }
+        .intro-btn:hover { background: var(--accent-color); color: #000; }
     </style>
 </head>
 <body>
 
-    <div id="announcementBanner">
+    <div id="welcomeScreen">
+        <h1 id="welcomeText">Welcome to Quackmath</h1>
+        <div id="welcomeActions">
+            <button class="intro-btn" onclick="startMode('games')">Games</button>
+            <button class="intro-btn" onclick="startMode('proxy')">Proxy</button>
+        </div>
+    </div>
+
+    <div id="announcementBanner" style="display:none;">
         <span>3/31: PROXY HAS DROPPED, slight changes <b onclick="toggleModal('updateModal')" style="cursor:pointer; text-decoration:underline; color:#fff;">more</b></span>
         <button class="dismiss-btn" onclick="dismissBanner()">Dismiss</button>
     </div>
@@ -247,7 +293,7 @@
         <div class="modal-content">
             <button class="close-x" onclick="toggleModal('linksModal')">×</button>
             <h2 style="color:var(--accent-color);">More Links</h2>
-            <ul style="max-height: 50vh; list-style: none; padding: 0; margin-top: 15px;">
+            <ul style="max-height: 50vh; list-style: none; padding: 0; margin-top: 15px; display:flex; flex-direction:column;">
                 <li><a href="https://Quackmath.vercel.app" target="_blank">Quackmath</a></li>
                 <li><a href="https://quackenglish.vercel.app" target="_blank">Quackenglish</a></li>
                 <li><a href="https://quackhistory.vercel.app" target="_blank">Quackhistory</a></li>
@@ -257,20 +303,65 @@
         </div>
     </div>
 
-    <div class="container">
-        <img src="https://ik.imagekit.io/quackmath/goose%20(1).png" class="logo">
-        <h1>Quackmath <span id="gameCount" class="count-badge">0 games</span></h1>
-        <input type="text" id="search" placeholder="Search games...">
-        <ul id="gameList"></ul>
+    <div class="container" id="mainContainer">
+        <div id="homeSection">
+            <center>
+                <img src="https://ik.imagekit.io/quackmath/goose%20(1).png" class="logo">
+                <h1>Quackmath <span id="gameCount" class="count-badge">0 games</span></h1>
+                <input type="text" id="search" placeholder="Search games...">
+            </center>
+            <ul id="gameList"></ul>
+        </div>
+
+        <div id="proxySection">
+            <h2 style="margin-bottom:10px;">Type in a URL to get started</h2>
+            <input type="text" id="proxySearch" placeholder="google.com" style="width:100%; max-width:500px; padding:0.85rem; border-radius:12px; border:1px solid rgba(255,255,255,0.1); background:rgba(255,255,255,0.08); color:white; text-align:center; outline:none;">
+            <iframe id="proxyIframe"></iframe>
+        </div>
     </div>
 
-    <footer>
+    <footer style="display:none;" id="mainFooter">
         Made with ♡ by Quackmath - <button class="more-links-footer" onclick="toggleModal('linksModal')">More Links</button>
     </footer>
 
     <script>
         let panicKey = localStorage.getItem('panicKey') || '';
         let panicUrl = localStorage.getItem('panicUrl') || 'https://google.com';
+
+        // Welcome Sequence
+        setTimeout(() => {
+            const welcomeText = document.getElementById('welcomeText');
+            welcomeText.style.animation = 'welcomeUp 0.8s ease forwards';
+            setTimeout(() => {
+                document.getElementById('welcomeActions').style.display = 'flex';
+            }, 500);
+        }, 1500);
+
+        function startMode(mode) {
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('mainContainer').style.display = 'flex';
+            document.getElementById('mainFooter').style.display = 'block';
+            document.getElementById('announcementBanner').style.display = 'flex';
+            
+            if(mode === 'games') {
+                document.getElementById('homeSection').style.display = 'block';
+                document.getElementById('proxySection').style.display = 'none';
+            } else {
+                document.getElementById('homeSection').style.display = 'none';
+                document.getElementById('proxySection').style.display = 'flex';
+            }
+        }
+
+        // Proxy Logic
+        document.getElementById('proxySearch').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') {
+                let url = e.target.value.trim();
+                if(!url) return;
+                const frame = document.getElementById('proxyIframe');
+                frame.src = `https://brunysixl.work/active/embed.html?p=http://${url}`;
+                frame.style.display = 'block';
+            }
+        });
 
         window.addEventListener('keydown', (e) => {
             if (panicKey && e.key === panicKey) {
@@ -340,26 +431,28 @@
         });
 
         async function fetchGames() {
-            const r = await fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub');
-            const html = await r.text();
-            const doc = new DOMParser().parseFromString(html, 'text/html');
-            const list = document.getElementById('gameList');
-            let count = 0; list.innerHTML = "";
-            
-            doc.querySelectorAll('a').forEach(g => {
-                let name = g.innerText.trim();
-                if (["report abuse", "learn more", "new website"].some(w => name.toLowerCase().includes(w)) || name === "") return;
+            try {
+                const r = await fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub');
+                const html = await r.text();
+                const doc = new DOMParser().parseFromString(html, 'text/html');
+                const list = document.getElementById('gameList');
+                let count = 0; list.innerHTML = "";
                 
-                if (name.toLowerCase().endsWith(".html")) name = name.slice(0, -5);
-                name = name.replace(/^(cl|g|v|p|m)[-\s]?/i, "");
-                
-                const li = document.createElement('li');
-                const a = document.createElement('a');
-                a.href = g.href; a.target = "_blank"; a.innerText = name;
-                li.appendChild(a); list.appendChild(li);
-                count++;
-            });
-            document.getElementById('gameCount').innerText = count + " games";
+                doc.querySelectorAll('a').forEach(g => {
+                    let name = g.innerText.trim();
+                    if (["report abuse", "learn more", "new website"].some(w => name.toLowerCase().includes(w)) || name === "") return;
+                    
+                    if (name.toLowerCase().endsWith(".html")) name = name.slice(0, -5);
+                    name = name.replace(/^(cl|g|v|p|m)[-\s]?/i, "");
+                    
+                    const li = document.createElement('li');
+                    const a = document.createElement('a');
+                    a.href = g.href; a.target = "_blank"; a.innerText = name;
+                    li.appendChild(a); list.appendChild(li);
+                    count++;
+                });
+                document.getElementById('gameCount').innerText = count + " games";
+            } catch(e) { console.log("Fetch failed"); }
         }
 
         const savedTheme = localStorage.getItem('quackTheme');
