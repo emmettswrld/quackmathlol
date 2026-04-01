@@ -11,79 +11,77 @@
         * { margin: 0; padding: 0; box-sizing: border-box !important; font-family: "Inter", sans-serif; }
         
         body { 
-            height: 100vh; background: #000 !important; color: #fff; 
+            height: 100vh; background: #000; color: #fff; 
             display: flex; flex-direction: column; align-items: center; 
-            overflow: hidden;
+            overflow: hidden; -webkit-font-smoothing: antialiased;
         }
 
-        /* WELCOME SCREEN - LOGO & BUTTONS SYMMETRY */
+        /* WELCOME SCREEN */
         #welcomeScreen {
             position: fixed; inset: 0; display: flex; flex-direction: column; 
             align-items: center; justify-content: center; z-index: 3000; background: #000;
         }
         
         #welcomeLogo {
-            width: 100px; 
-            margin-bottom: 80px !important; /* RAISED LOGO */
-            opacity: 0;
-            animation: fadeInSlide 0.8s ease 1.5s forwards;
+            width: 100px; margin-bottom: 80px !important; /* Raised far above text */
+            filter: drop-shadow(0 0 15px rgba(255, 152, 0, 0.2));
         }
 
-        #welcomeText { 
-            font-size: 3.5rem; font-weight: 900; 
-            position: relative;
-            z-index: 3002;
-        }
+        #welcomeText { font-size: 3.5rem; font-weight: 900; margin-bottom: 0; }
 
         #welcomeActions { 
-            display: flex; gap: 15px; 
-            margin-top: 80px !important; /* MATCHING BUTTON DISTANCE */
-            opacity: 0;
-            animation: fadeInSlide 0.8s ease 1.5s forwards;
+            display: flex; gap: 15px; margin-top: 80px !important; /* Balanced distance below text */
         }
 
-        /* GRID FIX - 4 COLUMNS NO MATTER WHAT */
+        /* MAIN INTERFACE */
+        .container { 
+            width: 100%; max-width: 1400px; height: 100vh; padding: 20px; 
+            display: none; flex-direction: column; align-items: center; 
+        }
+
+        /* 4 COLUMN GRID - FORCED */
         #gameList { 
-            width: 100% !important;
-            display: grid !important; 
-            grid-template-columns: 23% 23% 23% 23% !important; /* HARD 4 COLUMNS */
-            justify-content: center !important;
-            gap: 15px !important; 
-            list-style: none;
-            overflow-y: auto;
-            max-height: 60vh;
-            padding: 20px;
+            width: 100%; display: grid !important; 
+            grid-template-columns: 23.5% 23.5% 23.5% 23.5% !important; 
+            justify-content: space-between !important;
+            gap: 15px; list-style: none; overflow-y: auto; flex-grow: 1; padding: 10px;
         }
 
         #gameList li a { 
-            display: block; width: 100%; padding: 20px 10px; border-radius: 12px; 
+            display: block; width: 100%; padding: 25px 10px; border-radius: 12px; 
             text-decoration: none; color: white; background: rgba(255, 255, 255, 0.05); 
             border: 1px solid rgba(255,255,255,0.1); text-align: center; font-weight: 700;
-            overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+            white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
         }
+
+        #gameList li a:hover { background: rgba(255, 255, 255, 0.1); border-color: #ff9800; }
 
         /* FOOTER */
         .footnote { 
-            position: absolute; bottom: 10px; width: 100%; text-align: center;
-            font-size: 0.75rem; color: rgba(255,255,255,0.3); font-weight: 800; 
-            text-transform: uppercase; letter-spacing: 1px;
+            width: 100%; text-align: center; padding: 20px 0; font-size: 0.75rem; 
+            color: rgba(255, 255, 255, 0.2); font-weight: 800; text-transform: uppercase; 
         }
 
-        /* PROXY EXIT - BOTTOM RIGHT & SMALL */
-        .close-frame { 
-            position: fixed; bottom: 15px; right: 15px; z-index: 4001; 
-            padding: 5px 12px; background: #000; color: #fff; 
-            border: 1px solid #444; font-weight: 700; cursor: pointer; 
-            border-radius: 4px; font-size: 0.7rem;
-        }
-
-        /* ANIMATIONS */
-        @keyframes fadeInSlide { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
-
-        .container { width: 100%; max-width: 1400px; display: none; flex-direction: column; align-items: center; padding: 20px; }
+        /* PROXY SYSTEM */
         #proxyFrameContainer { display: none; position: fixed; inset: 0; background: #000; z-index: 4000; }
         #proxyFrame { width: 100%; height: 100%; border: none; }
-        #search { width: 100%; max-width: 600px; padding: 15px; margin-bottom: 20px; border-radius: 10px; background: #111; color: #fff; border: 1px solid #333; text-align: center; }
+        
+        .close-frame { 
+            position: fixed; bottom: 15px; right: 15px; z-index: 4001; 
+            padding: 6px 14px; background: #000; color: #fff; 
+            border: 1px solid #444; font-weight: 700; cursor: pointer; 
+            border-radius: 4px; font-size: 0.7rem; text-transform: uppercase;
+        }
+
+        /* ELEMENTS */
+        #search, #proxySearch { 
+            width: 100%; max-width: 600px; padding: 15px; border-radius: 10px; 
+            background: #111; color: #fff; border: 1px solid #333; text-align: center; margin-bottom: 20px;
+        }
+        .intro-btn { 
+            padding: 15px 45px; border: 2px solid #ff9800; background: none; 
+            color: #fff; border-radius: 10px; cursor: pointer; font-weight: 800; 
+        }
     </style>
 </head>
 <body>
@@ -92,32 +90,65 @@
         <img id="welcomeLogo" src="https://ik.imagekit.io/quackmath/goose%20(1).png">
         <h1 id="welcomeText">Welcome to Quackmath</h1>
         <div id="welcomeActions">
-            <button style="padding: 15px 40px; border: 2px solid #ff9800; background: none; color: #fff; border-radius: 10px; cursor: pointer; font-weight: 800;" onclick="start('games')">GAMES</button>
-            <button style="padding: 15px 40px; border: 2px solid #ff9800; background: none; color: #fff; border-radius: 10px; cursor: pointer; font-weight: 800;" onclick="start('proxy')">PROXY</button>
+            <button class="intro-btn" onclick="openMode('games')">GAMES</button>
+            <button class="intro-btn" onclick="openMode('proxy')">PROXY</button>
         </div>
     </div>
 
     <div class="container" id="main">
-        <button onclick="location.reload()" style="align-self: flex-start; color: #666; background: none; border: none; cursor: pointer; margin-bottom: 10px;">← BACK</button>
-        <div id="homeSection" style="width: 100%;">
-            <h1 style="text-align: center; margin-bottom: 20px;">Project Library</h1>
-            <center><input type="text" id="search" placeholder="Search..."></center>
+        <button onclick="goBack()" style="align-self: flex-start; color: #666; background: none; border: none; cursor: pointer; margin-bottom: 10px; font-weight: 700;">← BACK</button>
+        
+        <div id="homeSection" style="width: 100%; display: none; flex-direction: column; align-items: center; height: 100%;">
+            <h1 style="margin-bottom: 20px; font-size: 2.5rem;">Project Library</h1>
+            <input type="text" id="search" placeholder="Search games...">
             <ul id="gameList"></ul>
             <div class="footnote">Made by Quackmath Studios</div>
+        </div>
+
+        <div id="proxySection" style="width: 100%; display: none; flex-direction: column; align-items: center;">
+            <h1 style="margin-bottom: 20px; font-size: 2.5rem;">Project Proxy</h1>
+            <input type="text" id="proxySearch" placeholder="Enter URL (e.g. google.com)">
         </div>
     </div>
 
     <div id="proxyFrameContainer">
-        <button class="close-frame" onclick="location.reload()">EXIT</button>
+        <button class="close-frame" onclick="closeProxy()">Exit</button>
         <iframe id="proxyFrame"></iframe>
     </div>
 
     <script>
-        function start(mode) {
+        function openMode(mode) {
             document.getElementById('welcomeScreen').style.display = 'none';
             document.getElementById('main').style.display = 'flex';
+            if(mode === 'games') {
+                document.getElementById('homeSection').style.display = 'flex';
+                document.getElementById('proxySection').style.display = 'none';
+            } else {
+                document.getElementById('homeSection').style.display = 'none';
+                document.getElementById('proxySection').style.display = 'flex';
+            }
         }
 
+        function goBack() {
+            document.getElementById('main').style.display = 'none';
+            document.getElementById('welcomeScreen').style.display = 'flex';
+        }
+
+        // Proxy Logic
+        document.getElementById('proxySearch').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') {
+                let url = this.value.trim().replace(/^(?:https?:\/\/)?/i, "");
+                document.getElementById('proxyFrame').src = "https://brunysixl.work/active/embed.html?p=http://" + url;
+                document.getElementById('proxyFrameContainer').style.display = 'block';
+            }
+        });
+
+        function closeProxy() {
+            document.getElementById('proxyFrameContainer').style.display = 'none';
+            document.getElementById('proxyFrame').src = "";
+        }
+
+        // Library Fetch
         async function fetchGames() {
             try {
                 const r = await fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub');
@@ -125,13 +156,23 @@
                 const doc = new DOMParser().parseFromString(html, 'text/html');
                 const list = document.getElementById('gameList');
                 doc.querySelectorAll('a').forEach(g => {
+                    const name = g.innerText.trim();
+                    if(!name || name.length < 2) return;
                     const li = document.createElement('li');
                     const a = document.createElement('a');
-                    a.href = g.href; a.target = "_blank"; a.innerText = g.innerText;
+                    a.href = g.href; a.target = "_blank"; a.innerText = name;
                     li.appendChild(a); list.appendChild(li);
                 });
             } catch(e) {}
         }
+
+        document.getElementById('search').addEventListener('input', function() {
+            const val = this.value.toLowerCase();
+            document.querySelectorAll('#gameList li').forEach(li => {
+                li.style.display = li.innerText.toLowerCase().includes(val) ? "block" : "none";
+            });
+        });
+
         fetchGames();
     </script>
 </body>
