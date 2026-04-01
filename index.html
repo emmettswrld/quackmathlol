@@ -13,25 +13,24 @@
         body { 
             height: 100vh; width: 100vw; background: #000; color: #fff; 
             display: flex; flex-direction: column; align-items: center; 
-            overflow-x: hidden; /* ELIMINATES HORIZONTAL SCROLL */
+            overflow-x: hidden;
             -webkit-font-smoothing: antialiased;
         }
 
-        /* --- SUBTLE ANIMATIONS --- */
+        /* --- ANIMATIONS --- */
         @keyframes fadeInUp {
             from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* WELCOME SCREEN - PRECISE SPACING */
+        /* WELCOME SCREEN */
         #welcomeScreen {
             position: fixed; inset: 0; display: flex; flex-direction: column; 
             align-items: center; justify-content: center; z-index: 3000; background: #000;
         }
         
         #welcomeLogo {
-            width: 100px; 
-            margin-bottom: 80px !important; 
+            width: 100px; margin-bottom: 80px !important; 
             filter: drop-shadow(0 0 15px rgba(255, 152, 0, 0.3));
             animation: fadeInUp 0.8s ease forwards;
         }
@@ -42,8 +41,7 @@
         }
 
         #welcomeActions { 
-            display: flex; gap: 20px; 
-            margin-top: 80px !important; 
+            display: flex; gap: 20px; margin-top: 80px !important; 
             animation: fadeInUp 0.8s ease 0.4s forwards; opacity: 0;
         }
 
@@ -54,17 +52,12 @@
             animation: fadeInUp 0.5s ease forwards;
         }
 
-        /* THE 4-COLUMN GRID - FIXED NO SCROLL */
+        /* 4-COLUMN GRID - NO HORIZONTAL SCROLL */
         #gameList { 
-            width: 100%; 
-            display: grid !important; 
+            width: 100%; display: grid !important; 
             grid-template-columns: repeat(4, minmax(0, 1fr)) !important; 
-            gap: 20px; 
-            list-style: none; 
-            overflow-y: auto; 
-            overflow-x: hidden; 
-            flex-grow: 1; 
-            padding: 10px 5px;
+            gap: 20px; list-style: none; overflow-y: auto; overflow-x: hidden; 
+            flex-grow: 1; padding: 10px 5px;
         }
 
         #gameList li a { 
@@ -75,7 +68,6 @@
             transition: all 0.3s ease;
         }
 
-        /* GLOW EFFECTS */
         #gameList li a:hover, .intro-btn:hover, .back-btn:hover { 
             border-color: #ff9800 !important; 
             box-shadow: 0 0 20px rgba(255, 152, 0, 0.4);
@@ -83,7 +75,7 @@
             background: rgba(255, 152, 0, 0.08);
         }
 
-        /* PROXY CENTERED */
+        /* PROXY SECTION */
         #proxySection {
             width: 100%; flex-grow: 1; display: none; flex-direction: column; 
             align-items: center; justify-content: center; 
@@ -135,7 +127,7 @@
         
         <div id="homeSection" style="width: 100%; display: none; flex-direction: column; align-items: center; height: 100%;">
             <h1 style="margin-bottom: 25px; font-size: 2.8rem; font-weight: 900;">Project Library</h1>
-            <input type="text" id="search" placeholder="Search for a project...">
+            <input type="text" id="search" placeholder="Search library...">
             <ul id="gameList"></ul>
             <div class="footnote">Made by Quackmath Studios</div>
         </div>
@@ -182,7 +174,7 @@
             document.getElementById('proxyFrame').src = "";
         }
 
-        // Search Filter Fix
+        // Live Search Filter
         document.getElementById('search').addEventListener('input', function() {
             let val = this.value.toLowerCase().trim();
             let items = document.querySelectorAll('#gameList li');
@@ -192,7 +184,7 @@
             });
         });
 
-        // Game Fetching
+        // FETCHING DATA WITH EXCLUSION FILTERS
         async function fetchGames() {
             try {
                 const r = await fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub');
@@ -202,7 +194,17 @@
                 
                 doc.querySelectorAll('a').forEach(g => {
                     const name = g.innerText.trim();
-                    if(!name || name.length < 2 || name.toLowerCase().includes("report abuse")) return;
+                    const lowName = name.toLowerCase();
+
+                    // --- THE FILTERS ---
+                    if(!name || name.length < 2) return;
+                    if(lowName.startsWith('cl')) return; // 'cl' prefix
+                    if(lowName.endsWith('.html')) return; // '.html' suffix
+                    if(lowName.includes("learn more")) return; 
+                    if(lowName.includes("new website")) return;
+                    if(lowName.includes("chat")) return;
+                    if(lowName.includes("report abuse")) return;
+
                     const li = document.createElement('li');
                     const a = document.createElement('a');
                     a.href = g.href; a.target = "_blank"; a.innerText = name;
