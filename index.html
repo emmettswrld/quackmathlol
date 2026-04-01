@@ -2,8 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="pageTitle">Quackmath</title>
+    <meta name="viewport" content="width=device-width, initial-scale=0.9"> <title id="pageTitle">Quackmath</title>
     <link id="favicon" rel="icon" type="image/png" href="https://ik.imagekit.io/quackmath/goose%20(1).png">
     <style>
         @import url("https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;900&display=swap");
@@ -14,11 +13,12 @@
             height: 100vh; background: #000; color: #fff; 
             display: flex; flex-direction: column; align-items: center; 
             overflow: hidden; -webkit-font-smoothing: antialiased;
+            transform: scale(0.95); /* Subtle zoom out for the whole UI */
         }
 
         :root {
-            --bg-gradient: radial-gradient(circle at 20% 30%, rgba(0, 150, 255, 0.15), transparent 40%), 
-                           radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.08), transparent 45%);
+            --bg-gradient: radial-gradient(circle at 20% 30%, rgba(0, 150, 255, 0.12), transparent 40%), 
+                           radial-gradient(circle at 80% 70%, rgba(255, 255, 255, 0.05), transparent 45%);
             --accent-color: #ff9800;
         }
 
@@ -34,14 +34,14 @@
         }
         @keyframes welcomeUp {
             0% { transform: translateY(-50%); }
-            100% { transform: translateY(-110%); }
+            100% { transform: translateY(-130%); } /* Pushed text slightly higher */
         }
-        @keyframes logoFadeIn {
-            from { opacity: 0; transform: translateY(10px) scale(0.9); }
+        @keyframes logoSlideUp {
+            from { opacity: 0; transform: translateY(40px) scale(0.9); }
             to { opacity: 1; transform: translateY(0) scale(1); }
         }
         @keyframes pageSlideIn {
-            from { opacity: 0; transform: translateY(30px); }
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -52,70 +52,73 @@
             transition: opacity 0.5s ease, visibility 0.5s;
         }
         #welcomeLogo {
-            width: 110px; margin-bottom: 50px; opacity: 0; /* Moved up with margin */
-            filter: drop-shadow(0 0 20px rgba(255, 152, 0, 0.3));
+            width: 100px; margin-bottom: 120px; opacity: 0; /* Raised significantly */
+            filter: drop-shadow(0 0 20px rgba(255, 152, 0, 0.2));
         }
         #welcomeText { 
-            font-size: 3.8rem; font-weight: 900; position: absolute; top: 50%;
+            font-size: 3.5rem; font-weight: 900; position: absolute; top: 50%;
             animation: welcomeIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
         }
         #welcomeActions { 
-            display: none; gap: 15px; margin-top: 50px; /* Reduced spacing */
-            animation: logoFadeIn 0.8s ease-out forwards;
+            display: none; gap: 12px; margin-top: 30px; /* Tighter spacing to text */
+            animation: logoSlideUp 0.8s ease-out forwards;
         }
 
         /* CONTAINER & LAYOUT */
         .container { 
-            width: 100%; max-width: 1100px; padding: 2rem; display: none; 
+            width: 100%; max-width: 1100px; padding: 1.5rem; display: none; 
             flex-direction: column; align-items: center; 
-            animation: pageSlideIn 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+            animation: pageSlideIn 0.5s cubic-bezier(0.23, 1, 0.32, 1) forwards;
         }
         
         #search, #proxySearch { 
-            width: 100%; max-width: 700px; padding: 1.4rem; border-radius: 18px; 
-            border: 1px solid rgba(255,255,255,0.1); background: rgba(255, 255, 255, 0.08); 
-            color: white; text-align: center; outline: none; margin-bottom: 40px; 
-            font-size: 1.3rem; /* Larger Search Bar */
-            transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            width: 100%; max-width: 750px; padding: 1.3rem; border-radius: 16px; 
+            border: 1px solid rgba(255,255,255,0.1); background: rgba(255, 255, 255, 0.06); 
+            color: white; text-align: center; outline: none; margin-bottom: 30px; 
+            font-size: 1.2rem;
         }
-        #search:focus, #proxySearch:focus { border-color: var(--accent-color); background: rgba(255, 255, 255, 0.12); }
 
         /* GAMES LIST */
         ul { 
             width: 100%; list-style: none; display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); 
-            gap: 1.5rem; max-height: 65vh; overflow-y: auto; overflow-x: hidden; 
+            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
+            gap: 1.2rem; max-height: 60vh; overflow-y: auto; overflow-x: hidden; 
             padding: 10px; 
         }
-        ul::-webkit-scrollbar { width: 6px; }
+        ul::-webkit-scrollbar { width: 5px; }
         ul::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
 
         li a { 
-            display: block; padding: 2rem; border-radius: 20px; text-decoration: none; 
-            color: white; background: rgba(255, 255, 255, 0.05); transition: 0.3s; 
-            border: 1px solid rgba(255,255,255,0.03); text-align: center; font-weight: 700; 
-            font-size: 1.1rem; letter-spacing: 0.5px;
+            display: block; padding: 1.6rem; border-radius: 18px; text-decoration: none; 
+            color: white; background: rgba(255, 255, 255, 0.04); transition: 0.25s; 
+            border: 1px solid rgba(255,255,255,0.02); text-align: center; font-weight: 700; 
         }
-        li a:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--accent-color); transform: translateY(-5px); }
+        li a:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--accent-color); transform: translateY(-3px); }
 
         /* BUTTONS */
         .intro-btn { 
-            padding: 18px 55px; border-radius: 16px; border: 2px solid var(--accent-color); 
+            padding: 16px 45px; border-radius: 14px; border: 2px solid var(--accent-color); 
             background: transparent; color: white; font-weight: 800; cursor: pointer; 
-            transition: 0.3s; font-size: 1.2rem;
+            transition: 0.3s; font-size: 1.1rem;
         }
-        .intro-btn:hover { background: var(--accent-color); color: #000; transform: translateY(-2px); }
+        .intro-btn:hover { background: var(--accent-color); color: #000; }
 
         .back-nav {
-            margin-bottom: 30px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            color: #999; padding: 10px 25px; border-radius: 30px; cursor: pointer; transition: 0.2s; font-weight: 600;
+            margin-bottom: 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
+            color: #888; padding: 8px 20px; border-radius: 30px; cursor: pointer; transition: 0.2s; font-weight: 600;
         }
-        .back-nav:hover { color: white; background: rgba(255,255,255,0.15); transform: translateX(-5px); }
+        .back-nav:hover { color: white; transform: translateX(-3px); }
+
+        /* FOOTER */
+        .footnote {
+            margin-top: auto; padding: 20px; font-size: 0.8rem; 
+            color: rgba(255, 255, 255, 0.3); letter-spacing: 1px; font-weight: 600;
+        }
 
         /* IFRAME */
         #proxyFrameContainer { display: none; position: fixed; inset: 0; background: #000; z-index: 4000; }
         #proxyFrame { width: 100%; height: 100%; border: none; }
-        .close-frame { position: fixed; top: 20px; left: 20px; z-index: 4001; padding: 10px 20px; border-radius: 12px; background: #ff4444; color: white; border: none; font-weight: 800; cursor: pointer; box-shadow: 0 4px 15px rgba(0,0,0,0.5); }
+        .close-frame { position: fixed; top: 15px; left: 15px; z-index: 4001; padding: 8px 18px; border-radius: 10px; background: #ff4444; color: white; border: none; font-weight: 800; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -132,16 +135,17 @@
     <div class="container" id="mainContainer">
         <button class="back-nav" onclick="goHome()">← Back to Menu</button>
         
-        <div id="homeSection" style="width:100%; text-align:center;">
-            <h1 style="margin-bottom:30px; font-weight:900; font-size: 2.5rem;">Project Library</h1>
+        <div id="homeSection" style="width:100%; text-align:center; display: flex; flex-direction: column; align-items: center;">
+            <h1 style="margin-bottom:25px; font-weight:900; font-size: 2.2rem;">Project Library</h1>
             <input type="text" id="search" placeholder="Search filtered library...">
             <ul id="gameList"></ul>
+            
+            <p class="footnote">Made by Quackmath Studios</p>
         </div>
 
         <div id="proxySection" style="display:none; text-align:center;">
-            <h1 style="margin-bottom:30px; font-weight:900; font-size: 2.5rem;">Project Proxy</h1>
+            <h1 style="margin-bottom:25px; font-weight:900; font-size: 2.2rem;">Project Proxy</h1>
             <input type="text" id="proxySearch" placeholder="Enter URL (example.com)">
-            <p style="color: #666; font-weight: 600;">Content launches in a secure project frame.</p>
         </div>
     </div>
 
@@ -151,17 +155,17 @@
     </div>
 
     <script>
-        // Intro sequence logic
+        // Intro sequence
         setTimeout(() => {
             const welcomeText = document.getElementById('welcomeText');
-            welcomeText.style.animation = 'welcomeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards';
+            welcomeText.style.animation = 'welcomeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards';
             
             setTimeout(() => {
                 const logo = document.getElementById('welcomeLogo');
-                logo.style.animation = 'logoFadeIn 0.8s ease forwards';
+                logo.style.animation = 'logoSlideUp 0.8s ease forwards';
                 document.getElementById('welcomeActions').style.display = 'flex';
             }, 700);
-        }, 1400);
+        }, 1200);
 
         function startMode(mode) {
             const welcome = document.getElementById('welcomeScreen');
@@ -170,7 +174,7 @@
                 welcome.style.visibility = 'hidden';
                 document.getElementById('mainContainer').style.display = 'flex';
                 if(mode === 'games') {
-                    document.getElementById('homeSection').style.display = 'block';
+                    document.getElementById('homeSection').style.display = 'flex';
                     document.getElementById('proxySection').style.display = 'none';
                 } else {
                     document.getElementById('homeSection').style.display = 'none';
@@ -203,7 +207,6 @@
             window.history.pushState({}, '', "/");
         }
 
-        // Fetching with full custom filters
         async function fetchGames() {
             try {
                 const r = await fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub');
@@ -213,12 +216,9 @@
                 
                 doc.querySelectorAll('a').forEach(g => {
                     let name = g.innerText.trim();
-                    
-                    // Filter list
                     const forbidden = ["report abuse", "learn more", "new website", "chat"];
                     if (forbidden.some(word => name.toLowerCase().includes(word)) || name === "") return;
 
-                    // Text Cleanup
                     if (name.toLowerCase().endsWith(".html")) name = name.slice(0, -5);
                     name = name.replace(/^cl[-\s]?/i, ""); 
                     if (name.toLowerCase() === "gdlite") name = "Geometry Dash";
@@ -228,10 +228,9 @@
                     a.href = g.href; a.target = "_blank"; a.innerText = name;
                     li.appendChild(a); list.appendChild(li);
                 });
-            } catch(e) { console.log("Fetch failed"); }
+            } catch(e) {}
         }
         
-        // Search Filter
         document.getElementById('search').addEventListener('input', (e) => {
             const val = e.target.value.toLowerCase();
             document.querySelectorAll('#gameList li').forEach(li => {
