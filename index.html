@@ -46,6 +46,7 @@
             align-items: center; justify-content: center; z-index: 3000; background: #000;
         }
         
+        /* LOGO - Balanced spacing (Exactly 70px from text center) */
         #welcomeLogo {
             width: 100px; margin-bottom: 70px; opacity: 0;
             filter: drop-shadow(0 0 15px rgba(255, 152, 0, 0.2));
@@ -57,75 +58,75 @@
             animation: welcomeIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
         }
 
+        /* BUTTONS - Balanced spacing (Exactly 70px from text center) */
         #welcomeActions { 
             display: none; gap: 15px; margin-top: 70px; 
             animation: fadeInSlide 0.8s ease-out forwards;
         }
 
-        /* CONTAINER */
+        /* CONTAINER - Forced Wide for 4 Columns */
         .container { 
-            width: 95%; max-width: 1400px; height: 100vh; padding: 1rem; 
+            width: 98%; max-width: 1500px; height: 100vh; padding: 1rem; 
             display: none; flex-direction: column; align-items: center; 
             animation: fadeInSlide 0.5s ease-out forwards;
         }
         
         #search, #proxySearch { 
-            width: 100%; max-width: 700px; padding: 1.2rem; border-radius: 12px; 
-            border: 1px solid rgba(255,255,255,0.1); background: rgba(255, 255, 255, 0.07); 
-            color: white; text-align: center; outline: none; margin-bottom: 15px; font-size: 1.2rem;
+            width: 100%; max-width: 800px; padding: 1.4rem; border-radius: 12px; 
+            border: 1px solid rgba(255,255,255,0.1); background: rgba(255, 255, 255, 0.08); 
+            color: white; text-align: center; outline: none; margin-bottom: 20px; font-size: 1.4rem;
         }
 
-        /* UPDATED HOME SECTION */
         #homeSection {
             width: 100%; height: 100%; display: flex; flex-direction: column; align-items: center;
         }
 
-        /* FORCED 4 COLUMNS - STRETCH TO FIT */
+        /* HARD 4-COLUMN GRID - NO COMPROMISE */
         ul { 
             width: 100%; list-style: none; display: grid; 
-            grid-template-columns: 1fr 1fr 1fr 1fr; /* Strict 4 Column Force */
-            gap: 12px; flex-grow: 1; overflow-y: auto; overflow-x: hidden; 
+            grid-template-columns: repeat(4, 1fr); 
+            grid-auto-rows: min-content;
+            gap: 15px; flex-grow: 1; overflow-y: auto; overflow-x: hidden; 
             padding: 10px; margin-bottom: 10px;
         }
 
         li a { 
-            display: block; width: 100%; padding: 1.5rem 0.5rem; border-radius: 12px; 
-            text-decoration: none; color: white; background: rgba(255, 255, 255, 0.04); 
-            transition: 0.2s; border: 1px solid rgba(255,255,255,0.02); 
-            text-align: center; font-weight: 700; font-size: 0.85rem;
+            display: block; width: 100%; padding: 1.8rem 0.5rem; border-radius: 12px; 
+            text-decoration: none; color: white; background: rgba(255, 255, 255, 0.05); 
+            transition: 0.2s; border: 1px solid rgba(255,255,255,0.05); 
+            text-align: center; font-weight: 700; font-size: 1rem;
             overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
         }
-        li a:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--accent-color); }
+        li a:hover { background: rgba(255, 255, 255, 0.1); border-color: var(--accent-color); }
 
+        /* BUTTONS & FOOTER */
         .intro-btn { 
             padding: 15px 45px; border-radius: 12px; border: 2px solid var(--accent-color); 
             background: transparent; color: white; font-weight: 800; cursor: pointer; 
-            transition: 0.3s; font-size: 1rem;
+            transition: 0.3s; font-size: 1.1rem;
         }
         .intro-btn:hover { background: var(--accent-color); color: #000; }
 
         .back-nav {
-            align-self: flex-start; margin-bottom: 5px; background: rgba(255,255,255,0.05); 
-            border: 1px solid rgba(255,255,255,0.1); color: #888; padding: 6px 16px; 
-            border-radius: 30px; cursor: pointer; font-weight: 600; font-size: 0.8rem;
+            align-self: flex-start; margin-bottom: 10px; background: rgba(255,255,255,0.05); 
+            border: 1px solid rgba(255,255,255,0.1); color: #888; padding: 8px 20px; 
+            border-radius: 30px; cursor: pointer; font-weight: 600;
         }
 
-        /* FIXED FOOTER POSITION */
         .footnote { 
-            width: 100%; text-align: center; padding: 10px 0; font-size: 0.7rem; 
-            color: rgba(255, 255, 255, 0.2); font-weight: 600; 
-            letter-spacing: 1px; text-transform: uppercase; border-top: 1px solid rgba(255,255,255,0.05);
+            width: 100%; text-align: center; padding: 15px 0; font-size: 0.8rem; 
+            color: rgba(255, 255, 255, 0.3); font-weight: 700; 
+            letter-spacing: 1.5px; text-transform: uppercase;
         }
 
-        /* PROXY OVERLAY */
+        /* PROXY */
         #proxyFrameContainer { display: none; position: fixed; inset: 0; background: #000; z-index: 4000; }
         #proxyFrame { width: 100%; height: 100%; border: none; }
         
-        /* Smaller Exit Button - Bottom Right */
         .close-frame { 
-            position: fixed; bottom: 15px; right: 15px; z-index: 4001; 
-            padding: 6px 14px; background: #000; color: #fff; 
-            border: 1px solid #444; font-weight: 700; cursor: pointer; 
+            position: fixed; bottom: 20px; right: 20px; z-index: 4001; 
+            padding: 8px 18px; background: #000; color: #fff; 
+            border: 1px solid #555; font-weight: 800; cursor: pointer; 
             border-radius: 4px; font-size: 0.75rem; text-transform: uppercase;
         }
     </style>
@@ -145,14 +146,14 @@
         <button class="back-nav" onclick="goHome()">← Back</button>
         
         <div id="homeSection" style="display:none;">
-            <h1 style="margin-bottom:10px; font-weight:900; font-size: 2rem; text-align: center;">Project Library</h1>
+            <h1 style="margin-bottom:15px; font-weight:900; font-size: 2.5rem; text-align: center;">Project Library</h1>
             <input type="text" id="search" placeholder="Search library...">
             <ul id="gameList"></ul>
             <div class="footnote">Made by Quackmath Studios</div>
         </div>
 
         <div id="proxySection" style="display:none; text-align:center; width: 100%;">
-            <h1 style="margin-bottom:20px; font-weight:900; font-size: 2.2rem;">Project Proxy</h1>
+            <h1 style="margin-bottom:25px; font-weight:900; font-size: 2.5rem;">Project Proxy</h1>
             <input type="text" id="proxySearch" placeholder="Enter URL...">
         </div>
     </div>
@@ -163,7 +164,7 @@
     </div>
 
     <script>
-        // Intro Animation
+        // Intro Sequence Logic
         setTimeout(() => {
             const welcomeText = document.getElementById('welcomeText');
             welcomeText.style.animation = 'welcomeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards';
