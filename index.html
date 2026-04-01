@@ -13,8 +13,7 @@
         body { 
             height: 100vh; width: 100vw; background: #000; color: #fff; 
             display: flex; flex-direction: column; align-items: center; 
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
+            overflow: hidden; -webkit-font-smoothing: antialiased;
         }
 
         /* --- ANIMATIONS --- */
@@ -23,7 +22,6 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        /* WELCOME SCREEN */
         #welcomeScreen {
             position: fixed; inset: 0; display: flex; flex-direction: column; 
             align-items: center; justify-content: center; z-index: 3000; background: #000;
@@ -45,17 +43,16 @@
             animation: fadeInUp 0.8s ease 0.4s forwards; opacity: 0;
         }
 
-        /* MAIN CONTAINER */
         .container { 
             width: 100%; max-width: 1300px; height: 100vh; padding: 40px 20px; 
             display: none; flex-direction: column; align-items: center; 
             animation: fadeInUp 0.5s ease forwards;
         }
 
-        /* 4-COLUMN GRID - NO HORIZONTAL SCROLL */
+        /* THE 4-COLUMN GRID */
         #gameList { 
             width: 100%; display: grid !important; 
-            grid-template-columns: repeat(4, minmax(0, 1fr)) !important; 
+            grid-template-columns: repeat(4, 1fr) !important; 
             gap: 20px; list-style: none; overflow-y: auto; overflow-x: hidden; 
             flex-grow: 1; padding: 10px 5px;
         }
@@ -75,7 +72,6 @@
             background: rgba(255, 152, 0, 0.08);
         }
 
-        /* PROXY SECTION */
         #proxySection {
             width: 100%; flex-grow: 1; display: none; flex-direction: column; 
             align-items: center; justify-content: center; 
@@ -174,7 +170,6 @@
             document.getElementById('proxyFrame').src = "";
         }
 
-        // Live Search Filter
         document.getElementById('search').addEventListener('input', function() {
             let val = this.value.toLowerCase().trim();
             let items = document.querySelectorAll('#gameList li');
@@ -184,7 +179,6 @@
             });
         });
 
-        // FETCHING DATA WITH EXCLUSION FILTERS
         async function fetchGames() {
             try {
                 const r = await fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub');
@@ -193,22 +187,25 @@
                 const list = document.getElementById('gameList');
                 
                 doc.querySelectorAll('a').forEach(g => {
-                    const name = g.innerText.trim();
-                    const lowName = name.toLowerCase();
+                    let rawName = g.innerText.trim();
+                    if(!rawName || rawName.length < 2 || rawName.toLowerCase().includes("report abuse")) return;
 
-                    // --- THE FILTERS ---
-                    if(!name || name.length < 2) return;
-                    if(lowName.startsWith('cl')) return; // 'cl' prefix
-                    if(lowName.endsWith('.html')) return; // '.html' suffix
-                    if(lowName.includes("learn more")) return; 
-                    if(lowName.includes("new website")) return;
-                    if(lowName.includes("chat")) return;
-                    if(lowName.includes("report abuse")) return;
+                    // --- AGGRESSIVE CLEANING ---
+                    // 1. Remove "cl" from the start (case insensitive)
+                    let cleanName = rawName.replace(/^cl\s*/i, "");
+                    
+                    // 2. Remove ".html" from the end (case insensitive)
+                    cleanName = cleanName.replace(/\.html$/i, "");
+                    
+                    // 3. Remove specific junk phrases globally
+                    cleanName = cleanName.replace(/learn more|new website|chat/gi, "").trim();
 
-                    const li = document.createElement('li');
-                    const a = document.createElement('a');
-                    a.href = g.href; a.target = "_blank"; a.innerText = name;
-                    li.appendChild(a); list.appendChild(li);
+                    if (cleanName.length > 0) {
+                        const li = document.createElement('li');
+                        const a = document.createElement('a');
+                        a.href = g.href; a.target = "_blank"; a.innerText = cleanName;
+                        li.appendChild(a); list.appendChild(li);
+                    }
                 });
             } catch(e) { console.log("Fetch error"); }
         }
