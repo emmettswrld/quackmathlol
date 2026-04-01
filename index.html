@@ -21,7 +21,6 @@
             --accent-color: #ff9800;
         }
 
-        /* Clean Background - Removed the blue tint */
         body::before { 
             content: ""; position: absolute; width: 100%; height: 100%; 
             background: var(--bg-gradient); z-index: -1; 
@@ -34,14 +33,10 @@
         }
         @keyframes welcomeUp {
             0% { transform: translateY(-50%); }
-            100% { transform: translateY(-135%); }
+            100% { transform: translateY(-120%); }
         }
-        @keyframes logoSlideUp {
-            from { opacity: 0; transform: translateY(30px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes pageSlideIn {
-            from { opacity: 0; transform: translateY(15px); }
+        @keyframes actionFade {
+            from { opacity: 0; transform: translateY(10px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
@@ -49,55 +44,58 @@
         #welcomeScreen {
             position: fixed; inset: 0; display: flex; flex-direction: column; 
             align-items: center; justify-content: center; z-index: 3000; background: #000;
-            transition: opacity 0.5s ease, visibility 0.5s;
         }
+        
+        /* LOGO RAISED HIGH */
         #welcomeLogo {
-            width: 90px; margin-bottom: 140px; opacity: 0;
+            width: 100px; position: absolute; top: 15%; opacity: 0;
             filter: drop-shadow(0 0 15px rgba(255, 152, 0, 0.2));
         }
+
         #welcomeText { 
-            font-size: 3.2rem; font-weight: 900; position: absolute; top: 50%;
+            font-size: 3.5rem; font-weight: 900; position: absolute; top: 50%;
             animation: welcomeIn 1.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
         }
+
+        /* BUTTONS TIED TO TEXT */
         #welcomeActions { 
-            display: none; gap: 12px; margin-top: 25px; 
-            animation: logoSlideUp 0.8s ease-out forwards;
+            display: none; gap: 15px; margin-top: 65px; /* Keeps them close to the text */
+            animation: actionFade 0.6s ease-out forwards;
         }
 
-        /* CONTAINER & LAYOUT */
+        /* CONTAINER */
         .container { 
-            width: 100%; max-width: 1100px; padding: 2rem; display: none; 
+            width: 100%; max-width: 1200px; padding: 2rem; display: none; 
             flex-direction: column; align-items: center; 
-            animation: pageSlideIn 0.5s ease-out forwards;
         }
         
         #search, #proxySearch { 
-            width: 100%; max-width: 700px; padding: 1.2rem; border-radius: 14px; 
+            width: 100%; max-width: 700px; padding: 1.2rem; border-radius: 12px; 
             border: 1px solid rgba(255,255,255,0.1); background: rgba(255, 255, 255, 0.07); 
-            color: white; text-align: center; outline: none; margin-bottom: 30px; 
-            font-size: 1.2rem;
+            color: white; text-align: center; outline: none; margin-bottom: 25px; font-size: 1.2rem;
         }
 
-        /* GAMES LIST */
+        /* 4 BUTTONS PER ROW GRID */
         ul { 
             width: 100%; list-style: none; display: grid; 
-            grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); 
-            gap: 1.2rem; max-height: 55vh; overflow-y: auto; overflow-x: hidden; 
+            grid-template-columns: repeat(4, 1fr); 
+            gap: 1rem; max-height: 55vh; overflow-y: auto; overflow-x: hidden; 
             padding: 10px; 
         }
-        ul::-webkit-scrollbar { width: 4px; }
-        ul::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 10px; }
+
+        /* Mobile fallback for the grid */
+        @media (max-width: 900px) { ul { grid-template-columns: repeat(2, 1fr); } }
 
         li a { 
-            display: block; padding: 1.5rem; border-radius: 15px; text-decoration: none; 
+            display: block; padding: 1.4rem; border-radius: 12px; text-decoration: none; 
             color: white; background: rgba(255, 255, 255, 0.04); transition: 0.2s; 
             border: 1px solid rgba(255,255,255,0.02); text-align: center; font-weight: 700; 
+            font-size: 0.95rem;
         }
         li a:hover { background: rgba(255, 255, 255, 0.08); border-color: var(--accent-color); }
 
-        /* BUTTONS */
         .intro-btn { 
-            padding: 15px 40px; border-radius: 12px; border: 2px solid var(--accent-color); 
+            padding: 15px 40px; border-radius: 10px; border: 2px solid var(--accent-color); 
             background: transparent; color: white; font-weight: 800; cursor: pointer; 
             transition: 0.3s; font-size: 1rem;
         }
@@ -105,23 +103,21 @@
 
         .back-nav {
             margin-bottom: 20px; background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.1);
-            color: #777; padding: 7px 18px; border-radius: 30px; cursor: pointer; transition: 0.2s; font-size: 0.9rem;
+            color: #777; padding: 7px 18px; border-radius: 30px; cursor: pointer;
         }
 
-        .footnote { margin-top: 30px; font-size: 0.75rem; color: rgba(255, 255, 255, 0.2); font-weight: 600; letter-spacing: 1px; }
+        .footnote { margin-top: 30px; font-size: 0.7rem; color: rgba(255, 255, 255, 0.2); font-weight: 600; }
 
         /* PROXY OVERLAY */
         #proxyFrameContainer { display: none; position: fixed; inset: 0; background: #000; z-index: 4000; }
         #proxyFrame { width: 100%; height: 100%; border: none; }
         
-        /* THE EXIT BUTTON - Locked Top Right, Black Box */
         .close-frame { 
             position: fixed; top: 20px; right: 20px; z-index: 4001; 
-            padding: 10px 25px; background: #000; color: #fff; 
-            border: 1px solid #333; font-weight: 700; cursor: pointer; 
-            border-radius: 8px; text-transform: uppercase; letter-spacing: 1px;
+            padding: 10px 20px; background: #000; color: #fff; 
+            border: 1px solid #444; font-weight: 700; cursor: pointer; 
+            border-radius: 5px;
         }
-        .close-frame:hover { background: #111; border-color: #555; }
     </style>
 </head>
 <body>
@@ -136,19 +132,18 @@
     </div>
 
     <div class="container" id="mainContainer">
-        <button class="back-nav" onclick="goHome()">← Back to Menu</button>
+        <button class="back-nav" onclick="goHome()">← Back</button>
         
         <div id="homeSection" style="width:100%; text-align:center;">
-            <h1 style="margin-bottom:20px; font-weight:900; font-size: 2rem;">Project Library</h1>
-            <input type="text" id="search" placeholder="Search filtered library...">
+            <h1 style="margin-bottom:20px; font-weight:900;">Project Library</h1>
+            <input type="text" id="search" placeholder="Search...">
             <ul id="gameList"></ul>
             <p class="footnote">MADE BY QUACKMATH STUDIOS</p>
         </div>
 
         <div id="proxySection" style="display:none; text-align:center;">
-            <h1 style="margin-bottom:20px; font-weight:900; font-size: 2rem;">Project Proxy</h1>
-            <input type="text" id="proxySearch" placeholder="Enter URL (e.g. bing.com)">
-            <p style="margin-top: 10px; color: #444; font-size: 0.9rem;">Note: Some sites block embedded viewing.</p>
+            <h1 style="margin-bottom:20px; font-weight:900;">Project Proxy</h1>
+            <input type="text" id="proxySearch" placeholder="Enter URL...">
         </div>
     </div>
 
@@ -158,61 +153,50 @@
     </div>
 
     <script>
-        // Intro sequence
+        // Intro Animation Sequence
         setTimeout(() => {
             const welcomeText = document.getElementById('welcomeText');
             welcomeText.style.animation = 'welcomeUp 1.2s cubic-bezier(0.16, 1, 0.3, 1) forwards';
             
             setTimeout(() => {
                 const logo = document.getElementById('welcomeLogo');
-                logo.style.animation = 'logoSlideUp 0.8s ease forwards';
+                logo.style.opacity = '1';
+                logo.style.transition = 'opacity 0.8s ease';
                 document.getElementById('welcomeActions').style.display = 'flex';
             }, 700);
-        }, 1200);
+        }, 1000);
 
         function startMode(mode) {
-            const welcome = document.getElementById('welcomeScreen');
-            welcome.style.opacity = '0';
-            setTimeout(() => {
-                welcome.style.visibility = 'hidden';
-                document.getElementById('mainContainer').style.display = 'flex';
-                if(mode === 'games') {
-                    document.getElementById('homeSection').style.display = 'block';
-                    document.getElementById('proxySection').style.display = 'none';
-                } else {
-                    document.getElementById('homeSection').style.display = 'none';
-                    document.getElementById('proxySection').style.display = 'block';
-                }
-            }, 500);
+            document.getElementById('welcomeScreen').style.display = 'none';
+            document.getElementById('mainContainer').style.display = 'flex';
+            if(mode === 'games') {
+                document.getElementById('homeSection').style.display = 'block';
+                document.getElementById('proxySection').style.display = 'none';
+            } else {
+                document.getElementById('homeSection').style.display = 'none';
+                document.getElementById('proxySection').style.display = 'block';
+            }
         }
 
         function goHome() {
-            const welcome = document.getElementById('welcomeScreen');
             document.getElementById('mainContainer').style.display = 'none';
-            welcome.style.visibility = 'visible';
-            welcome.style.opacity = '1';
+            document.getElementById('welcomeScreen').style.display = 'flex';
         }
 
-        // Proxy Enter Logic
         document.getElementById('proxySearch').addEventListener('keypress', (e) => {
             if (e.key === 'Enter') {
                 let url = e.target.value.trim().replace(/^(?:https?:\/\/)?/i, "");
                 if(!url) return;
-                // Using a fallback structure for the proxy URL
-                const finalUrl = `https://brunysixl.work/active/embed.html?p=http://${url}`;
-                document.getElementById('proxyFrame').src = finalUrl;
+                document.getElementById('proxyFrame').src = `https://brunysixl.work/active/embed.html?p=http://${url}`;
                 document.getElementById('proxyFrameContainer').style.display = 'block';
-                window.history.pushState({}, '', "/p?=" + url);
             }
         });
 
         function closeProxy() {
             document.getElementById('proxyFrameContainer').style.display = 'none';
             document.getElementById('proxyFrame').src = "";
-            window.history.pushState({}, '', "/");
         }
 
-        // Game Fetching
         async function fetchGames() {
             try {
                 const r = await fetch('https://docs.google.com/document/d/e/2PACX-1vQBKBzjpOyjHA9PHl3NQi3am0RHVYOLMCCyfk5U2QAjqbB5tnG68XRZgGneMnQeAbI-cstsj08j_yhE/pub');
